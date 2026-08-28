@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.9</title>
+    <title>Xadrez - v3.8.10</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -432,7 +432,7 @@
             display: flex;
             flex-direction: column;
             flex: 1;
-            min-height: 70px;
+            min-height: 0px;
             gap: 3px;
             overflow: hidden;
         }
@@ -448,6 +448,7 @@
             display: flex;
             flex-direction: column;
             gap: 3px;
+            min-height: 0px;
         }
         .chat-msg { background: var(--chat-msg-bg); padding: 4px 6px; border-radius: 5px; border-left: 3px solid #f43f5e; line-height: 1.25; }
         .chat-msg span { color: #f43f5e; font-weight: bold; }
@@ -681,7 +682,7 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
         .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- CORREÇÃO CIRÚRGICA PARA CELULAR EM PÉ (PORTRAIT): PAINEL LATERAL FLEXÍVEL ATÉ O FIM DA TELA --- */
+        /* --- CORREÇÃO CIRÚRGICA PARA CELULAR EM PÉ (PORTRAIT): PAINEL LATERAL DIMENSIONADO E SEM CORTES --- */
         @media (max-width: 900px) and (orientation: portrait) {
             #game-wrapper {
                 flex-direction: column !important;
@@ -696,24 +697,25 @@
             .board-section {
                 width: calc(100vw - 12px) !important;
                 height: calc(100vw - 12px) !important;
-                max-width: 48vh !important;
-                max-height: 48vh !important;
-                padding: 6px;
+                max-width: 44vh !important;
+                max-height: 44vh !important;
+                padding: 4px;
                 margin-top: 2px;
                 flex-shrink: 0;
             }
             .side-section {
                 width: calc(100vw - 12px) !important;
-                height: calc(100vh - 100vw - 20px) !important;
-                max-height: calc(100vh - 48vh - 20px) !important;
+                height: calc(100vh - 44vh - 20px) !important;
+                max-height: calc(100vh - 44vh - 20px) !important;
                 border-radius: 12px;
-                padding: 6px;
+                padding: 5px;
                 flex-shrink: 0;
                 margin-bottom: 2px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                overflow: hidden;
+                overflow: hidden !important;
+                gap: 4px;
             }
             .side-section.minimized {
                 height: 0px !important;
@@ -732,17 +734,20 @@
             }
             .chat-container { 
                 flex: 1;
-                min-height: 0px !important; 
+                min-height: 0px !important;
                 display: flex;
                 flex-direction: column;
+                gap: 3px;
+                overflow: hidden;
             }
             .chat-box {
                 flex: 1;
                 min-height: 0px !important;
+                overflow-y: auto !important;
             }
         }
 
-        /* --- CORREÇÃO CIRÚRGICA PARA CELULAR/TABLET DEITADO (LANDSCAPE): SEM CORTES NA VERTICAL --- */
+        /* --- CORREÇÃO CIRÚRGICA PARA CELULAR/TABLET DEITADO (LANDSCAPE) --- */
         @media (max-width: 900px) and (orientation: landscape) {
             #game-wrapper {
                 flex-direction: row !important;
@@ -882,7 +887,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.9</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.10</p>
         </div>
         
         <div class="menu-dashboard">
@@ -1021,7 +1026,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.9 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.10 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1134,7 +1139,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.9&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.10&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
