@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.5.1</title>
+    <title>Termux Xadrez - v3.5.2</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -16,7 +16,6 @@
             --panel-border: #cbd5e1;
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --board-bg: #ffffff;
             --board-border: #0284c7;
             --light-square: #f1f5f9;
             --dark-square: #64748b;
@@ -32,7 +31,7 @@
             --hint-dot-color: #0284c7;
             --candy-w-bg: #0284c7;
             --candy-b-bg: #e11d48;
-            --neon-glow-btn: 0 0 10px rgba(2, 132, 199, 0.3), inset 0 0 4px rgba(2, 132, 199, 0.1);
+            --neon-glow-btn: 0 0 10px rgba(2, 132, 199, 0.3);
             --turn-active-color: #16a34a;
         }
 
@@ -166,7 +165,117 @@
             --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6);
         }
 
-        /* --- PEÇAS NEON --- */
+        /* --- TEMAS EXCLUSIVOS DAS SALAS GLOBAIS --- */
+        
+        /* 1. PARIS (Rosa Romântico / Elegante) */
+        body.room-paris {
+            --bg-main: #fff0f5;
+            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
+            --panel-bg: rgba(255, 240, 245, 0.9);
+            --panel-border: #ec4899;
+            --text-main: #831843;
+            --text-muted: #be185d;
+            --board-border: #db2777;
+            --light-square: #fce7f3;
+            --dark-square: #f472b6;
+            --chat-bg: #ffe4e6;
+            --chat-input-bg: #ffffff;
+            --chat-msg-bg: #fbcfe8;
+            --btn-bg: #f472b6;
+            --btn-hover: #ec4899;
+            --modal-bg: #fff1f2;
+            --modal-border: #db2777;
+            --modal-text: #831843;
+            --trail-color: rgba(219, 39, 119, 0.95);
+            --hint-dot-color: #db2777;
+            --candy-w-bg: #ec4899;
+            --candy-b-bg: #831843;
+        }
+        body.room-paris .piece.white-piece { filter: drop-shadow(0 0 6px #ec4899) brightness(1.2); }
+        body.room-paris .piece.black-piece { filter: drop-shadow(0 0 6px #831843) brightness(1.1); }
+
+        /* 2. TÓQUIO (Cyber Neon / Futurista) */
+        body.room-toquio {
+            --bg-main: #050508;
+            --bg-gradient: radial-gradient(circle at center, #130729 0%, #050508 100%);
+            --panel-bg: rgba(19, 7, 41, 0.9);
+            --panel-border: #00f0ff;
+            --text-main: #00f0ff;
+            --text-muted: #c084fc;
+            --board-border: #a855f7;
+            --light-square: #3b0764;
+            --dark-square: #1e1b4b;
+            --chat-bg: #0b071a;
+            --chat-input-bg: #120e26;
+            --chat-msg-bg: #2e1065;
+            --btn-bg: #4c1d95;
+            --btn-hover: #6d28d9;
+            --modal-bg: #130729;
+            --modal-border: #00f0ff;
+            --modal-text: #00f0ff;
+            --trail-color: rgba(0, 240, 255, 0.95);
+            --hint-dot-color: #00f0ff;
+            --candy-w-bg: #00f0ff;
+            --candy-b-bg: #f43f5e;
+        }
+        body.room-toquio .piece.white-piece { filter: drop-shadow(0 0 6px #00f0ff) brightness(1.3); }
+        body.room-toquio .piece.black-piece { filter: drop-shadow(0 0 6px #f43f5e) brightness(1.2); }
+
+        /* 3. NOVA YORK (Dark Minimalista / Grafite) */
+        body.room-novayork {
+            --bg-main: #090d16;
+            --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #090d16 100%);
+            --panel-bg: rgba(15, 23, 42, 0.9);
+            --panel-border: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --board-border: #0ea5e9;
+            --light-square: #334155;
+            --dark-square: #0f172a;
+            --chat-bg: #0f172a;
+            --chat-input-bg: #020617;
+            --chat-msg-bg: #1e293b;
+            --btn-bg: #334155;
+            --btn-hover: #475569;
+            --modal-bg: #0f172a;
+            --modal-border: #38bdf8;
+            --modal-text: #f8fafc;
+            --trail-color: rgba(56, 189, 248, 0.95);
+            --hint-dot-color: #38bdf8;
+            --candy-w-bg: #38bdf8;
+            --candy-b-bg: #e11d48;
+        }
+        body.room-novayork .piece.white-piece { filter: drop-shadow(0 0 6px #ffffff) brightness(1.2); }
+        body.room-novayork .piece.black-piece { filter: drop-shadow(0 0 6px #f97316) brightness(1.2); }
+
+        /* 4. LONDRES (Floresta Mística / Esmeralda) */
+        body.room-londres {
+            --bg-main: #022c22;
+            --bg-gradient: radial-gradient(circle at center, #064e3b 0%, #022c22 100%);
+            --panel-bg: rgba(2, 44, 34, 0.9);
+            --panel-border: #34d399;
+            --text-main: #d1fae5;
+            --text-muted: #6ee7b7;
+            --board-border: #10b981;
+            --light-square: #065f46;
+            --dark-square: #022c22;
+            --chat-bg: #022c22;
+            --chat-input-bg: #011611;
+            --chat-msg-bg: #064e3b;
+            --btn-bg: #047857;
+            --btn-hover: #059669;
+            --modal-bg: #022c22;
+            --modal-border: #34d399;
+            --modal-text: #d1fae5;
+            --trail-color: rgba(52, 211, 153, 0.95);
+            --hint-dot-color: #34d399;
+            --candy-w-bg: #34d399;
+            --candy-b-bg: #f59e0b;
+        }
+        body.room-londres .piece.white-piece { filter: drop-shadow(0 0 6px #34d399) brightness(1.2); }
+        body.room-londres .piece.black-piece { filter: drop-shadow(0 0 6px #f59e0b) brightness(1.2); }
+
+        /* --- PEÇAS NEON PADRÃO --- */
         body.pieces-blue-pink .piece.white-piece { filter: drop-shadow(0 0 5px #00f0ff) brightness(1.2); }
         body.pieces-blue-pink .piece.black-piece { filter: drop-shadow(0 0 5px #ff007f) brightness(1.1); }
         body.pieces-green-cyan .piece.white-piece { filter: drop-shadow(0 0 5px #22c55e) brightness(1.2); }
@@ -744,7 +853,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Termux Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.1</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.2</p>
         </div>
         
         <div class="menu-dashboard">
@@ -769,9 +878,9 @@
             
             <div class="room-grid">
                 <button class="room-btn" style="background: linear-gradient(135deg, #f472b6, #db2777);" onclick="joinCityRoom('paris')">🌸 Paris (Rosa) <span id="status-paris" class="room-status">Verif...</span></button>
-                <button class="room-btn" style="background: linear-gradient(135deg, #120e26, #4c1d95);" onclick="joinCityRoom('toquio')">⚡ Tóquio (Cyber) <span id="status-toquio" class="room-status">Verif...</span></button>
-                <button class="room-btn" style="background: linear-gradient(135deg, #0f172a, #334155);" onclick="joinCityRoom('novayork')">🌙 N. York (Escuro) <span id="status-novayork" class="room-status">Verif...</span></button>
-                <button class="room-btn" style="background: linear-gradient(135deg, #062314, #059669);" onclick="joinCityRoom('londres')">🌲 Londres (Floresta) <span id="status-londres" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #4c1d95, #3b0764);" onclick="joinCityRoom('toquio')">⚡ Tóquio (Cyber) <span id="status-toquio" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #334155, #0f172a);" onclick="joinCityRoom('novayork')">🌙 N. York (Escuro) <span id="status-novayork" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #059669, #022c22);" onclick="joinCityRoom('londres')">🌲 Londres (Floresta) <span id="status-londres" class="room-status">Verif...</span></button>
             </div>
 
         </div>
@@ -874,7 +983,7 @@
         if (textarea) textarea.value = systemLogs.join('\n');
     }
 
-    addLog("Sistema iniciado. Termux Xadrez v3.5.1 pronto.");
+    addLog("Sistema iniciado. Termux Xadrez v3.5.2 pronto.");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -946,7 +1055,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.1&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.2&body=${text}`;
     }
 
     function updateFightBarDisplay() {
@@ -999,6 +1108,7 @@
             let details = cityDetails[cityKey];
             document.body.classList.add(details.roomClass);
             roomTitle.innerText = `${details.name}`;
+            addLog(`Tema da sala aplicado: ${cityKey}`);
         } else {
             document.body.classList.add(`theme-${currentTheme}`);
             roomTitle.innerText = "XADREZ";
@@ -1239,7 +1349,7 @@
                         conn = c;
                         setupHostListeners(cityName);
                         setupHeartbeat();
-                        try { c.send({ type: 'slot-response', status: 'accepted', fen: chess.fen() }); } catch(e){}
+                        try { c.send({ type: 'slot-response', status: 'accepted', fen: chess.fen(), city: cityName }); } catch(e){}
                         document.getElementById("player2-label").innerText = "Oponente (Pretas)";
                         addChatMessage("Sistema", "Oponente entrou na sala!", false, true);
                         addLog("Oponente conectado como Pretas.");
