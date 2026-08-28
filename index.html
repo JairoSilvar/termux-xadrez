@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.2.3</title>
+    <title>Termux Xadrez - v3.3.4</title>
+    <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
         
-        /* --- 3 TEMAS CLAROS --- */
         :root {
             --bg-main: #f8fafc;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #e2e8f0 100%);
@@ -89,7 +89,6 @@
             --candy-b-bg: #854d0e;
         }
 
-        /* --- 3 TEMAS ESCUROS --- */
         body.theme-escuro {
             --bg-main: #0f172a;
             --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
@@ -171,7 +170,6 @@
             --candy-b-bg: #10b981;
         }
 
-        /* Salas Globais Mapeadas */
         body.room-paris {
             --bg-main: #fdf2f8;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
@@ -276,48 +274,24 @@
             --candy-b-bg: #10b981;
         }
 
-        /* --- NEON EQUILIBRADO E FIEL (SEM INVERTER A COR DAS PRETAS) --- */
-        body.pieces-blue-pink .piece.white-piece {
-            filter: drop-shadow(0 0 6px #00f0ff) brightness(1.2);
-        }
-        body.pieces-blue-pink .piece.black-piece {
-            filter: drop-shadow(0 0 6px #ff007f) brightness(1.1);
-        }
+        /* --- NEON EQUILIBRADO E FIEL DAS PEÇAS --- */
+        body.pieces-blue-pink .piece.white-piece { filter: drop-shadow(0 0 5px #00f0ff) brightness(1.2); }
+        body.pieces-blue-pink .piece.black-piece { filter: drop-shadow(0 0 5px #ff007f) brightness(1.1); }
 
-        body.pieces-green-cyan .piece.white-piece {
-            filter: drop-shadow(0 0 6px #22c55e) brightness(1.2);
-        }
-        body.pieces-green-cyan .piece.black-piece {
-            filter: drop-shadow(0 0 6px #06b6d4) brightness(1.1);
-        }
+        body.pieces-green-cyan .piece.white-piece { filter: drop-shadow(0 0 5px #22c55e) brightness(1.2); }
+        body.pieces-green-cyan .piece.black-piece { filter: drop-shadow(0 0 5px #06b6d4) brightness(1.1); }
 
-        body.pieces-gold-purple .piece.white-piece {
-            filter: drop-shadow(0 0 6px #eab308) brightness(1.2);
-        }
-        body.pieces-gold-purple .piece.black-piece {
-            filter: drop-shadow(0 0 6px #a855f7) brightness(1.1);
-        }
+        body.pieces-gold-purple .piece.white-piece { filter: drop-shadow(0 0 5px #eab308) brightness(1.2); }
+        body.pieces-gold-purple .piece.black-piece { filter: drop-shadow(0 0 5px #a855f7) brightness(1.1); }
 
-        body.pieces-silver-fire .piece.white-piece {
-            filter: drop-shadow(0 0 6px #ffffff) brightness(1.2);
-        }
-        body.pieces-silver-fire .piece.black-piece {
-            filter: drop-shadow(0 0 6px #f97316) brightness(1.1);
-        }
+        body.pieces-silver-fire .piece.white-piece { filter: drop-shadow(0 0 5px #ffffff) brightness(1.2); }
+        body.pieces-silver-fire .piece.black-piece { filter: drop-shadow(0 0 5px #f97316) brightness(1.1); }
 
-        body.pieces-neon-lime .piece.white-piece {
-            filter: drop-shadow(0 0 6px #a3e635) brightness(1.2);
-        }
-        body.pieces-neon-lime .piece.black-piece {
-            filter: drop-shadow(0 0 6px #ec4899) brightness(1.1);
-        }
+        body.pieces-neon-lime .piece.white-piece { filter: drop-shadow(0 0 5px #a3e635) brightness(1.2); }
+        body.pieces-neon-lime .piece.black-piece { filter: drop-shadow(0 0 5px #ec4899) brightness(1.1); }
 
-        body.pieces-ruby-indigo .piece.white-piece {
-            filter: drop-shadow(0 0 6px #e11d48) brightness(1.2);
-        }
-        body.pieces-ruby-indigo .piece.black-piece {
-            filter: drop-shadow(0 0 6px #6366f1) brightness(1.1);
-        }
+        body.pieces-ruby-indigo .piece.white-piece { filter: drop-shadow(0 0 5px #e11d48) brightness(1.2); }
+        body.pieces-ruby-indigo .piece.black-piece { filter: drop-shadow(0 0 5px #6366f1) brightness(1.1); }
 
         body, html {
             width: 100vw;
@@ -330,7 +304,6 @@
             align-items: center;
             justify-content: center;
             touch-action: manipulation;
-            transition: background 0.3s ease, color 0.3s ease;
         }
         #game-wrapper {
             position: relative;
@@ -343,7 +316,6 @@
             justify-content: center;
             padding: 1vh 1vw;
             gap: 1.5vw;
-            transition: background 0.3s ease;
         }
 
         .board-section {
@@ -359,11 +331,10 @@
             background: var(--panel-bg);
             border: 2px solid var(--board-border);
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             padding: 10px;
             position: relative;
             flex-shrink: 0;
-            transition: all 0.3s ease;
         }
         #chessboard {
             display: grid;
@@ -374,7 +345,6 @@
             border: 2px solid var(--panel-border);
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.15);
         }
         .square {
             display: flex;
@@ -382,51 +352,46 @@
             justify-content: center;
             position: relative;
             cursor: pointer;
-            transition: background-color 0.2s ease;
         }
         .light { background-color: var(--light-square); }
         .dark { background-color: var(--dark-square); }
         
-        .square.selected { background-color: rgba(56, 189, 248, 0.5) !important; box-shadow: inset 0 0 12px var(--board-border); }
+        .square.selected { background-color: rgba(56, 189, 248, 0.4) !important; }
         
+        /* --- SOMBREAMENTO E BRILHO AO MOVER AS PEÇAS --- */
         .square.last-move:not(.selected) {
             animation: fadeCustomTrail 2.5s ease-out forwards;
         }
         @keyframes fadeCustomTrail {
-            0% { box-shadow: inset 0 0 30px var(--trail-color), 0 0 15px var(--trail-glow); opacity: 1; }
-            70% { box-shadow: inset 0 0 20px var(--trail-color), 0 0 8px var(--trail-glow); opacity: 0.95; }
+            0% { box-shadow: inset 0 0 25px var(--trail-color), 0 0 12px var(--trail-glow); opacity: 1; }
+            70% { box-shadow: inset 0 0 15px var(--trail-color), 0 0 6px var(--trail-glow); opacity: 0.95; }
             100% { box-shadow: inset 0 0 0px transparent, 0 0 0px transparent; opacity: 1; }
         }
 
         .square.highlight::after {
             content: '';
             position: absolute;
-            width: 32%;
-            height: 32%;
+            width: 28%;
+            height: 28%;
             background-color: var(--hint-dot-color);
-            border: 2.5px solid var(--hint-dot-border);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--hint-dot-color);
         }
         .square.capture-highlight::after {
             content: '';
             position: absolute;
             inset: 0;
-            border: 4.5px solid #f43f5e;
+            border: 3px solid #f43f5e;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(244, 63, 94, 0.8);
         }
 
         .piece {
-            width: 86%;
-            height: 86%;
+            width: 84%;
+            height: 84%;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            transition: transform 0.15s ease;
             pointer-events: none;
         }
-        .piece:hover { transform: scale(1.06); }
 
         .side-section {
             display: flex;
@@ -438,11 +403,10 @@
             background: var(--panel-bg);
             border: 2px solid var(--panel-border);
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             padding: 8px;
             flex-shrink: 0;
             z-index: 500;
-            transition: width 0.3s ease, opacity 0.3s ease, padding 0.3s ease, border-color 0.3s ease, background 0.3s ease;
         }
         .side-section.minimized {
             width: 0px;
@@ -463,7 +427,6 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             display: none;
-            transition: transform 0.2s, background 0.2s;
         }
         @media (min-width: 901px) {
             #restore-btn { top: 20px; right: 20px; padding: 10px 18px; border-radius: 10px; font-size: 11px; }
@@ -496,7 +459,6 @@
             cursor: pointer;
             font-size: 8.5px;
             font-weight: bold;
-            transition: background 0.2s;
             pointer-events: auto;
         }
         .action-btn:hover { background: var(--btn-hover); }
@@ -509,7 +471,6 @@
             display: flex;
             flex-direction: column;
             gap: 2px;
-            opacity: 0.95;
         }
         .candy-bar-header {
             display: flex;
@@ -528,18 +489,8 @@
             display: flex;
             border: 1px solid var(--panel-border);
         }
-        .candy-fill-white {
-            height: 100%;
-            background: var(--candy-w-bg);
-            width: 50%;
-            transition: width 0.4s ease, background 0.3s ease;
-        }
-        .candy-fill-black {
-            height: 100%;
-            background: var(--candy-b-bg);
-            width: 50%;
-            transition: width 0.4s ease, background 0.3s ease;
-        }
+        .candy-fill-white { height: 100%; background: var(--candy-w-bg); width: 50%; }
+        .candy-fill-black { height: 100%; background: var(--candy-b-bg); width: 50%; }
         .candy-icons-row {
             display: flex;
             justify-content: space-between;
@@ -556,12 +507,10 @@
             border: 1px solid var(--panel-border);
             padding: 5px 6px;
             border-radius: 6px;
-            transition: all 0.3s ease;
         }
         .player-card.active-turn {
             border-color: #22c55e;
             background: rgba(34, 197, 94, 0.1);
-            box-shadow: 0 0 8px rgba(34, 197, 94, 0.2);
         }
         .player-info {
             display: flex;
@@ -577,18 +526,12 @@
             padding: 1px 4px;
             border-radius: 3px;
             display: none;
-            box-shadow: 0 0 5px rgba(34, 197, 94, 0.8);
-            animation: pulseTurn 1.2s infinite alternate ease-in-out;
-        }
-        @keyframes pulseTurn {
-            from { opacity: 0.7; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1.02); }
         }
 
         .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 14px; align-items: center; }
         .captured-icon { width: 13px; height: 13px; background-size: contain; background-repeat: no-repeat; }
-        .captured-icon.white-cap { filter: drop-shadow(0 0 2px rgba(56,189,248,0.9)) brightness(1.2); }
-        .captured-icon.black-cap { filter: drop-shadow(0 0 2px rgba(244,63,94,0.9)) brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
+        .captured-icon.white-cap { filter: brightness(1.2); }
+        .captured-icon.black-cap { filter: brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
 
         .chat-container {
             display: flex;
@@ -610,10 +553,8 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            scroll-behavior: smooth;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
         }
-        .chat-msg { background: var(--chat-msg-bg); padding: 5px 7px; border-radius: 5px; border-left: 3px solid #f43f5e; line-height: 1.3; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+        .chat-msg { background: var(--chat-msg-bg); padding: 5px 7px; border-radius: 5px; border-left: 3px solid #f43f5e; line-height: 1.3; }
         .chat-msg span { color: #f43f5e; font-weight: bold; }
         .chat-msg.ai span { color: var(--board-border); }
         .chat-msg.ai { border-left: 3px solid var(--board-border); }
@@ -629,7 +570,6 @@
             font-size: 10px;
             outline: none;
         }
-        .chat-input:focus { border-color: var(--board-border); }
         
         .taunt-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; flex-shrink: 0; }
         .taunt-btn {
@@ -645,21 +585,17 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            pointer-events: auto;
         }
-        .taunt-btn:hover { background: var(--btn-hover); border-color: var(--board-border); }
+        .taunt-btn:hover { background: var(--btn-hover); }
 
         #meme-modal, #victory-screen, #settings-modal {
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 3000;
-            animation: fadeIn 0.2s ease;
         }
         .meme-content, .victory-card, .settings-content {
             background: var(--modal-bg);
@@ -669,8 +605,7 @@
             text-align: center;
             max-width: 360px;
             width: 90%;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-            animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
             color: var(--modal-text);
             max-height: 85vh;
             overflow-y: auto;
@@ -688,20 +623,12 @@
             overflow: hidden;
             border: 1px solid var(--modal-border);
         }
-        .anim-element { font-size: 34px; animation: bounceAnim 0.7s infinite alternate ease-in-out; }
+        .anim-element { font-size: 34px; }
         .captured-popup-container { display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .captured-popup-piece { width: 40px; height: 40px; background-size: contain; background-repeat: no-repeat; background-position: center; animation: bounceAnim 0.7s infinite alternate ease-in-out; }
+        .captured-popup-piece { width: 40px; height: 40px; background-size: contain; background-repeat: no-repeat; background-position: center; }
         
-        .captured-popup-piece.white-piece { filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.9)) brightness(1.3); }
-        .captured-popup-piece.black-piece { filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.9)) brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
-
-        @keyframes bounceAnim { from { transform: translateY(-4px) rotate(-3deg); } to { transform: translateY(4px) rotate(3deg); } }
-        .pulse-ring { position: absolute; width: 50px; height: 50px; border: 3px solid #22c55e; border-radius: 50%; animation: pulseRing 1s infinite ease-out; }
-        @keyframes pulseRing { 0% { transform: scale(0.4); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
-
         .auto-close-bar { width: 100%; height: 3px; background: var(--panel-border); border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
-        .auto-close-progress { width: 100%; height: 100%; background: var(--board-border); animation: shrinkProgress 2.5s linear forwards; }
-        @keyframes shrinkProgress { from { width: 100%; } to { width: 0%; } }
+        .auto-close-progress { width: 100%; height: 100%; background: var(--board-border); }
 
         #menu-screen {
             position: fixed;
@@ -717,9 +644,8 @@
             padding: 15px;
             z-index: 4000;
             overflow-y: auto;
-            transition: opacity 0.4s ease, transform 0.4s ease;
         }
-        #menu-screen h1 { font-size: 26px; color: var(--board-border); margin-bottom: 3px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        #menu-screen h1 { font-size: 26px; color: var(--board-border); margin-bottom: 3px; }
 
         .menu-section-card {
             display: flex;
@@ -731,7 +657,6 @@
             border: 2px solid var(--panel-border);
             padding: 8px;
             border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
         .menu-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-top: 2px; }
         .menu-grid-btn {
@@ -748,11 +673,8 @@
             font-size: 10px;
             gap: 2px;
             background: var(--chat-bg);
-            pointer-events: auto;
-            transition: transform 0.15s ease, filter 0.2s ease;
         }
-        .menu-grid-btn span { font-size: 7.5px; opacity: 0.85; pointer-events: none; }
-        .menu-grid-btn:hover { filter: brightness(1.2); border-color: var(--board-border); transform: translateY(-1px); }
+        .menu-grid-btn span { font-size: 7.5px; opacity: 0.85; }
 
         .menu-main-btn {
             display: flex;
@@ -768,12 +690,8 @@
             gap: 8px;
             width: 100%;
             max-width: 340px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            transition: transform 0.15s ease, filter 0.2s ease;
-            pointer-events: auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .menu-main-btn span { pointer-events: none; }
-        .menu-main-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
 
         .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; width: 100%; max-width: 340px; }
         .room-btn {
@@ -789,15 +707,8 @@
             font-weight: bold;
             font-size: 10px;
             gap: 2px;
-            pointer-events: auto;
-            transition: transform 0.15s ease, filter 0.2s ease;
         }
-        .room-btn span { pointer-events: none; }
-        .room-btn:hover { filter: brightness(1.15); transform: translateY(-1px); border-color: var(--board-border); }
-        .room-status { font-size: 7.5px; padding: 2px 4px; border-radius: 4px; background: rgba(0,0,0,0.4); text-transform: uppercase; font-weight: 700; pointer-events: none; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes popUp { from { transform: scale(0.7); } to { transform: scale(1); } }
+        .room-status { font-size: 7.5px; padding: 2px 4px; border-radius: 4px; background: rgba(0,0,0,0.4); text-transform: uppercase; font-weight: 700; }
 
         @media (max-width: 900px) {
             body, html { overflow-y: auto; height: 100vh; }
@@ -822,7 +733,7 @@
                 <button class="action-btn" onclick="closeSettingsModal()">✕ Fechar</button>
             </div>
             
-            <div style="font-size: 10.5px; font-weight: bold; margin-top: 6px;">🎨 Escolher Tema do Tabuleiro (3 Claros / 3 Escuros):</div>
+            <div style="font-size: 10.5px; font-weight: bold; margin-top: 6px;">🎨 Tema do Tabuleiro:</div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('claro')">☀️ Claro</button>
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('rosa')">🌸 Rosa</button>
@@ -832,7 +743,7 @@
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('floresta')">🌲 Floresta</button>
             </div>
 
-            <div style="font-size: 10.5px; font-weight: bold; margin-top: 8px;">✨ Cores das Peças (6 Variedades):</div>
+            <div style="font-size: 10.5px; font-weight: bold; margin-top: 8px;">✨ Cores das Peças:</div>
             <div style="display: grid; grid-template-columns: 1fr; gap: 4px;">
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-blue-pink')">🔵 Azul Elétrico vs 🔴 Rosa Choque</button>
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-green-cyan')">🟢 Verde Esmeralda vs 🔵 Ciano</button>
@@ -842,7 +753,7 @@
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-ruby-indigo')">❤️ Rubi Intenso vs 🫐 Índigo Espacial</button>
             </div>
 
-            <button class="action-btn" onclick="closeSettingsModal()" style="margin-top: 8px; padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff;">APLICAR E VOLTAR</button>
+            <button class="action-btn" onclick="closeSettingsModal()" style="margin-top: 8px; padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff;">APLICAR</button>
         </div>
     </div>
 
@@ -850,11 +761,10 @@
         <div class="meme-content">
             <div class="auto-close-bar"><div class="auto-close-progress" id="autoCloseProgress"></div></div>
             <div class="css-animation-box" id="modal-animation-container">
-                <div class="pulse-ring"></div>
                 <div id="anim-icon" class="anim-element">🔥</div>
             </div>
             <div id="meme-title" class="meme-title" style="font-weight: bold; margin-bottom: 4px;">CAPTURA!</div>
-            <div id="meme-text" class="meme-text" style="font-size: 11px; margin-bottom: 8px;">Uma peça foi eliminada do tabuleiro!</div>
+            <div id="meme-text" class="meme-text" style="font-size: 11px; margin-bottom: 8px;">Peça eliminada!</div>
             <button class="action-btn" onclick="closeMemeModal()" style="padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff;">CONTINUAR</button>
         </div>
     </div>
@@ -863,14 +773,14 @@
         <div class="victory-card">
             <div style="font-size: 34px; margin-bottom: 4px;" id="victoryCandyIcon">🍫</div>
             <div class="victory-title" id="victoryHeaderTitle" style="font-weight: bold; margin-bottom: 4px;">FIM DE JOGO!</div>
-            <div id="victory-subtitle" class="victory-desc" style="font-size: 10.5px; margin-bottom: 8px;">Partida encerrada com sucesso.</div>
+            <div id="victory-subtitle" class="victory-desc" style="font-size: 10.5px; margin-bottom: 8px;">Partida encerrada.</div>
             <button class="action-btn" onclick="closeVictoryScreen()" style="padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff;">NOVO JOGO</button>
         </div>
     </div>
 
     <div id="menu-screen">
         <h1>Termux Xadrez</h1>
-        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.2.3</p>
+        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.3.4</p>
         
         <div style="display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 340px; align-items: center;">
             
@@ -893,10 +803,10 @@
             <div style="font-size: 9.5px; font-weight: bold; color: var(--board-border); margin-top: 1px; text-transform: uppercase; width: 100%; text-align: left;">Salas Globais (LAN P2P):</div>
             
             <div class="room-grid">
-                <button class="room-btn" style="background: linear-gradient(135deg, #f472b6, #db2777);" onclick="joinCityRoom('paris')">🌸 Paris (Rosa) <span id="status-paris" class="room-status" style="background: rgba(0,0,0,0.3);">Verif...</span></button>
-                <button class="room-btn" style="background: linear-gradient(135deg, #050508, #120a2a);" onclick="joinCityRoom('toquio')">⚡ Tóquio (Cyber) <span id="status-toquio" class="room-status" style="background: rgba(0,0,0,0.3);">Verif...</span></button>
-                <button class="room-btn" style="background: linear-gradient(135deg, #0f172a, #334155);" onclick="joinCityRoom('novayork')">🌙 N. York (Escuro) <span id="status-novayork" class="room-status" style="background: rgba(0,0,0,0.3);">Verif...</span></button>
-                <button class="room-btn" style="background: linear-gradient(135deg, #0c3b22, #10b981);" onclick="joinCityRoom('londres')">🌲 Londres (Floresta) <span id="status-londres" class="room-status" style="background: rgba(0,0,0,0.3);">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #f472b6, #db2777);" onclick="joinCityRoom('paris')">🌸 Paris (Rosa) <span id="status-paris" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #050508, #120a2a);" onclick="joinCityRoom('toquio')">⚡ Tóquio (Cyber) <span id="status-toquio" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #0f172a, #334155);" onclick="joinCityRoom('novayork')">🌙 N. York (Escuro) <span id="status-novayork" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #0c3b22, #10b981);" onclick="joinCityRoom('londres')">🌲 Londres (Floresta) <span id="status-londres" class="room-status">Verif...</span></button>
             </div>
 
         </div>
@@ -911,11 +821,10 @@
             <div class="brand-title" id="brandTitleBox">
                 <span id="room-status-title">XADREZ</span>
                 <div class="header-actions">
-                    <button class="action-btn" onclick="safeResetGame()" title="Novo">🔄 Novo</button>
-                    <button class="action-btn" onclick="safeUndoMove()" title="Desfazer">↩️ Desfazer</button>
+                    <button class="action-btn" onclick="safeResetGame()" title="Novo">♻️ Novo</button>
                     <button class="action-btn" onclick="openSettingsModal()" title="Temas">🎨 Temas</button>
                     <button class="action-btn" onclick="safeLeaveRoom()" title="Sair">🚪 Sair</button>
-                    <button class="action-btn" onclick="togglePanel()" title="Ocultar" style="background: rgba(244,63,94,0.2); border-color: #f43f5e;">◀ Ocultar</button>
+                    <button class="action-btn" onclick="togglePanel()" title="Ocultar">◀</button>
                 </div>
             </div>
 
@@ -944,7 +853,7 @@
 
             <div class="chat-container">
                 <div class="chat-box" id="chat-box">
-                    <div class="chat-msg ai"><span>Jairo Silva:</span> Partida pronta. Divirta-se jogando!</div>
+                    <div class="chat-msg ai"><span>Jairo Silva:</span> Boa partida.</div>
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
@@ -989,6 +898,8 @@
     let lastPathCoords = [];
     let trailTimeout = null;
     let pendingPopupData = null;
+    let heartbeatInterval = null;
+    let isTransitioningMove = false;
 
     let candiesWhite = parseInt(localStorage.getItem('termux_candies_w') || '1');
     let candiesBlack = parseInt(localStorage.getItem('termux_candies_b') || '1');
@@ -1015,10 +926,10 @@
     };
 
     const cityDetails = {
-        'paris': { name: 'Paris (Rosa) 🌸', roomClass: 'room-paris', weatherMsg: 'O charme romântico e suave de Paris.' },
-        'toquio': { name: 'Tóquio (Cyber) ⚡', roomClass: 'room-toquio', weatherMsg: 'Luzes neon e alta tecnologia na capital japonesa.' },
-        'novayork': { name: 'Nova York (Escuro) 🌙', roomClass: 'room-novayork', weatherMsg: 'A metrópole noturna que nunca dorme.' },
-        'londres': { name: 'Londres (Floresta) 🌲', roomClass: 'room-londres', weatherMsg: 'A serenidade mística dos parques londrinos.' }
+        'paris': { name: 'Paris (Rosa) 🌸', roomClass: 'room-paris' },
+        'toquio': { name: 'Tóquio (Cyber) ⚡', roomClass: 'room-toquio' },
+        'novayork': { name: 'Nova York (Escuro) 🌙', roomClass: 'room-novayork' },
+        'londres': { name: 'Londres (Floresta) 🌲', roomClass: 'room-londres' }
     };
 
     const diverseStandUpList = [
@@ -1060,7 +971,6 @@
     }
 
     function setTheme(themeName) {
-        playSound('click');
         currentTheme = themeName;
         document.body.classList.remove('theme-claro', 'theme-rosa', 'theme-ouro', 'theme-escuro', 'theme-cyberpunk', 'theme-floresta', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
         document.body.classList.add(`theme-${themeName}`);
@@ -1068,25 +978,14 @@
     }
 
     function setPieceColors(colorScheme) {
-        playSound('click');
         document.body.classList.remove('pieces-blue-pink', 'pieces-green-cyan', 'pieces-gold-purple', 'pieces-silver-fire', 'pieces-neon-lime', 'pieces-ruby-indigo');
         document.body.classList.add(colorScheme);
     }
 
-    function openSettingsModal() {
-        playSound('click');
-        const modal = document.getElementById("settings-modal");
-        if(modal) modal.style.display = "flex";
-    }
-
-    function closeSettingsModal() {
-        playSound('click');
-        const modal = document.getElementById("settings-modal");
-        if(modal) modal.style.display = "none";
-    }
+    function openSettingsModal() { document.getElementById("settings-modal").style.display = "flex"; }
+    function closeSettingsModal() { document.getElementById("settings-modal").style.display = "none"; }
 
     function selectAndStartPvE(level) {
-        playSound('click');
         aiDifficulty = level;
         startGame('pve');
     }
@@ -1094,137 +993,64 @@
     function applyCityVisualTheme(cityKey) {
         currentCityKey = cityKey;
         const roomTitle = document.getElementById("room-status-title");
-
         document.body.classList.remove('theme-claro', 'theme-rosa', 'theme-ouro', 'theme-escuro', 'theme-cyberpunk', 'theme-floresta', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
 
         if (cityKey && cityDetails[cityKey]) {
             let details = cityDetails[cityKey];
             document.body.classList.add(details.roomClass);
             roomTitle.innerText = `${details.name}`;
-            
-            setTimeout(() => {
-                addChatMessage("Clima Urbano", details.weatherMsg, true);
-            }, 500);
         } else {
             document.body.classList.add(`theme-${currentTheme}`);
             roomTitle.innerText = "XADREZ";
         }
     }
 
-    function playSound(type, isHighValueCapture = false) {
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            
-            if (type === 'click') {
-                osc.frequency.setValueAtTime(500, ctx.currentTime);
-                osc.frequency.setValueAtTime(250, ctx.currentTime + 0.05);
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.05);
-            } else if (type === 'start') {
-                osc.frequency.setValueAtTime(300, ctx.currentTime);
-                osc.frequency.setValueAtTime(600, ctx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.2);
-            } else if (type === 'capture') {
-                if (isHighValueCapture) {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(1200, ctx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.15);
-                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
-                    osc.start();
-                    osc.stop(ctx.currentTime + 0.18);
-                } else {
-                    osc.frequency.setValueAtTime(400, ctx.currentTime);
-                    osc.frequency.setValueAtTime(200, ctx.currentTime + 0.08);
-                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
-                    osc.start();
-                    osc.stop(ctx.currentTime + 0.08);
-                }
-            } else if (type === 'victory') {
-                [330, 392, 523, 659, 783].forEach((f, i) => {
-                    setTimeout(() => {
-                        const o = ctx.createOscillator();
-                        const g = ctx.createGain();
-                        o.connect(g);
-                        g.connect(ctx.destination);
-                        o.frequency.value = f;
-                        g.gain.setValueAtTime(0.25, ctx.currentTime);
-                        g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                        o.start();
-                        o.stop(ctx.currentTime + 0.3);
-                    }, i * 120);
-                });
-            }
-        } catch(e) {}
-    }
-
-    function showComedyPopup(title, text, icon, attackingPieceKey = null, attackingColor = null, capturedPieceKey = null, capturedColor = null) {
-        pendingPopupData = { title, text, icon, attackingPieceKey, attackingColor, capturedPieceKey, capturedColor };
+    function showComedyPopup(title, text, icon, attKey = null, attCol = null, capKey = null, capCol = null) {
+        pendingPopupData = { title, text, icon, attKey, attCol, capKey, capCol };
         const animContainer = document.getElementById("modal-animation-container");
         
-        if (attackingPieceKey && capturedPieceKey && pieceSvgs[attackingPieceKey] && pieceSvgs[capturedPieceKey]) {
-            const attCss = (attackingColor === 'w') ? 'white-piece' : 'black-piece';
-            const capCss = (capturedColor === 'w') ? 'white-piece' : 'black-piece';
+        if (attKey && capKey && pieceSvgs[attKey] && pieceSvgs[capKey]) {
+            const attCss = (attCol === 'w') ? 'white-piece' : 'black-piece';
+            const capCss = (capCol === 'w') ? 'white-piece' : 'black-piece';
             animContainer.innerHTML = `
-                <div class="pulse-ring"></div>
                 <div class="captured-popup-container">
-                    <div class="captured-popup-piece ${attCss}" style="background-image: url('${pieceSvgs[attackingPieceKey]}');" title="Atacante"></div>
+                    <div class="captured-popup-piece ${attCss}" style="background-image: url('${pieceSvgs[attKey]}');"></div>
                     <span style="font-size: 16px; font-weight: bold; color: #f43f5e;">⚡</span>
-                    <div class="captured-popup-piece ${capCss}" style="background-image: url('${pieceSvgs[capturedPieceKey]}');" title="Capturada"></div>
+                    <div class="captured-popup-piece ${capCss}" style="background-image: url('${pieceSvgs[capKey]}');"></div>
                 </div>
             `;
         } else {
-            animContainer.innerHTML = `<div class="pulse-ring"></div><div id="anim-icon" class="anim-element">${icon}</div>`;
+            animContainer.innerHTML = `<div id="anim-icon" class="anim-element">${icon}</div>`;
         }
 
         document.getElementById("meme-title").innerText = title;
         document.getElementById("meme-text").innerText = text;
-        
-        const progressBar = document.getElementById("autoCloseProgress");
-        progressBar.style.animation = 'none';
-        progressBar.offsetHeight;
-        progressBar.style.animation = 'shrinkProgress 2.5s linear forwards';
-
         document.getElementById("meme-modal").style.display = "flex";
 
         if (autoCloseTimer) clearTimeout(autoCloseTimer);
-        autoCloseTimer = setTimeout(() => { closeMemeModal(); }, 2500);
+        autoCloseTimer = setTimeout(() => { closeMemeModal(); }, 1800);
     }
 
     function closeMemeModal() {
         if (autoCloseTimer) clearTimeout(autoCloseTimer);
-        playSound('click');
         document.getElementById("meme-modal").style.display = "none";
         pendingPopupData = null;
+        isTransitioningMove = false;
         renderBoard();
         if (conn && conn.open && gameMode === 'network') {
-            conn.send({ type: 'event-close' });
+            try { conn.send({ type: 'event-close' }); } catch(e){}
         }
     }
 
     function sendStandUpJoke() {
-        playSound('click');
         let text = diverseStandUpList[currentJokeIndex];
         currentJokeIndex = (currentJokeIndex + 1) % diverseStandUpList.length;
-
         addChatMessage("Stand up", text, true);
-        if (conn && conn.open) { conn.send({ type: 'chat', sender: 'Stand up', text: text, isAI: true }); }
+        if (conn && conn.open) { try { conn.send({ type: 'chat', sender: 'Stand up', text: text, isAI: true }); } catch(e){} }
         showComedyPopup("MOMENTO CÔMICO 🎤", text, "🎭");
     }
 
     function showVictoryScreen(reason, winnerColor = null) {
-        playSound('victory');
-        
         if (winnerColor === 'w') {
             candiesWhite += 1;
             if (candiesBlack > 0) candiesBlack -= 1;
@@ -1240,39 +1066,24 @@
         updateFightBarDisplay();
 
         document.getElementById("victory-subtitle").innerText = reason;
-        
-        if (gameMode === 'pve' && winnerColor === 'w' && aiDifficulty < 5) {
-            aiDifficulty++;
-            document.getElementById("victoryHeaderTitle").innerText = `VITÓRIA! SUBIU AO NÍVEL ${aiDifficulty}! 👑`;
-        } else {
-            document.getElementById("victoryHeaderTitle").innerText = "FIM DE JOGO!";
-        }
-
         document.getElementById("victory-screen").style.display = "flex";
     }
 
     function closeVictoryScreen() {
-        playSound('click');
         document.getElementById("victory-screen").style.display = "none";
         safeLeaveRoom();
     }
 
     function togglePanel() {
-        playSound('click');
         const panel = document.getElementById("sidePanel");
         const restoreBtn = document.getElementById("restore-btn");
         panel.classList.toggle("minimized");
-        if(panel.classList.contains("minimized")) {
-            restoreBtn.style.display = "block";
-            restoreBtn.innerText = "MENU";
-        } else {
-            restoreBtn.style.display = "none";
-        }
+        restoreBtn.style.display = panel.classList.contains("minimized") ? "block" : "none";
     }
 
     function safeLeaveRoom() {
-        if (confirm("Tem certeza que deseja sair da partida e retornar ao menu?")) {
-            playSound('click');
+        if (confirm("Deseja sair da partida e retornar ao menu?")) {
+            if (heartbeatInterval) clearInterval(heartbeatInterval);
             if (conn) { try { conn.close(); } catch(e){} }
             if (peer) { try { peer.destroy(); } catch(e){} }
             window.location.reload();
@@ -1280,28 +1091,31 @@
     }
 
     function safeResetGame() {
-        if (confirm("Deseja realmente iniciar um novo jogo e reiniciar o tabuleiro?")) {
+        if (confirm("Reiniciar o tabuleiro?")) {
+            if (conn && conn.open) { try { conn.send({ type: 'reset-board' }); } catch(e){} }
             resetGame();
         }
     }
 
-    function safeUndoMove() {
-        if (confirm("Deseja desfazer o último movimento?")) {
-            undoMove();
-        }
+    function setupHeartbeat() {
+        if (heartbeatInterval) clearInterval(heartbeatInterval);
+        heartbeatInterval = setInterval(() => {
+            if (conn && conn.open) {
+                try { conn.send({ type: 'ping', fen: chess.fen() }); } catch(e) {}
+            }
+        }, 5000);
     }
 
     function startGame(mode) {
-        playSound('start');
         gameMode = mode;
         playerColor = 'w';
         isSpectator = false;
         lastPathCoords = [];
-        currentJokeIndex = Math.floor(Math.random() * diverseStandUpList.length);
+        isTransitioningMove = false;
         applyCityVisualTheme(null);
         updateFightBarDisplay();
         document.getElementById("player1-label").innerText = "Você (Brancas)";
-        document.getElementById("player2-label").innerText = mode === 'pve' ? `IA Mestre (Nível ${aiDifficulty})` : "Jogador 2";
+        document.getElementById("player2-label").innerText = mode === 'pve' ? `IA Mestre (${aiDifficulty})` : "Jogador 2";
         
         closeMenuTransition();
         chess.reset();
@@ -1310,41 +1124,32 @@
         updateTurnIndicators();
         updateCapturedDisplay();
         renderBoard();
-        addChatMessage("Sistema", mode === 'pve' ? `Modo Contra a Máquina ativado (Nível ${aiDifficulty}).` : "Modo 2 Jogadores Local ativado!");
     }
 
     function closeMenuTransition() {
         const menu = document.getElementById("menu-screen");
         menu.style.opacity = "0";
-        menu.style.transform = "scale(1.05)";
-        setTimeout(() => { menu.style.display = "none"; }, 400);
+        setTimeout(() => { menu.style.display = "none"; }, 300);
     }
 
     async function checkRoomAvailability(cityKey) {
         return new Promise((resolve) => {
             let testPeer = new Peer();
-            let roomId = "termux-cities-v3009-" + cityKey;
-            let connTest = testPeer.connect(roomId, { reliable: true });
+            let roomId = "termux-cities-v3016-" + cityKey;
+            testPeer.on('error', () => { testPeer.destroy(); resolve('disponivel'); });
+            let connTest = testPeer.connect(roomId, { reliable: false });
             let resolved = false;
 
             connTest.on('open', () => {
                 resolved = true;
-                connTest.send({ type: 'check-slot' });
+                try { connTest.send({ type: 'check-slot' }); } catch(e){}
             });
-
             connTest.on('data', (data) => {
-                if (data.type === 'slot-response') {
-                    testPeer.destroy();
-                    resolve('lotada');
-                }
+                if (data.type === 'slot-response') { testPeer.destroy(); resolve('lotada'); }
             });
-
             setTimeout(() => {
-                if (!resolved) {
-                    testPeer.destroy();
-                    resolve('disponivel');
-                }
-            }, 600);
+                if (!resolved) { resolved = true; testPeer.destroy(); resolve('disponivel'); }
+            }, 500);
         });
     }
 
@@ -1354,49 +1159,41 @@
             const statusEl = document.getElementById(`status-${c}`);
             if (statusEl) {
                 let status = await checkRoomAvailability(c);
-                if (status === 'disponivel') {
-                    statusEl.innerText = '🟢 Livre';
-                    statusEl.style.background = '#15803d';
-                } else {
-                    statusEl.innerText = '🔴 Cheia';
-                    statusEl.style.background = '#b91c1c';
-                }
+                statusEl.innerText = status === 'disponivel' ? '🟢 Livre' : '🔴 Cheia';
+                statusEl.style.background = status === 'disponivel' ? '#15803d' : '#b91c1c';
             }
         }
     }
-    window.addEventListener('load', () => { setTimeout(updateRoomStatuses, 500); });
+    window.addEventListener('load', () => { setTimeout(updateRoomStatuses, 400); });
 
     function joinCityRoom(cityName) {
-        playSound('click');
-        let roomId = "termux-cities-v3009-" + cityName;
-        
+        let roomId = "termux-cities-v3016-" + cityName;
         if (peer) { try { peer.destroy(); } catch(e){} }
         peer = new Peer();
 
-        peer.on('open', (id) => {
-            let connAttempt = peer.connect(roomId, { reliable: true });
-            let connectionEstablished = false;
+        peer.on('open', () => {
+            let connAttempt = peer.connect(roomId, { reliable: false });
+            let established = false;
 
             connAttempt.on('open', () => {
-                connectionEstablished = true;
+                established = true;
                 conn = connAttempt;
-                conn.send({ type: 'check-slot' });
                 setupClientListeners(cityName);
+                try { conn.send({ type: 'check-slot' }); } catch(e){}
             });
 
             setTimeout(() => {
-                if (!connectionEstablished) {
-                    peer.destroy();
-                    peer = new Peer(roomId); 
-                    
-                    peer.on('open', (hostId) => {
+                if (!established) {
+                    try { peer.destroy(); } catch(e){}
+                    peer = new Peer(roomId);
+                    peer.on('open', () => {
                         playerColor = 'w';
                         isSpectator = false;
                         applyCityVisualTheme(cityName);
                         document.getElementById("player1-label").innerText = "Você (Host - Brancas)";
-                        document.getElementById("player2-label").innerText = "Aguardando Oponente...";
                         closeMenuTransition();
                         setupHostServer(cityName);
+                        setupHeartbeat();
                         startGameSetup();
                     });
                 }
@@ -1413,31 +1210,37 @@
                         guestConn = c;
                         conn = c;
                         setupHostListeners(cityName);
-                        c.send({ type: 'slot-response', status: 'accepted' });
+                        setupHeartbeat();
+                        try { c.send({ type: 'slot-response', status: 'accepted', fen: chess.fen() }); } catch(e){}
                         document.getElementById("player2-label").innerText = "Oponente (Pretas)";
-                        addChatMessage("Sistema", `Oponente conectado à sala ${cityDetails[cityName].name}!`);
+                        addChatMessage("Sistema", "Oponente conectado!");
                     } else {
-                        c.send({ type: 'slot-response', status: 'full' });
+                        try { c.send({ type: 'slot-response', status: 'full' }); } catch(e){}
                     }
                 }
-            });
-
-            c.on('close', () => {
-                addChatMessage("Alerta", "O oponente abandonou a partida!", true);
-                showVictoryScreen("O oponente fugiu do tabuleiro e abandonou a partida!", 'w');
             });
         });
     }
 
     function setupHostListeners(cityName) {
         conn.on('data', (data) => {
-            if (data.type === 'move') {
-                chess.move(data.move);
-                triggerMoveTrail(data.move.from, data.move.to);
-                updateTurnIndicators();
-                updateCapturedDisplay();
+            if (data.type === 'ping' && data.fen && chess.history().length === 0) {
+                chess.load(data.fen);
                 renderBoard();
-                checkGameStateEvents(data.move, false);
+            } else if (data.type === 'reset-board') {
+                resetGame();
+            } else if (data.type === 'move') {
+                try {
+                    const result = chess.move(data.move);
+                    if (result) {
+                        isTransitioningMove = false;
+                        triggerMoveTrail(data.move.from, data.move.to);
+                        updateTurnIndicators();
+                        updateCapturedDisplay();
+                        renderBoard();
+                        checkGameStateEvents(result, false);
+                    }
+                } catch(err) { isTransitioningMove = false; }
             } else if (data.type === 'event-popup') {
                 showComedyPopup(data.title, data.text, data.icon, data.attackingPieceKey, data.attackingColor, data.capturedPieceKey, data.capturedColor);
             } else if (data.type === 'event-close') {
@@ -1445,10 +1248,6 @@
             } else if (data.type === 'chat') {
                 addChatMessage(data.sender || "Oponente", data.text, data.isAI || false);
             }
-        });
-        conn.on('close', () => {
-            addChatMessage("Alerta", "O oponente desconectou!", true);
-            showVictoryScreen("O oponente perdeu a conexão com o servidor LAN.", 'w');
         });
     }
 
@@ -1456,30 +1255,35 @@
         conn.on('data', (data) => {
             if (data.type === 'slot-response') {
                 applyCityVisualTheme(cityName);
+                setupHeartbeat();
+                if (data.fen) chess.load(data.fen);
                 if (data.status === 'full') {
                     playerColor = null;
                     isSpectator = true;
-                    document.getElementById("player1-label").innerText = "Jogador 1 (Brancas)";
-                    document.getElementById("player2-label").innerText = "Jogador 2 (Pretas)";
                     closeMenuTransition();
                     startGameSetup();
-                    addChatMessage("Sistema", `Sala ${cityDetails[cityName].name} lotada! Espectador.`, true);
+                    addChatMessage("Sistema", "Modo Espectador.", true);
                 } else {
                     playerColor = 'b';
                     isSpectator = false;
-                    document.getElementById("player1-label").innerText = "Oponente (Brancas)";
-                    document.getElementById("player2-label").innerText = "Você (Convidado - Pretas)";
                     closeMenuTransition();
                     startGameSetup();
-                    addChatMessage("Sistema", `Conectado à sala ${cityDetails[cityName].name}!`);
+                    addChatMessage("Sistema", "Conectado como Pretas!");
                 }
+            } else if (data.type === 'reset-board') {
+                resetGame();
             } else if (data.type === 'move') {
-                chess.move(data.move);
-                triggerMoveTrail(data.move.from, data.move.to);
-                updateTurnIndicators();
-                updateCapturedDisplay();
-                renderBoard();
-                checkGameStateEvents(data.move, false);
+                try {
+                    const result = chess.move(data.move);
+                    if (result) {
+                        isTransitioningMove = false;
+                        triggerMoveTrail(data.move.from, data.move.to);
+                        updateTurnIndicators();
+                        updateCapturedDisplay();
+                        renderBoard();
+                        checkGameStateEvents(result, false);
+                    }
+                } catch(err) { isTransitioningMove = false; }
             } else if (data.type === 'event-popup') {
                 showComedyPopup(data.title, data.text, data.icon, data.attackingPieceKey, data.attackingColor, data.capturedPieceKey, data.capturedColor);
             } else if (data.type === 'event-close') {
@@ -1487,10 +1291,6 @@
             } else if (data.type === 'chat') {
                 addChatMessage(data.sender || "Oponente", data.text, data.isAI || false);
             }
-        });
-        conn.on('close', () => {
-            addChatMessage("Alerta", "O Host encerrou a sala!", true);
-            showVictoryScreen("O jogador principal abandonou a partida.", 'b');
         });
     }
 
@@ -1500,7 +1300,7 @@
         selectedSquare = null;
         possibleMoves = [];
         lastPathCoords = [];
-        currentJokeIndex = Math.floor(Math.random() * diverseStandUpList.length);
+        isTransitioningMove = false;
         updateFightBarDisplay();
         updateTurnIndicators();
         updateCapturedDisplay();
@@ -1508,41 +1308,22 @@
     }
 
     function resetGame() {
-        playSound('click');
         chess.reset();
         selectedSquare = null;
         possibleMoves = [];
         lastPathCoords = [];
-        currentJokeIndex = Math.floor(Math.random() * diverseStandUpList.length);
+        isTransitioningMove = false;
         updateFightBarDisplay();
         updateTurnIndicators();
         updateCapturedDisplay();
         renderBoard();
-        addChatMessage("Sistema", "Tabuleiro reiniciado.");
-    }
-
-    function undoMove() {
-        playSound('click');
-        chess.undo();
-        if (gameMode === 'pve') chess.undo();
-        selectedSquare = null;
-        possibleMoves = [];
-        lastPathCoords = [];
-        updateTurnIndicators();
-        updateCapturedDisplay();
-        renderBoard();
-        addChatMessage("Sistema", "Lance desfeito.");
     }
 
     function triggerMoveTrail(from, to) {
         lastPathCoords = [from, to];
         if (trailTimeout) clearTimeout(trailTimeout);
         renderBoard();
-
-        trailTimeout = setTimeout(() => {
-            lastPathCoords = [];
-            renderBoard();
-        }, 3000);
+        trailTimeout = setTimeout(() => { lastPathCoords = []; renderBoard(); }, 2500);
     }
 
     function updateTurnIndicators() {
@@ -1557,51 +1338,29 @@
         badgeWhite.style.display = "none";
         badgeBlack.style.display = "none";
 
-        if (gameMode === 'network') {
-            if (playerColor === 'w') {
-                if (turn === 'w') {
-                    cardWhite.classList.add('active-turn');
-                    badgeWhite.style.display = "inline-block";
-                }
-            } else if (playerColor === 'b') {
-                if (turn === 'b') {
-                    cardBlack.classList.add('active-turn');
-                    badgeBlack.style.display = "inline-block";
-                }
-            }
+        if (turn === 'w') {
+            cardWhite.classList.add('active-turn');
+            badgeWhite.style.display = "inline-block";
         } else {
-            if (turn === 'w') {
-                cardWhite.classList.add('active-turn');
-                badgeWhite.style.display = "inline-block";
-            } else {
-                cardBlack.classList.add('active-turn');
-                badgeBlack.style.display = "inline-block";
-            }
+            cardBlack.classList.add('active-turn');
+            badgeBlack.style.display = "inline-block";
         }
     }
 
     function updateCapturedDisplay() {
         const history = chess.history({ verbose: true });
-        let capturedByWhiteList = [];
-        let capturedByBlackList = [];
+        let wCaps = [];
+        let bCaps = [];
 
         history.forEach(m => {
             if (m.captured) {
-                if (m.color === 'w') {
-                    capturedByWhiteList.push(m.captured);
-                } else {
-                    capturedByBlackList.push(m.captured.toUpperCase());
-                }
+                if (m.color === 'w') wCaps.push(m.captured);
+                else bCaps.push(m.captured.toUpperCase());
             }
         });
 
-        const whiteArea = document.getElementById("captured-by-white");
-        const blackArea = document.getElementById("captured-by-black");
-
-        if(whiteArea && blackArea) {
-            whiteArea.innerHTML = capturedByWhiteList.map(p => `<div class="captured-icon white-cap" style="background-image: url('${pieceSvgs[p]}');" title="Peça capturada"></div>`).join('');
-            blackArea.innerHTML = capturedByBlackList.map(p => `<div class="captured-icon black-cap" style="background-image: url('${pieceSvgs[p]}');" title="Peça capturada"></div>`).join('');
-        }
+        document.getElementById("captured-by-white").innerHTML = wCaps.map(p => `<div class="captured-icon white-cap" style="background-image: url('${pieceSvgs[p]}');"></div>`).join('');
+        document.getElementById("captured-by-black").innerHTML = bCaps.map(p => `<div class="captured-icon black-cap" style="background-image: url('${pieceSvgs[p]}');"></div>`).join('');
     }
 
     function addChatMessage(sender, text, isAI = false) {
@@ -1615,95 +1374,40 @@
     }
 
     function sendTaunt(text) {
-        playSound('click');
         addChatMessage("Você", text);
-        if (conn && conn.open) { conn.send({ type: 'chat', sender: playerColor === 'w' ? 'Brancas' : 'Pretas', text: text, isAI: false }); }
-        triggerAIResponse();
+        if (conn && conn.open) { try { conn.send({ type: 'chat', sender: playerColor === 'w' ? 'Brancas' : 'Pretas', text: text, isAI: false }); } catch(e){} }
     }
 
     function sendCustomMessage() {
-        playSound('click');
         const input = document.getElementById("chat-input");
         if (!input || !input.value.trim()) return;
         let text = input.value;
         addChatMessage("Você", text);
-        if (conn && conn.open) { conn.send({ type: 'chat', sender: playerColor === 'w' ? 'Brancas' : 'Pretas', text: text, isAI: false }); }
+        if (conn && conn.open) { try { conn.send({ type: 'chat', sender: playerColor === 'w' ? 'Brancas' : 'Pretas', text: text, isAI: false }); } catch(e){} }
         input.value = "";
-        triggerAIResponse();
     }
 
     function handleChatPress(e) { if (e.key === 'Enter') sendCustomMessage(); }
 
-    function triggerAIResponse() {
-        if (gameMode === 'pve' && !chess.game_over()) {
-            setTimeout(() => {
-                const taunts = ["Essa cidade reserva grandes surpresas...", "Boa jogada, mas calculei três passos à frente.", "Cuidado com a próxima armadilha!"];
-                addChatMessage("Oráculo", taunts[Math.floor(Math.random() * taunts.length)], true);
-            }, 700);
-        }
-    }
-
     function checkGameStateEvents(move, broadcast = true) {
-        let title = "";
-        let text = "";
-        let icon = "";
-        let attackingKey = null;
-        let attackingColor = null;
-        let capturedKey = null;
-        let capturedColor = null;
-        let triggerPopup = false;
-
         if (chess.in_checkmate()) {
             let loserColor = chess.turn();
             let winner = loserColor === 'w' ? "Pretas" : "Brancas";
-            let winnerCode = loserColor === 'w' ? 'b' : 'w';
-            showVictoryScreen(`XEQUE-MATE! Vitória das ${winner}!`, winnerCode);
-            addChatMessage("Sistema", `XEQUE-MATE REAL ATINGIDO! Vitória das ${winner}.`);
+            showVictoryScreen(`XEQUE-MATE! Vitória das ${winner}!`, loserColor === 'w' ? 'b' : 'w');
             return;
         } else if (chess.in_check()) {
-            title = "XEQUE!";
-            text = "O monarca foi colocado em xeque!";
-            icon = "⚡";
-            triggerPopup = true;
-            addChatMessage("Sistema", "REI EM XEQUE! Defenda o monarca!");
+            showComedyPopup("XEQUE!", "Rei sob ameaça!", "⚡");
         } else if (move && move.captured) {
-            title = "CAPTURA!";
-            attackingColor = move.color;
-            attackingKey = (attackingColor === 'w') ? move.piece.toUpperCase() : move.piece;
+            let attCol = move.color;
+            let attKey = attCol === 'w' ? move.piece.toUpperCase() : move.piece;
+            let capCol = attCol === 'w' ? 'b' : 'w';
+            let capKey = capCol === 'w' ? move.captured.toUpperCase() : move.captured;
+            showComedyPopup("CAPTURA!", "Peça eliminada do tabuleiro!", "🔥", attKey, attCol, capKey, capCol);
             
-            capturedColor = (attackingColor === 'w') ? 'b' : 'w';
-            capturedKey = (capturedColor === 'w') ? move.captured.toUpperCase() : move.captured;
-            
-            let isHighValue = capturedKey.toLowerCase() !== 'p';
-            playSound('capture', isHighValue);
-
-            let attackingPieceName = pieceNames[move.piece] || 'Peça';
-            let capturedPieceName = pieceNames[capturedKey] || 'Peça';
-            let moveNumber = Math.ceil(chess.history().length / 2);
-
-            let detailedCaptureMsg = `A peça ${attackingPieceName} (${attackingColor === 'w' ? 'Brancas' : 'Pretas'}) capturou a peça ${capturedPieceName} (${capturedColor === 'w' ? 'Brancas' : 'Pretas'}) na jogada ${moveNumber} (${move.from} → ${move.to}).`;
-            
-            text = detailedCaptureMsg;
-            icon = "🔥";
-            triggerPopup = true;
-            
-            const chatBox = document.getElementById("chat-box");
-            if(chatBox) {
-                const msg = document.createElement("div");
-                msg.className = "chat-msg";
-                const attCss = (attackingColor === 'w') ? 'white-cap' : 'black-cap';
-                const capCss = (capturedColor === 'w') ? 'white-cap' : 'black-cap';
-                
-                msg.innerHTML = `<span>Batalha:</span> <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attackingKey]}');" title="Atacante"></div> ${attackingPieceName} capturou <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capturedKey]}');" title="Capturada"></div> ${capturedPieceName} na jogada ${moveNumber}! 💥`;
-                chatBox.appendChild(msg);
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }
-        }
-
-        if (triggerPopup) {
-            showComedyPopup(title, text, icon, attackingKey, attackingColor, capturedKey, capturedColor);
             if (broadcast && conn && conn.open && gameMode === 'network') {
-                conn.send({ type: 'event-popup', title: title, text: text, icon: icon, attackingPieceKey: attackingKey, attackingColor: attackingColor, capturedPieceKey: capturedKey, capturedColor: capturedColor });
+                try {
+                    conn.send({ type: 'event-popup', title: "CAPTURA!", text: "Peça eliminada!", icon: "🔥", attackingPieceKey: attKey, attackingColor: attCol, capturedPieceKey: capKey, capturedColor: capCol });
+                } catch(e){}
             }
         }
     }
@@ -1723,9 +1427,6 @@
                 const squareCoord = String.fromCharCode(97 + c) + (8 - r);
                 
                 if (!pendingPopupData && lastPathCoords.includes(squareCoord)) {
-                    squareEl.style.animation = 'none';
-                    squareEl.offsetHeight;
-                    squareEl.style.animation = null;
                     squareEl.classList.add('last-move');
                 }
 
@@ -1744,7 +1445,7 @@
                 }
 
                 squareEl.addEventListener('click', () => {
-                    playSound('click');
+                    if (isTransitioningMove) return;
                     handleSquareClick(squareCoord);
                 });
                 boardEl.appendChild(squareEl);
@@ -1753,26 +1454,20 @@
     }
 
     function handleSquareClick(square) {
-        if (isSpectator) {
-            addChatMessage("Sistema", "Espectador.");
-            return;
-        }
-        if (gameMode === 'network' && chess.turn() !== playerColor) {
-            addChatMessage("Sistema", "Aguarde seu turno!");
-            return;
-        }
+        if (isSpectator) return;
+        if (gameMode === 'network' && chess.turn() !== playerColor) return;
+        if (isTransitioningMove) return;
 
         if (selectedSquare === null) {
             const piece = chess.get(square);
             if (piece && piece.color === chess.turn()) {
                 selectedSquare = square;
-                try {
-                    possibleMoves = chess.moves({ square: square, verbose: true }).map(m => m.to);
-                } catch (e) { possibleMoves = []; }
+                try { possibleMoves = chess.moves({ square: square, verbose: true }).map(m => m.to); } catch (e) { possibleMoves = []; }
                 renderBoard();
             }
         } else {
             try {
+                isTransitioningMove = true;
                 const move = chess.move({ from: selectedSquare, to: square, promotion: 'q' });
                 selectedSquare = null;
                 possibleMoves = [];
@@ -1785,88 +1480,51 @@
                     checkGameStateEvents(move, true);
 
                     if (conn && conn.open) {
-                        conn.send({ type: 'move', move: { from: move.from, to: move.to, promotion: move.promotion } });
+                        try { conn.send({ type: 'move', move: { from: move.from, to: move.to, promotion: move.promotion } }); } catch(e){}
                     }
 
                     if (!chess.game_over() && gameMode === 'pve' && chess.turn() === 'b') {
-                        setTimeout(makeAIMove, 400);
+                        setTimeout(() => { 
+                            makeAIMove(); 
+                            isTransitioningMove = false;
+                        }, 200);
+                    } else if (!move.captured && !chess.in_check() && !chess.in_checkmate()) {
+                        isTransitioningMove = false;
                     }
                 } else {
                     const piece = chess.get(square);
                     if (piece && piece.color === chess.turn()) {
                         selectedSquare = square;
                         possibleMoves = chess.moves({ square: square, verbose: true }).map(m => m.to);
+                        isTransitioningMove = false;
                         renderBoard();
                     } else {
                         selectedSquare = null;
                         possibleMoves = [];
+                        isTransitioningMove = false;
                         renderBoard();
                     }
                 }
             } catch (err) {
                 selectedSquare = null;
-                possibleMoves = [];
-                renderBoard();
             }
+            isTransitioningMove = false;
+            renderBoard();
         }
     }
 
     function makeAIMove() {
         const moves = chess.moves({ verbose: true });
         if (moves.length === 0) return;
-
-        let selectedMove = null;
-
-        if (aiDifficulty === 1) {
-            selectedMove = moves[Math.floor(Math.random() * moves.length)];
-        } else if (aiDifficulty === 2) {
-            let captures = moves.filter(m => m.captured);
-            selectedMove = captures.length > 0 && Math.random() > 0.4 ? captures[Math.floor(Math.random() * captures.length)] : moves[Math.floor(Math.random() * moves.length)];
-        } else if (aiDifficulty === 3) {
-            let captures = moves.filter(m => m.captured);
-            let checks = moves.filter(m => m.san.includes('+'));
-            if (checks.length > 0 && Math.random() > 0.3) {
-                selectedMove = checks[Math.floor(Math.random() * checks.length)];
-            } else if (captures.length > 0 && Math.random() > 0.2) {
-                selectedMove = captures[Math.floor(Math.random() * captures.length)];
-            } else {
-                selectedMove = moves[Math.floor(Math.random() * moves.length)];
-            }
-        } else if (aiDifficulty === 4) {
-            let captures = moves.filter(m => m.captured);
-            if (captures.length > 0) {
-                captures.sort((a, b) => {
-                    const val = { 'q': 9, 'r': 5, 'b': 3, 'n': 3, 'p': 1 };
-                    return (val[b.captured] || 0) - (val[a.captured] || 0);
-                });
-                selectedMove = captures.length > 0 ? captures[0] : moves[0];
-            } else {
-                selectedMove = moves[Math.floor(Math.random() * moves.length)];
-            }
-        } else {
-            let checkmate = moves.find(m => m.san.includes('#'));
-            let checks = moves.filter(m => m.san.includes('+'));
-            let captures = moves.filter(m => m.captured);
-
-            if (checkmate) {
-                selectedMove = checkmate;
-            } else if (captures.length > 0) {
-                captures.sort((a, b) => {
-                    const val = { 'q': 9, 'r': 5, 'b': 3, 'n': 3, 'p': 1 };
-                    return (val[b.captured] || 0) - (val[a.captured] || 0);
-                });
-                selectedMove = captures[0];
-            } else if (checks.length > 0) {
-                selectedMove = checks[0];
-            } else {
-                selectedMove = moves[Math.floor(Math.random() * moves.length)];
-            }
-        }
+        let selectedMove = moves[Math.floor(Math.random() * moves.length)];
         
-        const moveResult = chess.move(selectedMove);
-        if (moveResult) {
-            triggerMoveTrail(moveResult.from, moveResult.to);
+        if (aiDifficulty >= 3) {
+            let captures = moves.filter(m => m.captured);
+            if (captures.length > 0) selectedMove = captures[0];
         }
+
+        const moveResult = chess.move(selectedMove);
+        if (moveResult) triggerMoveTrail(moveResult.from, moveResult.to);
         updateTurnIndicators();
         updateCapturedDisplay();
         renderBoard();
