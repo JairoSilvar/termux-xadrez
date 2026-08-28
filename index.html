@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.2</title>
+    <title>Xadrez - v3.8.3</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -486,7 +486,7 @@
         }
         .chat-input:focus { border-color: var(--board-border); box-shadow: var(--neon-glow-btn); }
         
-        /* --- CORREÇÃO DA ROLAGEM COM O MOUSE NO PC PARA OS BOTÕES RÁPIDOS --- */
+        /* --- CORREÇÃO DEFINITIVA: ROLAGEM DIRETA COM O CURSOR DO MOUSE (SEM MÃOZINHA DE ARRASTO) --- */
         .taunt-scroll-container {
             display: flex;
             gap: 4px;
@@ -495,10 +495,10 @@
             padding-bottom: 4px;
             scrollbar-width: thin;
             scrollbar-color: var(--board-border) var(--chat-bg);
-            cursor: grab;
+            cursor: default; /* Cursor padrão do PC, permitindo seleção/clique imediato */
             user-select: none;
+            scroll-behavior: smooth; /* Rolagem fluida ao usar a roda do mouse lateral */
         }
-        .taunt-scroll-container:active { cursor: grabbing; }
         .taunt-scroll-container::-webkit-scrollbar { height: 6px; }
         .taunt-scroll-container::-webkit-scrollbar-track { background: var(--chat-bg); border-radius: 3px; }
         .taunt-scroll-container::-webkit-scrollbar-thumb { background: var(--board-border); border-radius: 3px; }
@@ -793,7 +793,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.2</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.3</p>
         </div>
         
         <div class="menu-dashboard">
@@ -875,7 +875,7 @@
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
                     <button class="action-btn" style="flex: 0 0 42px; padding: 4px; font-size: 8.5px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
                 </div>
-                <!-- BARRA DE TAUNTS COM SUPORTE A ROLAGEM ARRASTADA COM O MOUSE (DRAG TO SCROLL) -->
+                <!-- BARRA DE TAUNTS COM ROLAGEM DIRETA NATURAL PELA RODA DO MOUSE -->
                 <div class="taunt-scroll-container" id="tauntScrollContainer">
                     <button class="taunt-btn" onclick="sendStandUpJoke()">🎤 Stand up</button>
                     <button class="taunt-btn" onclick="sendTaunt('O destino do rei foi selado!')">⚡ Profético</button>
@@ -933,7 +933,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.2 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.3 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -941,36 +941,9 @@
     localStorage.setItem('termux_candies_b', '1');
     updateFightBarDisplay();
 
-    // Habilitar Drag-to-Scroll (arrastar com o mouse) para a barra de botões rápidos no PC
+    // ROLAGEM HORIZONTAL DIRETA PELA RODA DO MOUSE (SEM MÃOZINHA DE ARRASTO)
     const scroller = document.getElementById('tauntScrollContainer');
     if (scroller) {
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
-        scroller.addEventListener('mousedown', (e) => {
-            isDown = true;
-            scroller.classList.add('active');
-            startX = e.pageX - scroller.offsetLeft;
-            scrollLeft = scroller.scrollLeft;
-        });
-        scroller.addEventListener('mouseleave', () => {
-            isDown = false;
-            scroller.classList.remove('active');
-        });
-        scroller.addEventListener('mouseup', () => {
-            isDown = false;
-            scroller.classList.remove('active');
-        });
-        scroller.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - scroller.offsetLeft;
-            const walk = (x - startX) * 1.5; // Velocidade do arrasto
-            scroller.scrollLeft = scrollLeft - walk;
-        });
-
-        // Suporte a wheel (roda do mouse) horizontal
         scroller.addEventListener('wheel', (e) => {
             if (e.deltaY !== 0) {
                 e.preventDefault();
@@ -1074,7 +1047,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.2&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.3&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
