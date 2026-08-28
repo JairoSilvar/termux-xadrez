@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.3.9</title>
+    <title>Termux Xadrez - v3.4.0</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -549,6 +549,20 @@
         .chat-msg.ai span { color: var(--board-border); }
         .chat-msg.ai { border-left: 3px solid var(--board-border); }
         
+        /* ALERTA NEON DE DESTAQUE NO CHAT PARA CAPTURAS, XEQUE E STAND-UP */
+        .chat-msg.alert-neon {
+            background: rgba(2, 132, 199, 0.15);
+            border: 2px solid var(--board-border);
+            border-left: 5px solid var(--board-border);
+            box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
+            font-weight: bold;
+            animation: pulseAlert 1.2s infinite alternate;
+        }
+        @keyframes pulseAlert {
+            0% { box-shadow: 0 0 5px rgba(2, 132, 199, 0.3); }
+            100% { box-shadow: 0 0 15px rgba(2, 132, 199, 0.8); }
+        }
+        
         .chat-input-row { display: flex; gap: 4px; flex-shrink: 0; }
         .chat-input {
             flex: 1;
@@ -580,7 +594,7 @@
         }
         .taunt-btn:hover { background: var(--btn-hover); box-shadow: var(--neon-glow-btn); border-color: var(--board-border); }
 
-        #meme-modal, #victory-screen, #settings-modal {
+        #victory-screen, #settings-modal {
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.45);
@@ -589,7 +603,7 @@
             justify-content: center;
             z-index: 3000;
         }
-        .meme-content, .victory-card, .settings-content {
+        .victory-card, .settings-content {
             background: var(--modal-bg);
             border: 3px solid var(--modal-border);
             border-radius: 16px;
@@ -602,25 +616,6 @@
             max-height: 85vh;
             overflow-y: auto;
         }
-        .css-animation-box {
-            width: 100%;
-            height: 90px;
-            background: var(--modal-bg);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--modal-border);
-        }
-        .anim-element { font-size: 34px; }
-        .captured-popup-container { display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .captured-popup-piece { width: 40px; height: 40px; background-size: contain; background-repeat: no-repeat; background-position: center; }
-        
-        .auto-close-bar { width: 100%; height: 3px; background: var(--panel-border); border-radius: 2px; margin-bottom: 8px; overflow: hidden; }
-        .auto-close-progress { width: 100%; height: 100%; background: var(--board-border); }
 
         #menu-screen {
             position: fixed;
@@ -768,18 +763,6 @@
         </div>
     </div>
 
-    <div id="meme-modal">
-        <div class="meme-content">
-            <div class="auto-close-bar"><div class="auto-close-progress" id="autoCloseProgress"></div></div>
-            <div class="css-animation-box" id="modal-animation-container">
-                <div id="anim-icon" class="anim-element">🔥</div>
-            </div>
-            <div id="meme-title" class="meme-title" style="font-weight: bold; margin-bottom: 4px;">CAPTURA!</div>
-            <div id="meme-text" class="meme-text" style="font-size: 11px; margin-bottom: 8px;">Peça eliminada!</div>
-            <button class="action-btn" onclick="closeMemeModal()" style="padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff;">CONTINUAR</button>
-        </div>
-    </div>
-
     <div id="victory-screen">
         <div class="victory-card">
             <div style="font-size: 34px; margin-bottom: 4px;" id="victoryCandyIcon">🍫</div>
@@ -791,7 +774,7 @@
 
     <div id="menu-screen">
         <h1>Termux Xadrez</h1>
-        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.3.9</p>
+        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.0</p>
         
         <div style="display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 340px; align-items: center;">
             
@@ -899,7 +882,6 @@
     let gameMode = 'pve';
     let currentCityKey = null;
     let aiDifficulty = 1;
-    let autoCloseTimer = null;
     let currentTheme = 'claro';
     
     let peer = null;
@@ -908,7 +890,6 @@
     let isSpectator = false;
     let lastPathCoords = [];
     let trailTimeout = null;
-    let pendingPopupData = null;
     let heartbeatInterval = null;
     let isTransitioningMove = false;
 
@@ -1016,6 +997,16 @@
         }
     }
 
+    function addChatMessage(sender, text, isAI = false, isAlert = false) {
+        const box = document.getElementById("chat-box");
+        if(!box) return;
+        const msg = document.createElement("div");
+        msg.className = `chat-msg ${isAI ? 'ai' : ''} ${isAlert ? 'alert-neon' : ''}`;
+        msg.innerHTML = `<span>${sender}:</span> ${text}`;
+        box.appendChild(msg);
+        box.scrollTop = box.scrollHeight;
+    }
+
     function showCaptureInChat(move) {
         if (!move.captured) return;
         let attCol = move.color;
@@ -1030,54 +1021,19 @@
         let attCss = attCol === 'w' ? 'white-cap' : 'black-cap';
         let capCss = capCol === 'w' ? 'white-cap' : 'black-cap';
 
-        let chatText = `Captura em <b>${square}</b>: <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} eliminou <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}!`;
+        let chatText = `🔥 <b>CAPTURA EM ${square.toUpperCase()}!</b><br><div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} eliminou <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}!`;
         
-        addChatMessage("Árbitro", chatText, true);
-    }
-
-    function showComedyPopup(title, text, icon, attKey = null, attCol = null, capKey = null, capCol = null) {
-        pendingPopupData = { title, text, icon, attKey, attCol, capKey, capCol };
-        const animContainer = document.getElementById("modal-animation-container");
-        
-        if (attKey && capKey && pieceSvgs[attKey] && pieceSvgs[capKey]) {
-            const attCss = (attCol === 'w') ? 'white-piece' : 'black-piece';
-            const capCss = (capCol === 'w') ? 'white-piece' : 'black-piece';
-            animContainer.innerHTML = `
-                <div class="captured-popup-container">
-                    <div class="captured-popup-piece ${attCss}" style="background-image: url('${pieceSvgs[attKey]}');"></div>
-                    <span style="font-size: 16px; font-weight: bold; color: #f43f5e;">⚡</span>
-                    <div class="captured-popup-piece ${capCss}" style="background-image: url('${pieceSvgs[capKey]}');"></div>
-                </div>
-            `;
-        } else {
-            animContainer.innerHTML = `<div id="anim-icon" class="anim-element">${icon}</div>`;
-        }
-
-        document.getElementById("meme-title").innerText = title;
-        document.getElementById("meme-text").innerText = text;
-        document.getElementById("meme-modal").style.display = "flex";
-
-        if (autoCloseTimer) clearTimeout(autoCloseTimer);
-        autoCloseTimer = setTimeout(() => { closeMemeModal(); }, 1800);
-    }
-
-    function closeMemeModal() {
-        if (autoCloseTimer) clearTimeout(autoCloseTimer);
-        document.getElementById("meme-modal").style.display = "none";
-        pendingPopupData = null;
-        isTransitioningMove = false;
-        renderBoard();
-        if (conn && conn.open && gameMode === 'network') {
-            try { conn.send({ type: 'event-close' }); } catch(e){}
-        }
+        addChatMessage("Árbitro", chatText, true, true);
     }
 
     function sendStandUpJoke() {
         let text = diverseStandUpList[currentJokeIndex];
         currentJokeIndex = (currentJokeIndex + 1) % diverseStandUpList.length;
-        addChatMessage("Stand up", text, true);
-        if (conn && conn.open) { try { conn.send({ type: 'chat', sender: 'Stand up', text: text, isAI: true }); } catch(e){} }
-        showComedyPopup("MOMENTO CÔMICO 🎤", text, "🎭");
+        let jokeHtml = `🎤 <b>MOMENTO CÔMICO:</b><br>"${text}"`;
+        addChatMessage("Stand up", jokeHtml, true, true);
+        if (conn && conn.open) { 
+            try { conn.send({ type: 'chat', sender: 'Stand up', text: jokeHtml, isAI: true, isAlert: true }); } catch(e){} 
+        }
     }
 
     function showVictoryScreen(reason, winnerColor = null) {
@@ -1272,12 +1228,8 @@
                         checkGameStateEvents(result, false);
                     }
                 } catch(err) { isTransitioningMove = false; }
-            } else if (data.type === 'event-popup') {
-                showComedyPopup(data.title, data.text, data.icon, data.attackingPieceKey, data.attackingColor, data.capturedPieceKey, data.capturedColor);
-            } else if (data.type === 'event-close') {
-                closeMemeModal();
             } else if (data.type === 'chat') {
-                addChatMessage(data.sender || "Oponente", data.text, data.isAI || false);
+                addChatMessage(data.sender || "Oponente", data.text, data.isAI || false, data.isAlert || false);
             }
         });
     }
@@ -1316,12 +1268,8 @@
                         checkGameStateEvents(result, false);
                     }
                 } catch(err) { isTransitioningMove = false; }
-            } else if (data.type === 'event-popup') {
-                showComedyPopup(data.title, data.text, data.icon, data.attackingPieceKey, data.attackingColor, data.capturedPieceKey, data.capturedColor);
-            } else if (data.type === 'event-close') {
-                closeMemeModal();
             } else if (data.type === 'chat') {
-                addChatMessage(data.sender || "Oponente", data.text, data.isAI || false);
+                addChatMessage(data.sender || "Oponente", data.text, data.isAI || false, data.isAlert || false);
             }
         });
     }
@@ -1395,16 +1343,6 @@
         document.getElementById("captured-by-black").innerHTML = bCaps.map(p => `<div class="captured-icon black-cap" style="background-image: url('${pieceSvgs[p]}');"></div>`).join('');
     }
 
-    function addChatMessage(sender, text, isAI = false) {
-        const box = document.getElementById("chat-box");
-        if(!box) return;
-        const msg = document.createElement("div");
-        msg.className = `chat-msg ${isAI ? 'ai' : ''}`;
-        msg.innerHTML = `<span>${sender}:</span> ${text}`;
-        box.appendChild(msg);
-        box.scrollTop = box.scrollHeight;
-    }
-
     function sendTaunt(text) {
         addChatMessage("Você", text);
         if (conn && conn.open) { try { conn.send({ type: 'chat', sender: playerColor === 'w' ? 'Brancas' : 'Pretas', text: text, isAI: false }); } catch(e){} }
@@ -1428,18 +1366,10 @@
             showVictoryScreen(`XEQUE-MATE! Vitória das ${winner}!`, loserColor === 'w' ? 'b' : 'w');
             return;
         } else if (chess.in_check()) {
-            showComedyPopup("XEQUE!", "Rei sob ameaça!", "⚡");
-        } else if (move && move.captured) {
-            let attCol = move.color;
-            let attKey = attCol === 'w' ? move.piece.toUpperCase() : move.piece;
-            let capCol = attCol === 'w' ? 'b' : 'w';
-            let capKey = capCol === 'w' ? move.captured.toUpperCase() : move.captured;
-            showComedyPopup("CAPTURA!", "Peça eliminada do tabuleiro!", "🔥", attKey, attCol, capKey, capCol);
-            
+            let alertText = "⚡ <b>ATENÇÃO: REI EM XEQUE!</b> Defenda-se imediatamente!";
+            addChatMessage("Árbitro", alertText, true, true);
             if (broadcast && conn && conn.open && gameMode === 'network') {
-                try {
-                    conn.send({ type: 'event-popup', title: "CAPTURA!", text: "Peça eliminada!", icon: "🔥", attackingPieceKey: attKey, attackingColor: attCol, capturedPieceKey: capKey, capturedColor: capCol });
-                } catch(e){}
+                try { conn.send({ type: 'chat', sender: 'Árbitro', text: alertText, isAI: true, isAlert: true }); } catch(e){}
             }
         }
     }
@@ -1459,7 +1389,7 @@
                 
                 const squareCoord = String.fromCharCode(97 + c) + (8 - r);
                 
-                if (!pendingPopupData && lastPathCoords.includes(squareCoord)) {
+                if (lastPathCoords.includes(squareCoord)) {
                     squareEl.classList.add('last-move');
                 }
 
