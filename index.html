@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.5</title>
+    <title>Xadrez - v3.8.6</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -277,7 +277,6 @@
             transform: translate3d(0, 0, 0);
         }
 
-        /* --- PAINEL LATERAL / INFERIOR (LAYOUT RESPONSIVO INTELIGENTE) --- */
         .side-section {
             display: flex;
             flex-direction: column;
@@ -448,7 +447,7 @@
             display: flex;
             flex-direction: column;
             flex: 1;
-            min-height: 120px;
+            min-height: 110px;
             gap: 4px;
             overflow: hidden;
         }
@@ -700,7 +699,7 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-color: #fff; }
         .room-status { font-size: 8px; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- RESPONSIVIDADE MOBILE CORRIGIDA: DIVISÃO VERTICAL DE ESPAÇO PARA O MENU NÃO COBRIR O TABULEIRO --- */
+        /* --- RESPONSIVIDADE INTELIGENTE: TABLETS E CELULARES DEITADOS (LANDSCAPE) COM MENU LATERAL E TABULEIRO MÁXIMO --- */
         @media (max-width: 900px) {
             body, html { overflow: hidden; height: 100vh; width: 100vw; }
             #game-wrapper {
@@ -713,13 +712,13 @@
                 align-items: center;
             }
             .board-section {
-                /* O tabuleiro fica fixo na metade superior, dimensionado perfeitamente para nunca ser coberto */
-                width: 46vh;
-                height: 46vh;
-                max-width: 46vw;
-                max-height: 46vw;
-                padding: 4px;
-                margin-top: 4px;
+                /* Retrato (Portrait): Tabuleiro com destaque máximo e seguro na metade superior */
+                width: 54vh;
+                height: 54vh;
+                max-width: 54vw;
+                max-height: 54vw;
+                padding: 6px;
+                margin-top: 2px;
                 flex-shrink: 0;
             }
             .side-section {
@@ -727,8 +726,8 @@
                 bottom: auto;
                 left: auto;
                 width: 100vw;
-                height: calc(52vh - 10px);
-                max-height: calc(52vh - 10px);
+                height: calc(44vh - 10px);
+                max-height: calc(44vh - 10px);
                 border-radius: 12px;
                 border: 2px solid var(--panel-border);
                 box-shadow: 0 5px 20px rgba(0,0,0,0.15);
@@ -744,17 +743,53 @@
                 opacity: 0;
                 pointer-events: none;
             }
-            /* Quando o painel inferior for ocultado via botão, o tabuleiro expande com folga e segurança */
             body.menu-hidden .board-section {
-                width: 82vh;
-                height: 82vh;
-                max-width: 92vw;
-                max-height: 92vw;
+                width: 86vh;
+                height: 86vh;
+                max-width: 96vw;
+                max-height: 96vw;
                 padding: 8px;
                 margin-top: 1vh;
             }
-            .chat-container { height: 90px; min-height: 70px; }
+            .chat-container { height: 75px; min-height: 60px; }
             .hero-box h1 { font-size: 30px; }
+        }
+
+        /* --- MODO PAISAGEM (LANDSCAPE) - CELULAR DEITADO E TABLETS: MENU AO LADO (ESTILO PC) COM TABULEIRO GIGANTE --- */
+        @media (max-width: 900px) and (orientation: landscape) {
+            #game-wrapper {
+                flex-direction: row !important;
+                padding: 1vw 1.5vh;
+                gap: 1.5vw;
+                justify-content: center;
+                align-items: center;
+            }
+            .board-section {
+                width: 94vh !important;
+                height: 94vh !important;
+                max-width: 60vw !important;
+                max-height: 94vh !important;
+                padding: 8px;
+                margin-top: 0 !important;
+            }
+            .side-section {
+                width: 320px !important;
+                height: 94vh !important;
+                max-height: 94vh !important;
+                border-radius: 16px;
+            }
+            .side-section.minimized {
+                width: 0px !important;
+                height: 94vh !important;
+                padding: 0px !important;
+            }
+            body.menu-hidden .board-section {
+                width: 94vh !important;
+                height: 94vh !important;
+                max-width: 85vw !important;
+                max-height: 94vh !important;
+            }
+            .chat-container { height: 130px; min-height: 100px; }
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
@@ -843,7 +878,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.5</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.6</p>
         </div>
         
         <div class="menu-dashboard">
@@ -982,7 +1017,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.5 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.6 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1071,7 +1106,7 @@
         "Por que o bispo anda na diagonal? Para desviar dos impostos e das fofocas do clero.",
         "A paciência é uma virtude, mas no xadrez relâmpago ela costuma virar infarto.",
         "Dizem que a esperança é a última que morre. No meu caso, ela foi capturada no lance 12.",
-        "Por que o pe鱼 vive no fundo do mar? Para fugir dos boletos da superfície.",
+        "Por que o peixe vive no fundo do mar? Para fugir dos boletos da superfície.",
         "Errar é humano, mas culpar a IA por perder no xadrez é pura autodefesa."
     ];
     let currentJokeIndex = 0;
@@ -1095,7 +1130,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.5&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.6&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
@@ -1284,7 +1319,6 @@
         addLog("Modal de vitória fechado. Usuário permaneceu no tabuleiro para análise e logs.", "UI");
     }
 
-    /* --- CONTROLE DE LAYOUT VERTICAL: TABULEIRO SEMPRE ACIMA E VISÍVEL --- */
     function togglePanel() {
         const panel = document.getElementById("sidePanel");
         const restoreBtn = document.getElementById("restore-btn");
@@ -1293,11 +1327,11 @@
         if (panel.classList.contains("minimized")) {
             document.body.classList.add("menu-hidden");
             restoreBtn.style.display = "block";
-            addLog("Painel inferior ocultado. Tabuleiro expandido verticalmente com segurança.", "UI");
+            addLog("Painel de menu ocultado. Tabuleiro expandido ao máximo em toda a tela.", "UI");
         } else {
             document.body.classList.remove("menu-hidden");
             restoreBtn.style.display = "none";
-            addLog("Painel inferior restaurado.", "UI");
+            addLog("Painel de menu restaurado.", "UI");
         }
     }
 
