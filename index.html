@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.5.3</title>
+    <title>Termux Xadrez - v3.5.4</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
         
-        /* --- TEMA CLARO (Padrão) --- */
+        /* --- TEMA CLARO (Padrão Inicial) --- */
         :root {
             --bg-main: #f8fafc;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #cbd5e1 100%);
-            --panel-bg: rgba(255, 255, 255, 0.9);
+            --panel-bg: rgba(255, 255, 255, 0.92);
             --panel-border: #cbd5e1;
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -36,7 +36,7 @@
         }
 
         /* --- TEMA PARIS (Barbie Clean & Chic) --- */
-        body.theme-paris {
+        body.theme-paris, body.room-paris {
             --bg-main: #fff0f5;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
             --panel-bg: rgba(255, 240, 245, 0.95);
@@ -86,8 +86,8 @@
             --neon-glow-btn: 0 0 10px rgba(234, 179, 8, 0.4);
         }
 
-        /* --- TEMA NOVA YORK (Escuro Minimalista) --- */
-        body.theme-novayork {
+        /* --- TEMA NOVA YORK (Escuro Minimalista / room-novayork) --- */
+        body.theme-novayork, body.room-novayork {
             --bg-main: #0f172a;
             --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
             --panel-bg: rgba(30, 41, 59, 0.85);
@@ -112,8 +112,8 @@
             --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6);
         }
 
-        /* --- TEMA TÓQUIO (Cyberpunk Neon) --- */
-        body.theme-toquio {
+        /* --- TEMA TÓQUIO (Cyberpunk Neon / room-toquio) --- */
+        body.theme-toquio, body.room-toquio {
             --bg-main: #050508;
             --bg-gradient: radial-gradient(circle at center, #120a2a 0%, #050508 100%);
             --panel-bg: rgba(18, 14, 38, 0.85);
@@ -138,8 +138,8 @@
             --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7);
         }
 
-        /* --- TEMA LONDRES (Floresta Mística) --- */
-        body.theme-londres {
+        /* --- TEMA LONDRES (Floresta Mística / room-londres) --- */
+        body.theme-londres, body.room-londres {
             --bg-main: #062314;
             --bg-gradient: radial-gradient(circle at center, #0c3b22 0%, #062314 100%);
             --panel-bg: rgba(12, 59, 34, 0.85);
@@ -321,7 +321,6 @@
             #restore-btn { bottom: 12px; left: 50%; transform: translateX(-50%); padding: 10px 24px; border-radius: 20px; font-size: 12px; }
         }
 
-        /* --- BARRA DE TOPO DA SIDEBAR (TUDO NA MESMA LINHA) --- */
         .brand-title {
             font-size: 10px;
             font-weight: bold;
@@ -606,7 +605,6 @@
         }
         .menu-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 2px; }
         
-        /* Botões do Oráculo Progressivos (Verde -> Azul -> Roxo) */
         .menu-grid-btn {
             display: flex;
             flex-direction: column;
@@ -629,26 +627,29 @@
             filter: brightness(1.1);
         }
 
+        /* Botão 2 Jogadores Estilizado e Harmonioso (Imagem 1) */
         .menu-main-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 18px;
+            padding: 13px 18px;
             border-radius: 12px;
-            border: 1px solid var(--panel-border);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             cursor: pointer;
             color: #fff;
-            font-weight: bold;
+            font-weight: 800;
             font-size: 12px;
             gap: 8px;
             width: 100%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #1d4ed8 100%);
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .menu-main-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--neon-glow-btn);
-            border-color: var(--board-border);
+            box-shadow: 0 0 18px rgba(2, 132, 199, 0.6);
+            border-color: #38bdf8;
+            filter: brightness(1.08);
         }
 
         .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
@@ -688,7 +689,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.2/peerjs.min.js"></script>
 </head>
-<body class="theme-paris pieces-blue-pink">
+<body class="theme-claro pieces-blue-pink">
 
     <button id="restore-btn" onclick="togglePanel()">MENU</button>
 
@@ -701,12 +702,12 @@
             
             <div style="font-size: 10.5px; font-weight: bold; margin-top: 6px;">🎨 Tema do Tabuleiro:</div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('paris')">🌸 Paris (Rosa Barbie)</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('toquio')">⚡ Tóquio (Cyber)</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('novayork')">🌙 Nova York (Escuro)</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('londres')">🌲 Londres (Floresta)</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('ouro')">👑 Ouro (Real)</button>
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('claro')">☀️ Claro (Padrão)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('paris')">🌸 Paris (Rosa Barbie)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('ouro')">👑 Ouro (Real)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('novayork')">🌙 Nova York (Escuro)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('toquio')">⚡ Tóquio (Cyber)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('londres')">🌲 Londres (Floresta)</button>
             </div>
 
             <div style="font-size: 10.5px; font-weight: bold; margin-top: 8px;">✨ Cores das Peças:</div>
@@ -753,7 +754,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Termux Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.3</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.4</p>
         </div>
         
         <div class="menu-dashboard">
@@ -764,7 +765,6 @@
                     <span style="color: var(--board-border); font-size: 8.5px;">Selecione a Dificuldade</span>
                 </div>
                 <div class="menu-grid-5">
-                    <!-- Paleta Progressiva com Descrição Completa -->
                     <button class="menu-grid-btn" style="background: linear-gradient(135deg, #15803d, #16a34a);" onclick="selectAndStartPvE(1)">🌱 1<span>Iniciante</span></button>
                     <button class="menu-grid-btn" style="background: linear-gradient(135deg, #0e7490, #0284c7);" onclick="selectAndStartPvE(2)">⚔️ 2<span>Casual</span></button>
                     <button class="menu-grid-btn" style="background: linear-gradient(135deg, #1d4ed8, #4f46e5);" onclick="selectAndStartPvE(3)">🛡️ 3<span>Médio</span></button>
@@ -773,7 +773,7 @@
                 </div>
             </div>
 
-            <button class="menu-main-btn" style="background: linear-gradient(135deg, #1e3a8a, #2563eb);" onclick="startGame('pvp')">👥 <span>2 Jogadores (Mesa Local)</span></button>
+            <button class="menu-main-btn" onclick="startGame('pvp')">👥 <span>2 Jogadores (Mesa Local)</span></button>
             
             <div style="font-size: 10px; font-weight: bold; color: var(--board-border); margin-top: 2px; text-transform: uppercase; text-align: left;">🌐 Salas Globais (LAN P2P Multiplayer):</div>
             
@@ -793,7 +793,6 @@
         </div>
 
         <div class="side-section" id="sidePanel">
-            <!-- Barra de Ações Unificada na Mesma Linha -->
             <div class="brand-title" id="brandTitleBox">
                 <span id="room-status-title">XADREZ</span>
                 <div class="header-actions">
@@ -865,7 +864,7 @@
     let gameMode = 'pve';
     let currentCityKey = null;
     let aiDifficulty = 1;
-    let currentTheme = 'paris';
+    let currentTheme = 'claro';
     
     let peer = null;
     let conn = null;
@@ -885,7 +884,7 @@
         if (textarea) textarea.value = systemLogs.join('\n');
     }
 
-    addLog("Sistema iniciado. Termux Xadrez v3.5.3 pronto.");
+    addLog("Sistema iniciado. Termux Xadrez v3.5.4 pronto.");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -914,10 +913,10 @@
     };
 
     const cityDetails = {
-        'paris': { name: 'Paris (Rosa) 🌸', roomClass: 'room-paris' },
-        'toquio': { name: 'Tóquio (Cyber) ⚡', roomClass: 'room-toquio' },
-        'novayork': { name: 'Nova York (Escuro) 🌙', roomClass: 'room-novayork' },
-        'londres': { name: 'Londres (Floresta) 🌲', roomClass: 'room-londres' }
+        'paris': { name: 'Paris (Rosa) 🌸', roomClass: 'room-paris', pieceColor: 'pieces-blue-pink' },
+        'toquio': { name: 'Tóquio (Cyber) ⚡', roomClass: 'room-toquio', pieceColor: 'pieces-blue-pink' },
+        'novayork': { name: 'Nova York (Escuro) 🌙', roomClass: 'room-novayork', pieceColor: 'pieces-silver-fire' },
+        'londres': { name: 'Londres (Floresta) 🌲', roomClass: 'room-londres', pieceColor: 'pieces-green-cyan' }
     };
 
     const diverseStandUpList = [
@@ -957,7 +956,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.3&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.4&body=${text}`;
     }
 
     function updateFightBarDisplay() {
@@ -980,7 +979,7 @@
 
     function setTheme(themeName) {
         currentTheme = themeName;
-        document.body.classList.remove('theme-paris', 'theme-toquio', 'theme-novayork', 'theme-londres', 'theme-ouro', 'theme-claro', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
+        document.body.classList.remove('theme-claro', 'theme-paris', 'theme-ouro', 'theme-novayork', 'theme-toquio', 'theme-londres', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
         document.body.classList.add(`theme-${themeName}`);
         currentCityKey = null;
         addLog(`Tema alterado para: ${themeName}`);
@@ -1004,13 +1003,14 @@
     function applyCityVisualTheme(cityKey) {
         currentCityKey = cityKey;
         const roomTitle = document.getElementById("room-status-title");
-        document.body.classList.remove('theme-paris', 'theme-toquio', 'theme-novayork', 'theme-londres', 'theme-ouro', 'theme-claro', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
+        document.body.classList.remove('theme-claro', 'theme-paris', 'theme-ouro', 'theme-novayork', 'theme-toquio', 'theme-londres', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
 
         if (cityKey && cityDetails[cityKey]) {
             let details = cityDetails[cityKey];
             document.body.classList.add(details.roomClass);
+            setPieceColors(details.pieceColor);
             roomTitle.innerText = `${details.name}`;
-            addLog(`Tema da sala aplicado: ${cityKey}`);
+            addLog(`Sala aplicada: ${cityKey} com peças ${details.pieceColor}`);
         } else {
             document.body.classList.add(`theme-${currentTheme}`);
             roomTitle.innerText = "XADREZ";
@@ -1143,6 +1143,7 @@
         isSpectator = false;
         lastPathCoords = [];
         applyCityVisualTheme(null);
+        setPieceColors('pieces-blue-pink');
         
         candiesWhite = parseInt(localStorage.getItem('termux_candies_w') || '1');
         candiesBlack = parseInt(localStorage.getItem('termux_candies_b') || '1');
@@ -1216,7 +1217,7 @@
                 established = true;
                 conn = connAttempt;
                 setupClientListeners(cityName);
-                try { conn.send({ type: 'check-slot' }); } catch(e){}
+                try { conn.send({ type: 'check-slot', city: cityName }); } catch(e){}
             });
 
             setTimeout(() => {
@@ -1295,7 +1296,7 @@
     function setupClientListeners(cityName) {
         conn.on('data', (data) => {
             if (data.type === 'slot-response') {
-                applyCityVisualTheme(cityName);
+                applyCityVisualTheme(data.city || cityName);
                 setupHeartbeat();
                 if (data.fen) chess.load(data.fen);
                 if (data.status === 'full') {
