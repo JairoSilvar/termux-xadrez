@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.3.5</title>
+    <title>Termux Xadrez - v3.3.6</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -255,6 +255,7 @@
             --panel-border: #22c55e;
             --text-main: #d1fae5;
             --text-muted: #6ee7b7;
+            --board-bg: #0c3b22;
             --board-border: #10b981;
             --light-square: #166534;
             --dark-square: #064e3b;
@@ -782,7 +783,7 @@
 
     <div id="menu-screen">
         <h1>Termux Xadrez</h1>
-        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.3.5</p>
+        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.3.6</p>
         
         <div style="display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 340px; align-items: center;">
             
@@ -1005,6 +1006,25 @@
             document.body.classList.add(`theme-${currentTheme}`);
             roomTitle.innerText = "XADREZ";
         }
+    }
+
+    function showCaptureInChat(move) {
+        if (!move.captured) return;
+        let attCol = move.color;
+        let attKey = attCol === 'w' ? move.piece.toUpperCase() : move.piece;
+        let capCol = attCol === 'w' ? 'b' : 'w';
+        let capKey = capCol === 'w' ? move.captured.toUpperCase() : move.captured;
+
+        let attName = pieceNames[attKey] || 'Peça';
+        let capName = pieceNames[capKey] || 'Peça';
+        let square = move.to;
+
+        let attCss = attCol === 'w' ? 'white-cap' : 'black-cap';
+        let capCss = capCol === 'w' ? 'white-cap' : 'black-cap';
+
+        let chatText = `Captura na casa <b>${square}</b>: <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} eliminou <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}!`;
+        
+        addChatMessage("Árbitro", chatText, true);
     }
 
     function showComedyPopup(title, text, icon, attKey = null, attCol = null, capKey = null, capCol = null) {
@@ -1240,6 +1260,7 @@
                         updateTurnIndicators();
                         updateCapturedDisplay();
                         renderBoard();
+                        if (result.captured) showCaptureInChat(result);
                         checkGameStateEvents(result, false);
                     }
                 } catch(err) { isTransitioningMove = false; }
@@ -1283,6 +1304,7 @@
                         updateTurnIndicators();
                         updateCapturedDisplay();
                         renderBoard();
+                        if (result.captured) showCaptureInChat(result);
                         checkGameStateEvents(result, false);
                     }
                 } catch(err) { isTransitioningMove = false; }
@@ -1481,6 +1503,7 @@
                     updateTurnIndicators();
                     updateCapturedDisplay();
                     renderBoard();
+                    if (move.captured) showCaptureInChat(move);
                     checkGameStateEvents(move, true);
 
                     if (conn && conn.open) {
@@ -1529,7 +1552,10 @@
         }
 
         const moveResult = chess.move(selectedMove);
-        if (moveResult) triggerMoveTrail(moveResult.from, moveResult.to);
+        if (moveResult) {
+            triggerMoveTrail(moveResult.from, moveResult.to);
+            if (moveResult.captured) showCaptureInChat(moveResult);
+        }
         updateTurnIndicators();
         updateCapturedDisplay();
         renderBoard();
