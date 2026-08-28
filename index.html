@@ -3,88 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.5.0</title>
+    <title>Termux Xadrez - v3.5.1</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
         
+        /* --- TEMA CLARO (Padrão) --- */
         :root {
-            --bg-main: #0b0f19;
-            --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0b0f19 100%);
-            --panel-bg: rgba(30, 41, 59, 0.85);
-            --panel-border: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --board-bg: #1e293b;
+            --bg-main: #f8fafc;
+            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #cbd5e1 100%);
+            --panel-bg: rgba(255, 255, 255, 0.9);
+            --panel-border: #cbd5e1;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --board-bg: #ffffff;
             --board-border: #0284c7;
             --light-square: #f1f5f9;
             --dark-square: #64748b;
-            --chat-bg: rgba(15, 23, 42, 0.6);
-            --chat-input-bg: #0f172a;
-            --chat-msg-bg: #1e293b;
-            --btn-bg: #334155;
-            --btn-hover: #475569;
-            --modal-bg: #1e293b;
+            --chat-bg: #f1f5f9;
+            --chat-input-bg: #ffffff;
+            --chat-msg-bg: #e2e8f0;
+            --btn-bg: #e2e8f0;
+            --btn-hover: #cbd5e1;
+            --modal-bg: #ffffff;
             --modal-border: #0284c7;
-            --modal-text: #f8fafc;
+            --modal-text: #0f172a;
             --trail-color: rgba(2, 132, 199, 0.95);
             --hint-dot-color: #0284c7;
             --candy-w-bg: #0284c7;
             --candy-b-bg: #e11d48;
-            --neon-glow-btn: 0 0 12px rgba(2, 132, 199, 0.5), inset 0 0 5px rgba(2, 132, 199, 0.2);
+            --neon-glow-btn: 0 0 10px rgba(2, 132, 199, 0.3), inset 0 0 4px rgba(2, 132, 199, 0.1);
             --turn-active-color: #16a34a;
         }
 
+        /* --- TEMA ROSA (Claro) --- */
         body.theme-rosa {
-            --bg-main: #180914;
-            --bg-gradient: radial-gradient(circle at center, #2d0d25 0%, #180914 100%);
-            --panel-bg: rgba(45, 13, 37, 0.85);
+            --bg-main: #fdf2f8;
+            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
+            --panel-bg: rgba(255, 255, 255, 0.9);
             --panel-border: #f472b6;
-            --text-main: #fce7f3;
-            --text-muted: #f472b6;
+            --text-main: #831843;
+            --text-muted: #be185d;
             --board-border: #ec4899;
             --light-square: #fce7f3;
             --dark-square: #f472b6;
-            --chat-bg: rgba(24, 9, 20, 0.6);
-            --chat-input-bg: #180914;
-            --chat-msg-bg: #2d0d25;
-            --btn-bg: #831843;
-            --btn-hover: #be185d;
-            --modal-bg: #2d0d25;
+            --chat-bg: #fdf2f8;
+            --chat-input-bg: #ffffff;
+            --chat-msg-bg: #fce7f3;
+            --btn-bg: #fbcfe8;
+            --btn-hover: #f472b6;
+            --modal-bg: #fff0f6;
             --modal-border: #ec4899;
-            --modal-text: #fce7f3;
+            --modal-text: #831843;
             --trail-color: rgba(219, 39, 119, 0.95);
             --hint-dot-color: #db2777;
             --candy-w-bg: #ec4899;
             --candy-b-bg: #831843;
-            --neon-glow-btn: 0 0 12px rgba(236, 72, 153, 0.5);
+            --neon-glow-btn: 0 0 10px rgba(236, 72, 153, 0.4);
         }
 
+        /* --- TEMA OURO (Claro) --- */
         body.theme-ouro {
-            --bg-main: #161204;
-            --bg-gradient: radial-gradient(circle at center, #2e2408 0%, #161204 100%);
-            --panel-bg: rgba(46, 36, 8, 0.85);
+            --bg-main: #fefce8;
+            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fef08a 100%);
+            --panel-bg: rgba(255, 255, 255, 0.9);
             --panel-border: #eab308;
-            --text-main: #fef9c3;
-            --text-muted: #eab308;
+            --text-main: #713f12;
+            --text-muted: #854d0e;
             --board-border: #ca8a04;
             --light-square: #fef9c3;
             --dark-square: #ca8a04;
-            --chat-bg: rgba(22, 18, 4, 0.6);
-            --chat-input-bg: #161204;
-            --chat-msg-bg: #2e2408;
-            --btn-bg: #713f12;
-            --btn-hover: #854d0e;
-            --modal-bg: #2e2408;
+            --chat-bg: #fefce8;
+            --chat-input-bg: #ffffff;
+            --chat-msg-bg: #fef08a;
+            --btn-bg: #fef08a;
+            --btn-hover: #fde047;
+            --modal-bg: #fffdeb;
             --modal-border: #ca8a04;
-            --modal-text: #fef9c3;
+            --modal-text: #713f12;
             --trail-color: rgba(194, 65, 12, 0.95);
             --hint-dot-color: #9a3412;
             --candy-w-bg: #ca8a04;
             --candy-b-bg: #854d0e;
-            --neon-glow-btn: 0 0 12px rgba(234, 179, 8, 0.6);
+            --neon-glow-btn: 0 0 10px rgba(234, 179, 8, 0.4);
         }
 
+        /* --- TEMA ESCURO (Noturno) --- */
         body.theme-escuro {
             --bg-main: #0f172a;
             --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
@@ -110,6 +114,7 @@
             --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6);
         }
 
+        /* --- TEMA CYBERPUNK (Noturno) --- */
         body.theme-cyberpunk {
             --bg-main: #050508;
             --bg-gradient: radial-gradient(circle at center, #120a2a 0%, #050508 100%);
@@ -135,6 +140,7 @@
             --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7);
         }
 
+        /* --- TEMA FLORESTA (Noturno) --- */
         body.theme-floresta {
             --bg-main: #062314;
             --bg-gradient: radial-gradient(circle at center, #0c3b22 0%, #062314 100%);
@@ -212,7 +218,7 @@
             background: var(--panel-bg);
             border: 2px solid var(--board-border);
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             padding: 10px;
             position: relative;
             flex-shrink: 0;
@@ -281,7 +287,7 @@
             background: var(--panel-bg);
             border: 2px solid var(--panel-border);
             border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             padding: 8px;
             flex-shrink: 0;
             z-index: 500;
@@ -300,7 +306,7 @@
             position: fixed;
             z-index: 2000;
             background: var(--board-border);
-            color: #0f172a;
+            color: #ffffff;
             border: none;
             font-weight: bold;
             cursor: pointer;
@@ -495,7 +501,7 @@
         #victory-screen, #settings-modal, #log-modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(8px);
             display: none;
             align-items: center;
@@ -510,7 +516,7 @@
             text-align: center;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
             color: var(--modal-text);
             max-height: 85vh;
             overflow-y: auto;
@@ -519,7 +525,7 @@
         .log-textarea {
             width: 100%;
             height: 220px;
-            background: #090d16;
+            background: #0f172a;
             color: #38bdf8;
             border: 1px solid var(--panel-border);
             font-family: monospace;
@@ -532,7 +538,7 @@
             white-space: pre-wrap;
         }
 
-        /* --- REDESIGN ELEGANTE DA TELA DE MENU --- */
+        /* --- TELA DE MENU --- */
         #menu-screen {
             position: fixed;
             inset: 0;
@@ -554,11 +560,11 @@
         .hero-box h1 {
             font-size: 38px;
             letter-spacing: -1px;
-            background: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 900;
-            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+            text-shadow: 0 0 20px rgba(2, 132, 199, 0.2);
         }
         .hero-box p {
             font-size: 11px;
@@ -573,11 +579,11 @@
             gap: 12px;
             width: 100%;
             max-width: 460px;
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
             padding: 16px;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
             backdrop-filter: blur(16px);
         }
 
@@ -586,8 +592,8 @@
             flex-direction: column;
             gap: 6px;
             width: 100%;
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: var(--chat-bg);
+            border: 1px solid var(--panel-border);
             padding: 10px;
             border-radius: 12px;
         }
@@ -599,7 +605,7 @@
             justify-content: center;
             padding: 8px 2px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--panel-border);
             cursor: pointer;
             color: #fff;
             font-weight: bold;
@@ -607,11 +613,11 @@
             gap: 2px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .menu-grid-btn span { font-size: 7.5px; opacity: 0.8; font-weight: 600; }
+        .menu-grid-btn span { font-size: 7.5px; opacity: 0.9; font-weight: 600; }
         .menu-grid-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
-            border-color: #38bdf8;
+            box-shadow: var(--neon-glow-btn);
+            border-color: var(--board-border);
         }
 
         .menu-main-btn {
@@ -620,20 +626,20 @@
             justify-content: center;
             padding: 12px 18px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid var(--panel-border);
             cursor: pointer;
             color: #fff;
             font-weight: bold;
             font-size: 12px;
             gap: 8px;
             width: 100%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .menu-main-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-            border-color: #38bdf8;
+            box-shadow: var(--neon-glow-btn);
+            border-color: var(--board-border);
         }
 
         .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
@@ -644,7 +650,7 @@
             justify-content: center;
             padding: 10px;
             border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
             cursor: pointer;
             color: #fff;
             font-weight: bold;
@@ -654,10 +660,10 @@
         }
         .room-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
             border-color: #fff;
         }
-        .room-status { font-size: 8px; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.6); text-transform: uppercase; font-weight: 700; }
+        .room-status { font-size: 8px; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
         @media (max-width: 900px) {
             body, html { overflow-y: auto; height: 100vh; }
@@ -711,7 +717,7 @@
     <!-- MODAL DE LOGS DO SISTEMA -->
     <div id="log-modal">
         <div class="log-content">
-            <div style="font-size: 13px; font-weight: bold; color: #38bdf8; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 13px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center;">
                 <span>📜 Relatório de Logs & Diagnóstico</span>
                 <button class="action-btn" onclick="closeLogModal()">✕ Fechar</button>
             </div>
@@ -738,7 +744,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Termux Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.0</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.1</p>
         </div>
         
         <div class="menu-dashboard">
@@ -746,7 +752,7 @@
             <div class="menu-section-card">
                 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; font-weight: bold;">
                     <span>🤖 Desafiar a Máquina (Oráculo)</span>
-                    <span style="color: #38bdf8; font-size: 8.5px;">Selecione a Dificuldade</span>
+                    <span style="color: var(--board-border); font-size: 8.5px;">Selecione a Dificuldade</span>
                 </div>
                 <div class="menu-grid-5">
                     <button class="menu-grid-btn" style="background: linear-gradient(135deg, #064e3b, #065f46);" onclick="selectAndStartPvE(1)">🌱 1<span>Inic</span></button>
@@ -759,10 +765,10 @@
 
             <button class="menu-main-btn" style="background: linear-gradient(135deg, #1e3a8a, #2563eb);" onclick="startGame('pvp')">👥 <span>2 Jogadores (Mesa Local)</span></button>
             
-            <div style="font-size: 10px; font-weight: bold; color: #38bdf8; margin-top: 2px; text-transform: uppercase; text-align: left;">🌐 Salas Globais (LAN P2P Multiplayer):</div>
+            <div style="font-size: 10px; font-weight: bold; color: var(--board-border); margin-top: 2px; text-transform: uppercase; text-align: left;">🌐 Salas Globais (LAN P2P Multiplayer):</div>
             
             <div class="room-grid">
-                <button class="room-btn" style="background: linear-gradient(135deg, #831843, #db2777);" onclick="joinCityRoom('paris')">🌸 Paris (Rosa) <span id="status-paris" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #f472b6, #db2777);" onclick="joinCityRoom('paris')">🌸 Paris (Rosa) <span id="status-paris" class="room-status">Verif...</span></button>
                 <button class="room-btn" style="background: linear-gradient(135deg, #120e26, #4c1d95);" onclick="joinCityRoom('toquio')">⚡ Tóquio (Cyber) <span id="status-toquio" class="room-status">Verif...</span></button>
                 <button class="room-btn" style="background: linear-gradient(135deg, #0f172a, #334155);" onclick="joinCityRoom('novayork')">🌙 N. York (Escuro) <span id="status-novayork" class="room-status">Verif...</span></button>
                 <button class="room-btn" style="background: linear-gradient(135deg, #062314, #059669);" onclick="joinCityRoom('londres')">🌲 Londres (Floresta) <span id="status-londres" class="room-status">Verif...</span></button>
@@ -817,7 +823,7 @@
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
-                    <button class="action-btn" style="flex: 0 0 42px; padding: 4px; font-size: 8.5px; background: var(--board-border); color: #0f172a; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
+                    <button class="action-btn" style="flex: 0 0 42px; padding: 4px; font-size: 8.5px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
                 </div>
                 <div class="taunt-row">
                     <button class="taunt-btn" onclick="sendStandUpJoke()">🎤 Stand up</button>
@@ -833,7 +839,7 @@
 
             <div class="player-card" id="card-white">
                 <div class="player-info">
-                    <span style="color:#38bdf8;" id="player1-label">Você</span>
+                    <span style="color:#0284c7;" id="player1-label">Você</span>
                     <span id="turn-badge-white" class="turn-badge">Sua Vez</span>
                 </div>
                 <div id="captured-by-white" class="captured-area"></div>
@@ -858,7 +864,6 @@
     let trailTimeout = null;
     let heartbeatInterval = null;
     
-    // SISTEMA DE LOGS INTERNO
     let systemLogs = [];
     function addLog(msg) {
         let time = new Date().toLocaleTimeString();
@@ -869,9 +874,8 @@
         if (textarea) textarea.value = systemLogs.join('\n');
     }
 
-    addLog("Sistema iniciado. Termux Xadrez v3.5.0 pronto.");
+    addLog("Sistema iniciado. Termux Xadrez v3.5.1 pronto.");
 
-    // Zera os bombons ao carregar ou recarregar a página
     let candiesWhite = 1;
     let candiesBlack = 1;
     localStorage.setItem('termux_candies_w', '1');
@@ -942,7 +946,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.0&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.1&body=${text}`;
     }
 
     function updateFightBarDisplay() {
@@ -1250,7 +1254,6 @@
     function setupHostListeners(cityName) {
         conn.on('data', (data) => {
             if (data.type === 'ping' && data.fen) {
-                // Sincronizador de FEN se houver divergência
                 if (data.fen !== chess.fen() && chess.history().length === 0) {
                     chess.load(data.fen);
                     renderBoard();
