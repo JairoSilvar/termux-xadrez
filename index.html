@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.4.2</title>
+    <title>Termux Xadrez - v3.4.4</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -509,7 +509,7 @@
             transition: all 0.3s ease;
         }
 
-        /* DESTAQUE APENAS PARA O JOGADOR ATUAL EM SEU RESPECTIVO TURNO */
+        /* DESTAQUE NEON DE TURNO ATIVO */
         .player-card.active-turn {
             border: 2px solid var(--turn-active-color);
             background: rgba(34, 197, 94, 0.08);
@@ -566,7 +566,6 @@
         .chat-msg.ai span { color: var(--board-border); }
         .chat-msg.ai { border-left: 3px solid var(--board-border); }
         
-        /* APENAS A NOTIFICAÇÃO ATUAL/MAIS RECENTE FICA DESTACADA EM NEON */
         .chat-msg.alert-neon {
             background: rgba(34, 197, 94, 0.15);
             border: 2px solid var(--turn-active-color);
@@ -786,7 +785,7 @@
 
     <div id="menu-screen">
         <h1>Termux Xadrez</h1>
-        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.2</p>
+        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.4</p>
         
         <div style="display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 340px; align-items: center;">
             
@@ -852,7 +851,7 @@
             <div class="player-card" id="card-black">
                 <div class="player-info">
                     <span style="color:#f43f5e;" id="player2-label">Oponente</span>
-                    <span id="turn-badge-black" class="turn-badge">TURNO DELE</span>
+                    <span id="turn-badge-black" class="turn-badge">VEZ DAS PRETAS</span>
                 </div>
                 <div id="captured-by-black" class="captured-area"></div>
             </div>
@@ -880,7 +879,7 @@
             <div class="player-card" id="card-white">
                 <div class="player-info">
                     <span style="color:#38bdf8;" id="player1-label">Você</span>
-                    <span id="turn-badge-white" class="turn-badge">SUA VEZ</span>
+                    <span id="turn-badge-white" class="turn-badge">VEZ DAS BRANCAS</span>
                 </div>
                 <div id="captured-by-white" class="captured-area"></div>
             </div>
@@ -905,8 +904,9 @@
     let heartbeatInterval = null;
     let isTransitioningMove = false;
 
-    let candiesWhite = parseInt(localStorage.getItem('termux_candies_w') || '1');
-    let candiesBlack = parseInt(localStorage.getItem('termux_candies_b') || '1');
+    // A pontuação inicia sempre em 1 vs 1 ao carregar/recarregar a página.
+    let candiesWhite = 1;
+    let candiesBlack = 1;
     updateFightBarDisplay();
 
     const pieceNames = {
@@ -1013,7 +1013,6 @@
         const box = document.getElementById("chat-box");
         if(!box) return;
 
-        // Remove o destaque de alertas anteriores para manter apenas a notificação atual destacada
         if (isAlert) {
             const oldAlerts = box.querySelectorAll('.alert-neon');
             oldAlerts.forEach(el => el.classList.remove('alert-neon'));
@@ -1040,7 +1039,12 @@
         let attCss = attCol === 'w' ? 'white-cap' : 'black-cap';
         let capCss = capCol === 'w' ? 'white-cap' : 'black-cap';
 
-        let chatText = `🔥 <b>CAPTURA EM ${square.toUpperCase()}!</b><br><div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} eliminou <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}!`;
+        // Ordem invertida: Peça com ícone capturou peça com ícone, e casa da captura abaixo em fonte menor
+        let chatText = `<div style="display:flex; align-items:center; gap:4px; font-weight:bold;">
+            <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} capturou 
+            <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}
+        </div>
+        <div style="font-size: 8.5px; opacity: 0.85; margin-top: 2px;">Captura na casa: ${square.toUpperCase()}</div>`;
         
         addChatMessage("Árbitro", chatText, true, true);
     }
@@ -1056,18 +1060,23 @@
     }
 
     function showVictoryScreen(reason, winnerColor = null) {
+        let savedW = parseInt(localStorage.getItem('termux_candies_w') || '1');
+        let savedB = parseInt(localStorage.getItem('termux_candies_b') || '1');
+
         if (winnerColor === 'w') {
-            candiesWhite += 1;
-            if (candiesBlack > 0) candiesBlack -= 1;
+            savedW += 1;
+            if (savedB > 0) savedB -= 1;
             document.getElementById("victoryCandyIcon").innerText = "🍫🏆 Brancas ganharam 1 bombom!";
         } else if (winnerColor === 'b') {
-            candiesBlack += 1;
-            if (candiesWhite > 0) candiesWhite -= 1;
+            savedB += 1;
+            if (savedW > 0) savedW -= 1;
             document.getElementById("victoryCandyIcon").innerText = "🍫🏆 Pretas ganharam 1 bombom!";
         }
 
-        localStorage.setItem('termux_candies_w', candiesWhite);
-        localStorage.setItem('termux_candies_b', candiesBlack);
+        localStorage.setItem('termux_candies_w', savedW);
+        localStorage.setItem('termux_candies_b', savedB);
+        candiesWhite = savedW;
+        candiesBlack = savedB;
         updateFightBarDisplay();
 
         document.getElementById("victory-subtitle").innerText = reason;
@@ -1118,9 +1127,13 @@
         lastPathCoords = [];
         isTransitioningMove = false;
         applyCityVisualTheme(null);
+        
+        candiesWhite = parseInt(localStorage.getItem('termux_candies_w') || '1');
+        candiesBlack = parseInt(localStorage.getItem('termux_candies_b') || '1');
         updateFightBarDisplay();
-        document.getElementById("player1-label").innerText = "Você (Brancas)";
-        document.getElementById("player2-label").innerText = mode === 'pve' ? `IA Mestre (${aiDifficulty})` : "Jogador 2";
+
+        document.getElementById("player1-label").innerText = mode === 'pvp' ? "Jogador 1 (Brancas)" : "Você (Brancas)";
+        document.getElementById("player2-label").innerText = mode === 'pvp' ? "Jogador 2 (Pretas)" : (mode === 'pve' ? `IA Mestre (${aiDifficulty})` : "Oponente");
         
         closeMenuTransition();
         chess.reset();
@@ -1337,24 +1350,47 @@
         badgeWhite.style.display = "none";
         badgeBlack.style.display = "none";
 
-        // Regra atualizada: O destaque neon (active-turn) aparece APENAS se for a sua vez de jogar e corresponder ao seu campo. Quando for a vez do oponente, o painel dele NÃO brilha na sua tela.
-        if (turn === 'w') {
-            if (playerColor === 'w') {
+        if (gameMode === 'pvp') {
+            // 2 jogadores na mesma tela: destaque neon para ambas as cores conforme o turno
+            if (turn === 'w') {
+                cardWhite.classList.add('active-turn');
+                badgeWhite.style.display = "inline-block";
+                badgeWhite.innerText = "VEZ DAS BRANCAS";
+            } else {
+                cardBlack.classList.add('active-turn');
+                badgeBlack.style.display = "inline-block";
+                badgeBlack.innerText = "VEZ DAS PRETAS";
+            }
+        } else if (gameMode === 'network') {
+            // Salas de rede: aviso discreto "Aguardando jogada..." sem neon quando for a vez do oponente na sua tela
+            if (turn === 'w') {
+                if (playerColor === 'w') {
+                    cardWhite.classList.add('active-turn');
+                    badgeWhite.style.display = "inline-block";
+                    badgeWhite.innerText = "SUA VEZ";
+                } else {
+                    badgeWhite.style.display = "inline-block";
+                    badgeWhite.innerText = "Aguardando jogada...";
+                }
+            } else {
+                if (playerColor === 'b') {
+                    cardBlack.classList.add('active-turn');
+                    badgeBlack.style.display = "inline-block";
+                    badgeBlack.innerText = "SUA VEZ";
+                } else {
+                    badgeBlack.style.display = "inline-block";
+                    badgeBlack.innerText = "Aguardando jogada...";
+                }
+            }
+        } else {
+            // PvE (contra IA)
+            if (turn === 'w') {
                 cardWhite.classList.add('active-turn');
                 badgeWhite.style.display = "inline-block";
                 badgeWhite.innerText = "SUA VEZ";
             } else {
-                badgeWhite.style.display = "inline-block";
-                badgeWhite.innerText = "VEZ DO OPONENTE";
-            }
-        } else {
-            if (playerColor === 'b') {
-                cardBlack.classList.add('active-turn');
                 badgeBlack.style.display = "inline-block";
-                badgeBlack.innerText = "SUA VEZ";
-            } else {
-                badgeBlack.style.display = "inline-block";
-                badgeBlack.innerText = "VEZ DO OPONENTE";
+                badgeBlack.innerText = "Aguardando jogada...";
             }
         }
     }
@@ -1457,7 +1493,7 @@
 
         if (selectedSquare === null) {
             const piece = chess.get(square);
-            if (piece && piece.color === chess.turn()) {
+            if (piece && (gameMode === 'pvp' || piece.color === chess.turn())) {
                 selectedSquare = square;
                 try { possibleMoves = chess.moves({ square: square, verbose: true }).map(m => m.to); } catch (e) { possibleMoves = []; }
                 renderBoard();
@@ -1491,7 +1527,7 @@
                     }
                 } else {
                     const piece = chess.get(square);
-                    if (piece && piece.color === chess.turn()) {
+                    if (piece && (gameMode === 'pvp' || piece.color === chess.turn())) {
                         selectedSquare = square;
                         possibleMoves = chess.moves({ square: square, verbose: true }).map(m => m.to);
                         isTransitioningMove = false;
