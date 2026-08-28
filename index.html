@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.5.2</title>
+    <title>Termux Xadrez - v3.5.3</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -35,30 +35,29 @@
             --turn-active-color: #16a34a;
         }
 
-        /* --- TEMA ROSA (Claro) --- */
-        body.theme-rosa {
-            --bg-main: #fdf2f8;
+        /* --- TEMA PARIS (Barbie Clean & Chic) --- */
+        body.theme-paris {
+            --bg-main: #fff0f5;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
-            --panel-bg: rgba(255, 255, 255, 0.9);
+            --panel-bg: rgba(255, 240, 245, 0.95);
             --panel-border: #f472b6;
             --text-main: #831843;
-            --text-muted: #be185d;
+            --text-muted: #db2777;
             --board-border: #ec4899;
-            --light-square: #fce7f3;
+            --light-square: #fdf2f8;
             --dark-square: #f472b6;
-            --chat-bg: #fdf2f8;
+            --chat-bg: #ffe4e6;
             --chat-input-bg: #ffffff;
-            --chat-msg-bg: #fce7f3;
-            --btn-bg: #fbcfe8;
-            --btn-hover: #f472b6;
-            --modal-bg: #fff0f6;
-            --modal-border: #ec4899;
+            --chat-msg-bg: #fbcfe8;
+            --btn-bg: #f472b6;
+            --btn-hover: #ec4899;
+            --modal-bg: #fff1f2;
+            --modal-border: #db2777;
             --modal-text: #831843;
             --trail-color: rgba(219, 39, 119, 0.95);
             --hint-dot-color: #db2777;
             --candy-w-bg: #ec4899;
             --candy-b-bg: #831843;
-            --neon-glow-btn: 0 0 10px rgba(236, 72, 153, 0.4);
         }
 
         /* --- TEMA OURO (Claro) --- */
@@ -87,8 +86,8 @@
             --neon-glow-btn: 0 0 10px rgba(234, 179, 8, 0.4);
         }
 
-        /* --- TEMA ESCURO (Noturno) --- */
-        body.theme-escuro {
+        /* --- TEMA NOVA YORK (Escuro Minimalista) --- */
+        body.theme-novayork {
             --bg-main: #0f172a;
             --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
             --panel-bg: rgba(30, 41, 59, 0.85);
@@ -113,8 +112,8 @@
             --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6);
         }
 
-        /* --- TEMA CYBERPUNK (Noturno) --- */
-        body.theme-cyberpunk {
+        /* --- TEMA TÓQUIO (Cyberpunk Neon) --- */
+        body.theme-toquio {
             --bg-main: #050508;
             --bg-gradient: radial-gradient(circle at center, #120a2a 0%, #050508 100%);
             --panel-bg: rgba(18, 14, 38, 0.85);
@@ -139,8 +138,8 @@
             --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7);
         }
 
-        /* --- TEMA FLORESTA (Noturno) --- */
-        body.theme-floresta {
+        /* --- TEMA LONDRES (Floresta Mística) --- */
+        body.theme-londres {
             --bg-main: #062314;
             --bg-gradient: radial-gradient(circle at center, #0c3b22 0%, #062314 100%);
             --panel-bg: rgba(12, 59, 34, 0.85);
@@ -165,117 +164,7 @@
             --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6);
         }
 
-        /* --- TEMAS EXCLUSIVOS DAS SALAS GLOBAIS --- */
-        
-        /* 1. PARIS (Rosa Romântico / Elegante) */
-        body.room-paris {
-            --bg-main: #fff0f5;
-            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
-            --panel-bg: rgba(255, 240, 245, 0.9);
-            --panel-border: #ec4899;
-            --text-main: #831843;
-            --text-muted: #be185d;
-            --board-border: #db2777;
-            --light-square: #fce7f3;
-            --dark-square: #f472b6;
-            --chat-bg: #ffe4e6;
-            --chat-input-bg: #ffffff;
-            --chat-msg-bg: #fbcfe8;
-            --btn-bg: #f472b6;
-            --btn-hover: #ec4899;
-            --modal-bg: #fff1f2;
-            --modal-border: #db2777;
-            --modal-text: #831843;
-            --trail-color: rgba(219, 39, 119, 0.95);
-            --hint-dot-color: #db2777;
-            --candy-w-bg: #ec4899;
-            --candy-b-bg: #831843;
-        }
-        body.room-paris .piece.white-piece { filter: drop-shadow(0 0 6px #ec4899) brightness(1.2); }
-        body.room-paris .piece.black-piece { filter: drop-shadow(0 0 6px #831843) brightness(1.1); }
-
-        /* 2. TÓQUIO (Cyber Neon / Futurista) */
-        body.room-toquio {
-            --bg-main: #050508;
-            --bg-gradient: radial-gradient(circle at center, #130729 0%, #050508 100%);
-            --panel-bg: rgba(19, 7, 41, 0.9);
-            --panel-border: #00f0ff;
-            --text-main: #00f0ff;
-            --text-muted: #c084fc;
-            --board-border: #a855f7;
-            --light-square: #3b0764;
-            --dark-square: #1e1b4b;
-            --chat-bg: #0b071a;
-            --chat-input-bg: #120e26;
-            --chat-msg-bg: #2e1065;
-            --btn-bg: #4c1d95;
-            --btn-hover: #6d28d9;
-            --modal-bg: #130729;
-            --modal-border: #00f0ff;
-            --modal-text: #00f0ff;
-            --trail-color: rgba(0, 240, 255, 0.95);
-            --hint-dot-color: #00f0ff;
-            --candy-w-bg: #00f0ff;
-            --candy-b-bg: #f43f5e;
-        }
-        body.room-toquio .piece.white-piece { filter: drop-shadow(0 0 6px #00f0ff) brightness(1.3); }
-        body.room-toquio .piece.black-piece { filter: drop-shadow(0 0 6px #f43f5e) brightness(1.2); }
-
-        /* 3. NOVA YORK (Dark Minimalista / Grafite) */
-        body.room-novayork {
-            --bg-main: #090d16;
-            --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #090d16 100%);
-            --panel-bg: rgba(15, 23, 42, 0.9);
-            --panel-border: #38bdf8;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --board-border: #0ea5e9;
-            --light-square: #334155;
-            --dark-square: #0f172a;
-            --chat-bg: #0f172a;
-            --chat-input-bg: #020617;
-            --chat-msg-bg: #1e293b;
-            --btn-bg: #334155;
-            --btn-hover: #475569;
-            --modal-bg: #0f172a;
-            --modal-border: #38bdf8;
-            --modal-text: #f8fafc;
-            --trail-color: rgba(56, 189, 248, 0.95);
-            --hint-dot-color: #38bdf8;
-            --candy-w-bg: #38bdf8;
-            --candy-b-bg: #e11d48;
-        }
-        body.room-novayork .piece.white-piece { filter: drop-shadow(0 0 6px #ffffff) brightness(1.2); }
-        body.room-novayork .piece.black-piece { filter: drop-shadow(0 0 6px #f97316) brightness(1.2); }
-
-        /* 4. LONDRES (Floresta Mística / Esmeralda) */
-        body.room-londres {
-            --bg-main: #022c22;
-            --bg-gradient: radial-gradient(circle at center, #064e3b 0%, #022c22 100%);
-            --panel-bg: rgba(2, 44, 34, 0.9);
-            --panel-border: #34d399;
-            --text-main: #d1fae5;
-            --text-muted: #6ee7b7;
-            --board-border: #10b981;
-            --light-square: #065f46;
-            --dark-square: #022c22;
-            --chat-bg: #022c22;
-            --chat-input-bg: #011611;
-            --chat-msg-bg: #064e3b;
-            --btn-bg: #047857;
-            --btn-hover: #059669;
-            --modal-bg: #022c22;
-            --modal-border: #34d399;
-            --modal-text: #d1fae5;
-            --trail-color: rgba(52, 211, 153, 0.95);
-            --hint-dot-color: #34d399;
-            --candy-w-bg: #34d399;
-            --candy-b-bg: #f59e0b;
-        }
-        body.room-londres .piece.white-piece { filter: drop-shadow(0 0 6px #34d399) brightness(1.2); }
-        body.room-londres .piece.black-piece { filter: drop-shadow(0 0 6px #f59e0b) brightness(1.2); }
-
-        /* --- PEÇAS NEON PADRÃO --- */
+        /* --- PEÇAS NEON --- */
         body.pieces-blue-pink .piece.white-piece { filter: drop-shadow(0 0 5px #00f0ff) brightness(1.2); }
         body.pieces-blue-pink .piece.black-piece { filter: drop-shadow(0 0 5px #ff007f) brightness(1.1); }
         body.pieces-green-cyan .piece.white-piece { filter: drop-shadow(0 0 5px #22c55e) brightness(1.2); }
@@ -432,8 +321,9 @@
             #restore-btn { bottom: 12px; left: 50%; transform: translateX(-50%); padding: 10px 24px; border-radius: 20px; font-size: 12px; }
         }
 
+        /* --- BARRA DE TOPO DA SIDEBAR (TUDO NA MESMA LINHA) --- */
         .brand-title {
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: bold;
             color: var(--text-main);
             border-bottom: 1px solid var(--panel-border);
@@ -442,21 +332,29 @@
             justify-content: space-between;
             align-items: center;
             border-radius: 5px;
-            padding: 5px 6px;
+            padding: 4px 6px;
             background: var(--chat-bg);
+            gap: 2px;
+            white-space: nowrap;
+        }
+        .brand-title > span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 75px;
         }
 
-        .header-actions { display: flex; gap: 3px; flex-wrap: wrap; justify-content: flex-end; }
+        .header-actions { display: flex; gap: 2px; align-items: center; flex-wrap: nowrap; }
         .action-btn {
             background: var(--btn-bg);
             color: var(--text-main);
             border: 1px solid var(--panel-border);
-            padding: 4px 7px;
-            border-radius: 6px;
+            padding: 3px 5px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 9px;
+            font-size: 8.5px;
             font-weight: bold;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
         .action-btn:hover {
             background: var(--btn-hover);
@@ -707,6 +605,8 @@
             border-radius: 12px;
         }
         .menu-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 2px; }
+        
+        /* Botões do Oráculo Progressivos (Verde -> Azul -> Roxo) */
         .menu-grid-btn {
             display: flex;
             flex-direction: column;
@@ -714,19 +614,19 @@
             justify-content: center;
             padding: 8px 2px;
             border-radius: 8px;
-            border: 1px solid var(--panel-border);
+            border: 1px solid rgba(255,255,255,0.2);
             cursor: pointer;
             color: #fff;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 10px;
             gap: 2px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .menu-grid-btn span { font-size: 7.5px; opacity: 0.9; font-weight: 600; }
+        .menu-grid-btn span { font-size: 7.5px; opacity: 0.95; font-weight: 600; text-transform: uppercase; }
         .menu-grid-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--neon-glow-btn);
-            border-color: var(--board-border);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+            filter: brightness(1.1);
         }
 
         .menu-main-btn {
@@ -788,7 +688,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.2/peerjs.min.js"></script>
 </head>
-<body class="theme-claro pieces-blue-pink">
+<body class="theme-paris pieces-blue-pink">
 
     <button id="restore-btn" onclick="togglePanel()">MENU</button>
 
@@ -801,12 +701,12 @@
             
             <div style="font-size: 10.5px; font-weight: bold; margin-top: 6px;">🎨 Tema do Tabuleiro:</div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('claro')">☀️ Claro</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('rosa')">🌸 Rosa</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('ouro')">👑 Ouro</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('escuro')">🌙 Escuro</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('cyberpunk')">⚡ Cyberpunk</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('floresta')">🌲 Floresta</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('paris')">🌸 Paris (Rosa Barbie)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('toquio')">⚡ Tóquio (Cyber)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('novayork')">🌙 Nova York (Escuro)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('londres')">🌲 Londres (Floresta)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('ouro')">👑 Ouro (Real)</button>
+                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('claro')">☀️ Claro (Padrão)</button>
             </div>
 
             <div style="font-size: 10.5px; font-weight: bold; margin-top: 8px;">✨ Cores das Peças:</div>
@@ -853,7 +753,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Termux Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.2</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.3</p>
         </div>
         
         <div class="menu-dashboard">
@@ -864,11 +764,12 @@
                     <span style="color: var(--board-border); font-size: 8.5px;">Selecione a Dificuldade</span>
                 </div>
                 <div class="menu-grid-5">
-                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #064e3b, #065f46);" onclick="selectAndStartPvE(1)">🌱 1<span>Inic</span></button>
-                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #0f766e, #0e7490);" onclick="selectAndStartPvE(2)">⚔️ 2<span>Cas</span></button>
-                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #1d4ed8, #2563eb);" onclick="selectAndStartPvE(3)">🛡️ 3<span>Med</span></button>
-                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6);" onclick="selectAndStartPvE(4)">⚡ 4<span>Avan</span></button>
-                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #9333ea, #c084fc);" onclick="selectAndStartPvE(5)">👑 5<span>Mest</span></button>
+                    <!-- Paleta Progressiva com Descrição Completa -->
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #15803d, #16a34a);" onclick="selectAndStartPvE(1)">🌱 1<span>Iniciante</span></button>
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #0e7490, #0284c7);" onclick="selectAndStartPvE(2)">⚔️ 2<span>Casual</span></button>
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #1d4ed8, #4f46e5);" onclick="selectAndStartPvE(3)">🛡️ 3<span>Médio</span></button>
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #7c3aed, #9333ea);" onclick="selectAndStartPvE(4)">⚡ 4<span>Avançado</span></button>
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #c026d3, #db2777);" onclick="selectAndStartPvE(5)">👑 5<span>Mestre</span></button>
                 </div>
             </div>
 
@@ -892,6 +793,7 @@
         </div>
 
         <div class="side-section" id="sidePanel">
+            <!-- Barra de Ações Unificada na Mesma Linha -->
             <div class="brand-title" id="brandTitleBox">
                 <span id="room-status-title">XADREZ</span>
                 <div class="header-actions">
@@ -963,7 +865,7 @@
     let gameMode = 'pve';
     let currentCityKey = null;
     let aiDifficulty = 1;
-    let currentTheme = 'claro';
+    let currentTheme = 'paris';
     
     let peer = null;
     let conn = null;
@@ -983,7 +885,7 @@
         if (textarea) textarea.value = systemLogs.join('\n');
     }
 
-    addLog("Sistema iniciado. Termux Xadrez v3.5.2 pronto.");
+    addLog("Sistema iniciado. Termux Xadrez v3.5.3 pronto.");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1055,7 +957,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.2&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.3&body=${text}`;
     }
 
     function updateFightBarDisplay() {
@@ -1078,7 +980,7 @@
 
     function setTheme(themeName) {
         currentTheme = themeName;
-        document.body.classList.remove('theme-claro', 'theme-rosa', 'theme-ouro', 'theme-escuro', 'theme-cyberpunk', 'theme-floresta', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
+        document.body.classList.remove('theme-paris', 'theme-toquio', 'theme-novayork', 'theme-londres', 'theme-ouro', 'theme-claro', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
         document.body.classList.add(`theme-${themeName}`);
         currentCityKey = null;
         addLog(`Tema alterado para: ${themeName}`);
@@ -1102,7 +1004,7 @@
     function applyCityVisualTheme(cityKey) {
         currentCityKey = cityKey;
         const roomTitle = document.getElementById("room-status-title");
-        document.body.classList.remove('theme-claro', 'theme-rosa', 'theme-ouro', 'theme-escuro', 'theme-cyberpunk', 'theme-floresta', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
+        document.body.classList.remove('theme-paris', 'theme-toquio', 'theme-novayork', 'theme-londres', 'theme-ouro', 'theme-claro', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
 
         if (cityKey && cityDetails[cityKey]) {
             let details = cityDetails[cityKey];
