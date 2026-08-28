@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.5.5</title>
+    <title>Termux Xadrez - v3.6.0</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -443,7 +443,7 @@
             display: flex;
             flex-direction: column;
             flex: 1;
-            min-height: 190px;
+            min-height: 150px;
             gap: 4px;
             overflow: hidden;
         }
@@ -486,20 +486,28 @@
         }
         .chat-input:focus { border-color: var(--board-border); box-shadow: var(--neon-glow-btn); }
         
-        .taunt-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; flex-shrink: 0; }
+        /* --- CARROSSEL HORIZONTAL DE TAUNTS (Otimização Mobile) --- */
+        .taunt-scroll-container {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            flex-shrink: 0;
+            padding-bottom: 2px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .taunt-scroll-container::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
         .taunt-btn {
             background: var(--chat-input-bg);
             color: var(--board-border);
             border: 1px solid var(--panel-border);
-            font-size: 8px;
-            padding: 5px 2px;
+            font-size: 8.5px;
+            padding: 5px 8px;
             border-radius: 4px;
             cursor: pointer;
             text-align: center;
             font-weight: 600;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            flex-shrink: 0;
             transition: all 0.2s ease;
         }
         .taunt-btn:hover { background: var(--btn-hover); box-shadow: var(--neon-glow-btn); border-color: var(--board-border); }
@@ -527,6 +535,31 @@
             max-height: 85vh;
             overflow-y: auto;
         }
+
+        /* Abas Colapsáveis no Modal de Configurações */
+        .settings-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 6px;
+            font-size: 9.5px;
+            font-weight: bold;
+            background: var(--btn-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+        .tab-btn.active {
+            background: var(--modal-border);
+            color: #fff;
+            box-shadow: var(--neon-glow-btn);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: grid; gap: 4px; }
 
         .log-textarea {
             width: 100%;
@@ -677,10 +710,10 @@
         @media (max-width: 900px) {
             body, html { overflow-y: auto; height: 100vh; }
             #game-wrapper { flex-direction: column; padding: 4px; gap: 4px; height: 100vh; justify-content: flex-start; }
-            .board-section { height: 48vh; width: 48vh; max-height: 350px; max-width: 350px; padding: 4px; }
-            .side-section { width: 100%; height: 47vh; max-height: 47vh; padding: 6px; }
+            .board-section { height: 46vh; width: 46vh; max-height: 330px; max-width: 330px; padding: 4px; }
+            .side-section { width: 100%; height: 50vh; max-height: 50vh; padding: 6px; }
             .side-section.minimized { height: 0px; width: 100%; padding: 0px; }
-            .chat-container { height: 160px; max-height: 180px; min-height: 130px; }
+            .chat-container { height: 130px; max-height: 150px; min-height: 110px; }
             .menu-dashboard { max-width: 94vw; padding: 12px; }
             .hero-box h1 { font-size: 30px; }
         }
@@ -694,13 +727,20 @@
 
     <div id="settings-modal">
         <div class="settings-content">
-            <div style="font-size: 13px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 13px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span>⚙️ Configurações & Temas</span>
                 <button class="action-btn" onclick="closeSettingsModal()">✕ Fechar</button>
             </div>
             
-            <div style="font-size: 10.5px; font-weight: bold; margin-top: 6px;">🎨 Tema do Tabuleiro:</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px;">
+            <!-- ABAS DE NAVEGAÇÃO DO MODAL -->
+            <div class="settings-tabs">
+                <button class="tab-btn active" onclick="switchSettingsTab(event, 'tab-board')">🎨 Tabuleiro</button>
+                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-pieces')">✨ Peças Neon</button>
+                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-sfx')">🔊 Áudio & FX</button>
+            </div>
+
+            <!-- CONTEÚDO ABA 1: TABULEIRO -->
+            <div id="tab-board" class="tab-content active" style="grid-template-columns: 1fr 1fr;">
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('claro')">☀️ Claro (Padrão)</button>
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('paris')">🌸 Paris (Rosa Barbie)</button>
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('ouro')">👑 Ouro (Real)</button>
@@ -709,8 +749,8 @@
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('londres')">🌲 Londres (Floresta)</button>
             </div>
 
-            <div style="font-size: 10.5px; font-weight: bold; margin-top: 8px;">✨ Cores das Peças:</div>
-            <div style="display: grid; grid-template-columns: 1fr; gap: 4px;">
+            <!-- CONTEÚDO ABA 2: PEÇAS -->
+            <div id="tab-pieces" class="tab-content" style="grid-template-columns: 1fr;">
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-blue-pink')">🔵 Azul Elétrico vs 🔴 Rosa Choque</button>
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-green-cyan')">🟢 Verde Esmeralda vs 🔵 Ciano</button>
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-gold-purple')">🟡 Dourado Real vs 🟣 Roxo Profundo</button>
@@ -719,7 +759,19 @@
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-ruby-indigo')">❤️ Rubi Intenso vs 🫐 Índigo Espacial</button>
             </div>
 
-            <button class="action-btn" onclick="closeSettingsModal()" style="margin-top: 8px; padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff;">APLICAR</button>
+            <!-- CONTEÚDO ABA 3: ÁUDIO E EFEITOS -->
+            <div id="tab-sfx" class="tab-content" style="grid-template-columns: 1fr; gap: 6px; text-align: left; padding: 4px;">
+                <label style="font-size: 10px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; background: var(--chat-bg); padding: 6px; border-radius: 6px; border: 1px solid var(--panel-border);">
+                    <span>🔊 Sons de Captura e Lance (SFX)</span>
+                    <input type="checkbox" id="sfxToggle" checked onchange="toggleSFX(this)" style="cursor: pointer;">
+                </label>
+                <label style="font-size: 10px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; background: var(--chat-bg); padding: 6px; border-radius: 6px; border: 1px solid var(--panel-border);">
+                    <span>✨ Animação de Rastro (Trail)</span>
+                    <input type="checkbox" id="trailToggle" checked onchange="toggleTrail(this)" style="cursor: pointer;">
+                </label>
+            </div>
+
+            <button class="action-btn" onclick="closeSettingsModal()" style="margin-top: 10px; padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff;">APLICAR</button>
         </div>
     </div>
 
@@ -753,7 +805,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Termux Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.5</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.6.0</p>
         </div>
         
         <div class="menu-dashboard">
@@ -834,7 +886,8 @@
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
                     <button class="action-btn" style="flex: 0 0 42px; padding: 4px; font-size: 8.5px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
                 </div>
-                <div class="taunt-row">
+                <!-- Carrossel Horizontal Otimizado para Mobile -->
+                <div class="taunt-scroll-container">
                     <button class="taunt-btn" onclick="sendStandUpJoke()">🎤 Stand up</button>
                     <button class="taunt-btn" onclick="sendTaunt('O destino do rei foi selado!')">⚡ Profético</button>
                     <button class="taunt-btn" onclick="sendTaunt('Minha torre vai te buscar!')">🏰 Estratégia</button>
@@ -864,6 +917,8 @@
     let currentCityKey = null;
     let aiDifficulty = 1;
     let currentTheme = 'claro';
+    let soundEnabled = true;
+    let trailEnabled = true;
     
     let peer = null;
     let conn = null;
@@ -883,13 +938,43 @@
         if (textarea) textarea.value = systemLogs.join('\n');
     }
 
-    addLog("Sistema iniciado. Termux Xadrez v3.5.5 pronto.");
+    addLog("Sistema iniciado. Termux Xadrez v3.6.0 pronto.");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
     localStorage.setItem('termux_candies_w', '1');
     localStorage.setItem('termux_candies_b', '1');
     updateFightBarDisplay();
+
+    // Sintetizador simples de áudio SFX via Web Audio API (Sem dependência externa)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSFX(type = 'move') {
+        if (!soundEnabled) return;
+        try {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if (type === 'move') {
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'capture') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+            }
+        } catch(e) {}
+    }
 
     const pieceNames = {
         'p': 'Peão', 'r': 'Torre', 'n': 'Cavalo', 'b': 'Bispo', 'q': 'Dama', 'k': 'Rei',
@@ -955,8 +1040,18 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.5&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.6.0&body=${text}`;
     }
+
+    function switchSettingsTab(evt, tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+
+    function toggleSFX(el) { soundEnabled = el.checked; addLog(`Efeitos sonoros: ${soundEnabled ? 'Ativados' : 'Desativados'}`); }
+    function toggleTrail(el) { trailEnabled = el.checked; addLog(`Animação de rastro: ${trailEnabled ? 'Ativada' : 'Desativada'}`); }
 
     function updateFightBarDisplay() {
         const total = candiesWhite + candiesBlack;
@@ -1281,7 +1376,7 @@
                         updateTurnIndicators();
                         updateCapturedDisplay();
                         renderBoard();
-                        if (result.captured) showCaptureInChat(result);
+                        if (result.captured) { showCaptureInChat(result); playSFX('capture'); } else { playSFX('move'); }
                         checkGameStateEvents(result, false);
                     }
                 } catch(err) { addLog(`Erro ao aplicar lance recebido: ${err.message}`); }
@@ -1324,7 +1419,7 @@
                         updateTurnIndicators();
                         updateCapturedDisplay();
                         renderBoard();
-                        if (result.captured) showCaptureInChat(result);
+                        if (result.captured) { showCaptureInChat(result); playSFX('capture'); } else { playSFX('move'); }
                         checkGameStateEvents(result, false);
                     }
                 } catch(err) { addLog(`Erro ao aplicar lance: ${err.message}`); }
@@ -1359,6 +1454,7 @@
     }
 
     function triggerMoveTrail(from, to) {
+        if (!trailEnabled) return;
         lastPathCoords = [from, to];
         if (trailTimeout) clearTimeout(trailTimeout);
         renderBoard();
@@ -1532,7 +1628,7 @@
                     updateTurnIndicators();
                     updateCapturedDisplay();
                     renderBoard();
-                    if (move.captured) showCaptureInChat(move);
+                    if (move.captured) { showCaptureInChat(move); playSFX('capture'); } else { playSFX('move'); }
                     checkGameStateEvents(move, true);
 
                     if (conn && conn.open) {
@@ -1579,7 +1675,7 @@
         if (moveResult) {
             addLog(`IA moveu: ${moveResult.from}->${moveResult.to}`);
             triggerMoveTrail(moveResult.from, moveResult.to);
-            if (moveResult.captured) showCaptureInChat(moveResult);
+            if (moveResult.captured) { showCaptureInChat(moveResult); playSFX('capture'); } else { playSFX('move'); }
         }
         updateTurnIndicators();
         updateCapturedDisplay();
