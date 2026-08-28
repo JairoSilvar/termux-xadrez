@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.6</title>
+    <title>Xadrez - v3.8.7</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -12,7 +12,7 @@
         :root {
             --bg-main: #f8fafc;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #cbd5e1 100%);
-            --panel-bg: rgba(255, 255, 255, 0.92);
+            --panel-bg: rgba(255, 255, 255, 0.94);
             --panel-border: #cbd5e1;
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -39,7 +39,7 @@
         body.theme-paris, body.room-paris {
             --bg-main: #fff0f5;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
-            --panel-bg: rgba(255, 240, 245, 0.85);
+            --panel-bg: rgba(255, 240, 245, 0.9);
             --panel-border: #f472b6;
             --text-main: #831843;
             --text-muted: #db2777;
@@ -64,7 +64,7 @@
         body.theme-ouro {
             --bg-main: #fefce8;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fef08a 100%);
-            --panel-bg: rgba(255, 255, 255, 0.85);
+            --panel-bg: rgba(255, 255, 255, 0.9);
             --panel-border: #eab308;
             --text-main: #713f12;
             --text-muted: #854d0e;
@@ -90,7 +90,7 @@
         body.theme-novayork, body.room-novayork {
             --bg-main: #0f172a;
             --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            --panel-bg: rgba(30, 41, 59, 0.85);
+            --panel-bg: rgba(30, 41, 59, 0.9);
             --panel-border: #334155;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -116,7 +116,7 @@
         body.theme-toquio, body.room-toquio {
             --bg-main: #050508;
             --bg-gradient: radial-gradient(circle at center, #120a2a 0%, #050508 100%);
-            --panel-bg: rgba(18, 14, 38, 0.85);
+            --panel-bg: rgba(18, 14, 38, 0.9);
             --panel-border: #f43f5e;
             --text-main: #00f0ff;
             --text-muted: #a855f7;
@@ -142,7 +142,7 @@
         body.theme-londres, body.room-londres {
             --bg-main: #062314;
             --bg-gradient: radial-gradient(circle at center, #0c3b22 0%, #062314 100%);
-            --panel-bg: rgba(12, 59, 34, 0.85);
+            --panel-bg: rgba(12, 59, 34, 0.9);
             --panel-border: #22c55e;
             --text-main: #d1fae5;
             --text-muted: #6ee7b7;
@@ -190,6 +190,7 @@
             justify-content: center;
             touch-action: manipulation;
         }
+
         #game-wrapper {
             position: relative;
             width: 100vw;
@@ -199,8 +200,8 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            padding: 1vh 1vw;
-            gap: 1.5vw;
+            padding: 8px;
+            gap: 12px;
         }
 
         .board-section {
@@ -208,16 +209,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 96vh;
-            max-height: 940px;
-            width: 96vh;
-            max-width: 940px;
+            height: 94vh;
+            max-height: 920px;
+            width: 94vh;
+            max-width: 920px;
             aspect-ratio: 1 / 1;
             background: var(--panel-bg);
             border: 2px solid var(--board-border);
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            padding: 10px;
+            padding: 8px;
             position: relative;
             flex-shrink: 0;
             backdrop-filter: blur(10px);
@@ -235,6 +236,7 @@
             overflow: hidden;
             transform: translate3d(0, 0, 0);
         }
+
         .square {
             display: flex;
             align-items: center;
@@ -246,10 +248,7 @@
         .dark { background-color: var(--dark-square); }
         
         .square.selected { background-color: rgba(56, 189, 248, 0.4) !important; }
-        
-        .square.last-move:not(.selected) {
-            box-shadow: inset 0 0 15px var(--trail-color);
-        }
+        .square.last-move:not(.selected) { box-shadow: inset 0 0 15px var(--trail-color); }
 
         .square.highlight::after {
             content: '';
@@ -281,9 +280,9 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            width: 340px;
-            height: 96vh;
-            max-height: 940px;
+            width: 330px;
+            height: 94vh;
+            max-height: 920px;
             background: var(--panel-bg);
             border: 2px solid var(--panel-border);
             border-radius: 16px;
@@ -322,7 +321,7 @@
             #restore-btn { top: 20px; right: 20px; padding: 10px 18px; border-radius: 10px; font-size: 11px; }
         }
         @media (max-width: 900px) {
-            #restore-btn { bottom: 12px; left: 50%; transform: translateX(-50%); padding: 10px 24px; border-radius: 20px; font-size: 12px; }
+            #restore-btn { bottom: 10px; left: 50%; transform: translateX(-50%); padding: 8px 22px; border-radius: 20px; font-size: 11px; }
         }
 
         .brand-title {
@@ -340,11 +339,7 @@
             gap: 2px;
             white-space: nowrap;
         }
-        .brand-title > span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 75px;
-        }
+        .brand-title > span { overflow: hidden; text-overflow: ellipsis; max-width: 75px; }
 
         .header-actions { display: flex; gap: 2px; align-items: center; flex-wrap: nowrap; }
         .action-btn {
@@ -385,7 +380,7 @@
         .candy-bar-track {
             position: relative;
             width: 100%;
-            height: 6px;
+            height: 5px;
             background: rgba(0,0,0,0.15);
             border-radius: 3px;
             overflow: hidden;
@@ -408,38 +403,28 @@
             gap: 2px;
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
-            padding: 6px 8px;
+            padding: 4px 6px;
             border-radius: 6px;
             transition: all 0.3s ease;
         }
-
         .player-card.active-turn {
             border: 2px solid var(--turn-active-color);
             background: rgba(34, 197, 94, 0.08);
-            box-shadow: 0 0 15px var(--turn-active-color), inset 0 0 5px var(--turn-active-color);
-            transform: scale(1.01);
+            box-shadow: 0 0 12px var(--turn-active-color);
         }
-
-        .player-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 10px;
-            font-weight: bold;
-        }
+        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; font-weight: bold; }
         .turn-badge {
-            font-size: 8.5px;
+            font-size: 8px;
             background: var(--turn-active-color);
             color: #fff;
-            padding: 2px 6px;
+            padding: 1px 5px;
             border-radius: 4px;
             display: none;
             font-weight: 800;
-            box-shadow: 0 0 8px var(--turn-active-color);
         }
 
-        .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 14px; align-items: center; }
-        .captured-icon { width: 13px; height: 13px; background-size: contain; background-repeat: no-repeat; }
+        .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 12px; align-items: center; }
+        .captured-icon { width: 12px; height: 12px; background-size: contain; background-repeat: no-repeat; }
         .captured-icon.white-cap { filter: brightness(1.2); }
         .captured-icon.black-cap { filter: brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
 
@@ -447,8 +432,8 @@
             display: flex;
             flex-direction: column;
             flex: 1;
-            min-height: 110px;
-            gap: 4px;
+            min-height: 90px;
+            gap: 3px;
             overflow: hidden;
         }
         .chat-box {
@@ -456,15 +441,15 @@
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
             border-radius: 6px;
-            padding: 6px;
+            padding: 5px;
             overflow-y: auto;
-            font-size: 10.5px;
+            font-size: 10px;
             color: var(--text-main);
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
-        .chat-msg { background: var(--chat-msg-bg); padding: 5px 7px; border-radius: 5px; border-left: 3px solid #f43f5e; line-height: 1.3; }
+        .chat-msg { background: var(--chat-msg-bg); padding: 4px 6px; border-radius: 5px; border-left: 3px solid #f43f5e; line-height: 1.25; }
         .chat-msg span { color: #f43f5e; font-weight: bold; }
         .chat-msg.ai span { color: var(--board-border); }
         .chat-msg.ai { border-left: 3px solid var(--board-border); }
@@ -472,8 +457,7 @@
         .chat-msg.alert-neon {
             background: rgba(34, 197, 94, 0.15);
             border: 2px solid var(--turn-active-color);
-            border-left: 5px solid var(--turn-active-color);
-            box-shadow: 0 0 12px var(--turn-active-color);
+            border-left: 4px solid var(--turn-active-color);
             font-weight: bold;
         }
         
@@ -483,26 +467,25 @@
             background: var(--chat-input-bg);
             border: 1px solid var(--panel-border);
             color: var(--text-main);
-            padding: 5px 6px;
+            padding: 4px 6px;
             border-radius: 5px;
-            font-size: 10px;
+            font-size: 9.5px;
             outline: none;
         }
         .chat-input:focus { border-color: var(--board-border); box-shadow: var(--neon-glow-btn); }
         
         .taunt-scroll-container {
             display: flex;
-            gap: 4px;
+            gap: 3px;
             overflow-x: auto;
             flex-shrink: 0;
-            padding-bottom: 4px;
+            padding-bottom: 2px;
             scrollbar-width: thin;
             scrollbar-color: var(--board-border) var(--chat-bg);
             cursor: default;
             user-select: none;
-            scroll-behavior: smooth;
         }
-        .taunt-scroll-container::-webkit-scrollbar { height: 6px; }
+        .taunt-scroll-container::-webkit-scrollbar { height: 5px; }
         .taunt-scroll-container::-webkit-scrollbar-track { background: var(--chat-bg); border-radius: 3px; }
         .taunt-scroll-container::-webkit-scrollbar-thumb { background: var(--board-border); border-radius: 3px; }
 
@@ -510,8 +493,8 @@
             background: var(--chat-input-bg);
             color: var(--board-border);
             border: 1px solid var(--panel-border);
-            font-size: 8.5px;
-            padding: 5px 8px;
+            font-size: 8px;
+            padding: 4px 7px;
             border-radius: 4px;
             cursor: pointer;
             text-align: center;
@@ -525,13 +508,13 @@
         #victory-screen, #settings-modal, #log-modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.25);
             backdrop-filter: blur(2px);
             display: none;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
             z-index: 3000;
-            padding-bottom: 4vh;
+            padding: 10px;
         }
         .victory-card, .settings-content, .log-content {
             background: var(--modal-bg);
@@ -539,21 +522,21 @@
             -webkit-backdrop-filter: blur(8px);
             border: 2px solid var(--modal-border);
             border-radius: 16px;
-            padding: 18px;
+            padding: 16px;
             text-align: center;
-            max-width: 420px;
-            width: 90%;
+            max-width: 400px;
+            width: 92%;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             color: var(--modal-text);
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
         }
 
         .settings-tabs { display: flex; gap: 4px; margin-bottom: 8px; }
         .tab-btn {
             flex: 1;
-            padding: 6px;
-            font-size: 9.5px;
+            padding: 5px;
+            font-size: 9px;
             font-weight: bold;
             background: var(--btn-bg);
             border: 1px solid var(--panel-border);
@@ -567,15 +550,15 @@
 
         .log-textarea {
             width: 100%;
-            height: 220px;
+            height: 200px;
             background: #0f172a;
             color: #38bdf8;
             border: 1px solid var(--panel-border);
             font-family: monospace;
-            font-size: 9.5px;
-            padding: 8px;
+            font-size: 9px;
+            padding: 6px;
             border-radius: 6px;
-            margin-top: 8px;
+            margin-top: 6px;
             resize: none;
             text-align: left;
             white-space: pre-wrap;
@@ -592,32 +575,31 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 20px;
+            padding: 16px;
             z-index: 4000;
             overflow-y: auto;
         }
-        .hero-box { margin-bottom: 16px; }
+        .hero-box { margin-bottom: 12px; }
         .hero-box h1 {
-            font-size: 38px;
+            font-size: 34px;
             letter-spacing: -1px;
             background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 900;
-            text-shadow: 0 0 20px rgba(2, 132, 199, 0.2);
         }
-        .hero-box p { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+        .hero-box p { font-size: 10.5px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
 
         .menu-dashboard {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
-            max-width: 460px;
+            max-width: 440px;
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
-            padding: 14px;
-            border-radius: 20px;
+            padding: 12px;
+            border-radius: 18px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.12);
             backdrop-filter: blur(16px);
         }
@@ -625,115 +607,109 @@
         .menu-section-card {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
             width: 100%;
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
-            padding: 10px;
-            border-radius: 12px;
+            padding: 8px;
+            border-radius: 10px;
         }
-        .menu-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 2px; }
+        .menu-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-top: 2px; }
         
         .menu-grid-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 8px 2px;
+            padding: 7px 2px;
+            border-radius: 7px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            color: #fff;
+            font-weight: bold;
+            font-size: 9.5px;
+            gap: 2px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .menu-grid-btn span { font-size: 7px; opacity: 0.95; font-weight: 600; text-transform: uppercase; }
+        .menu-grid-btn:hover { transform: translateY(-2px); box-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
+
+        .menu-dual-row { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; width: 100%; }
+
+        .menu-main-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            color: #fff;
+            font-weight: 800;
+            font-size: 10.5px;
+            gap: 5px;
+            width: 100%;
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #1d4ed8 100%);
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .menu-main-btn:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(2, 132, 199, 0.6); }
+
+        .menu-ai-battle-btn {
+            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #c026d3 100%);
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.35);
+        }
+        .menu-ai-battle-btn:hover { box-shadow: 0 0 15px rgba(147, 51, 234, 0.6); }
+
+        .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
+        .room-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.2);
             cursor: pointer;
             color: #fff;
             font-weight: bold;
             font-size: 10px;
-            gap: 2px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 3px;
+            transition: all 0.2s ease;
         }
-        .menu-grid-btn span { font-size: 7.5px; opacity: 0.95; font-weight: 600; text-transform: uppercase; }
-        .menu-grid-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(255, 255, 255, 0.4); filter: brightness(1.1); }
+        .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
+        .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        .menu-dual-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
-
-        .menu-main-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 11px 10px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            cursor: pointer;
-            color: #fff;
-            font-weight: 800;
-            font-size: 11px;
-            gap: 6px;
-            width: 100%;
-            background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #1d4ed8 100%);
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-        }
-        .menu-main-btn:hover { transform: translateY(-2px); box-shadow: 0 0 18px rgba(2, 132, 199, 0.6); border-color: #38bdf8; filter: brightness(1.08); }
-
-        .menu-ai-battle-btn {
-            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #c026d3 100%);
-            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.35);
-        }
-        .menu-ai-battle-btn:hover { box-shadow: 0 0 18px rgba(147, 51, 234, 0.6); border-color: #e879f9; }
-
-        .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
-        .room-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.2);
-            cursor: pointer;
-            color: #fff;
-            font-weight: bold;
-            font-size: 10.5px;
-            gap: 4px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-color: #fff; }
-        .room-status { font-size: 8px; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
-
-        /* --- RESPONSIVIDADE INTELIGENTE: TABLETS E CELULARES DEITADOS (LANDSCAPE) COM MENU LATERAL E TABULEIRO MÁXIMO --- */
-        @media (max-width: 900px) {
-            body, html { overflow: hidden; height: 100vh; width: 100vw; }
+        /* --- RESPONSIVIDADE INTELIGENTE: CELULAR EM PÉ (PORTRAIT) COM MENU ABERTO --- */
+        @media (max-width: 900px) and (orientation: portrait) {
             #game-wrapper {
-                flex-direction: column;
+                flex-direction: column !important;
                 padding: 4px;
                 gap: 4px;
                 height: 100vh;
                 width: 100vw;
                 justify-content: flex-start;
                 align-items: center;
+                overflow-y: auto;
             }
             .board-section {
-                /* Retrato (Portrait): Tabuleiro com destaque máximo e seguro na metade superior */
-                width: 54vh;
-                height: 54vh;
-                max-width: 54vw;
-                max-height: 54vw;
+                width: 58vw !important;
+                height: 58vw !important;
+                max-width: 58vh !important;
+                max-height: 58vh !important;
                 padding: 6px;
                 margin-top: 2px;
                 flex-shrink: 0;
             }
             .side-section {
-                position: relative;
-                bottom: auto;
-                left: auto;
-                width: 100vw;
-                height: calc(44vh - 10px);
-                max-height: calc(44vh - 10px);
-                border-radius: 12px;
-                border: 2px solid var(--panel-border);
-                box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-                z-index: 500;
+                width: 96vw !important;
+                height: auto !important;
+                max-height: 40vh !important;
+                border-radius: 14px;
                 padding: 6px;
                 flex-shrink: 0;
+                margin-bottom: 10px;
             }
             .side-section.minimized {
                 height: 0px !important;
@@ -744,52 +720,56 @@
                 pointer-events: none;
             }
             body.menu-hidden .board-section {
-                width: 86vh;
-                height: 86vh;
-                max-width: 96vw;
-                max-height: 96vw;
-                padding: 8px;
-                margin-top: 1vh;
+                width: 88vw !important;
+                height: 88vw !important;
+                max-width: 88vh !important;
+                max-height: 88vh !important;
+                margin-top: 2vh;
             }
-            .chat-container { height: 75px; min-height: 60px; }
-            .hero-box h1 { font-size: 30px; }
+            .chat-container { height: 65px; min-height: 50px; }
         }
 
-        /* --- MODO PAISAGEM (LANDSCAPE) - CELULAR DEITADO E TABLETS: MENU AO LADO (ESTILO PC) COM TABULEIRO GIGANTE --- */
+        /* --- MODO PAISAGEM (LANDSCAPE): CELULAR DEITADO E TABLETS (MENU AO LADO E TABULEIRO INTEIRO SEM CORTAR) --- */
         @media (max-width: 900px) and (orientation: landscape) {
             #game-wrapper {
                 flex-direction: row !important;
-                padding: 1vw 1.5vh;
-                gap: 1.5vw;
+                padding: 6px;
+                gap: 12px;
+                height: 100vh;
+                width: 100vw;
                 justify-content: center;
                 align-items: center;
+                overflow: hidden;
             }
             .board-section {
-                width: 94vh !important;
-                height: 94vh !important;
-                max-width: 60vw !important;
-                max-height: 94vh !important;
-                padding: 8px;
+                width: 90vh !important;
+                height: 90vh !important;
+                max-width: 62vw !important;
+                max-height: 90vh !important;
+                padding: 6px;
                 margin-top: 0 !important;
+                flex-shrink: 0;
             }
             .side-section {
-                width: 320px !important;
-                height: 94vh !important;
-                max-height: 94vh !important;
-                border-radius: 16px;
+                width: 290px !important;
+                height: 90vh !important;
+                max-height: 90vh !important;
+                border-radius: 14px;
+                flex-shrink: 0;
+                padding: 6px;
             }
             .side-section.minimized {
                 width: 0px !important;
-                height: 94vh !important;
+                height: 90vh !important;
                 padding: 0px !important;
             }
             body.menu-hidden .board-section {
-                width: 94vh !important;
-                height: 94vh !important;
-                max-width: 85vw !important;
-                max-height: 94vh !important;
+                width: 92vh !important;
+                height: 92vh !important;
+                max-width: 88vw !important;
+                max-height: 92vh !important;
             }
-            .chat-container { height: 130px; min-height: 100px; }
+            .chat-container { height: 110px; min-height: 80px; }
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
@@ -802,7 +782,7 @@
     <!-- MODAL DE CONFIGURAÇÕES -->
     <div id="settings-modal">
         <div class="settings-content">
-            <div style="font-size: 13px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <div style="font-size: 12px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <span>⚙️ Configurações & Temas</span>
                 <button class="action-btn" onclick="closeSettingsModal()">✕ Fechar</button>
             </div>
@@ -814,52 +794,52 @@
             </div>
 
             <div id="tab-board" class="tab-content active" style="grid-template-columns: 1fr 1fr;">
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('claro')">☀️ Claro (Padrão)</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('paris')">🌸 Paris (Rosa Barbie)</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('ouro')">👑 Ouro (Real)</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('novayork')">🌙 Nova York (Escuro)</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('toquio')">⚡ Tóquio (Cyber)</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('londres')">🌲 Londres (Floresta)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('claro')">☀️ Claro (Padrão)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('paris')">🌸 Paris (Rosa Barbie)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('ouro')">👑 Ouro (Real)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('novayork')">🌙 Nova York (Escuro)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('toquio')">⚡ Tóquio (Cyber)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('londres')">🌲 Londres (Floresta)</button>
             </div>
 
             <div id="tab-pieces" class="tab-content" style="grid-template-columns: 1fr;">
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-blue-pink')">🔵 Azul Elétrico vs 🔴 Rosa Choque</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-green-cyan')">🟢 Verde Esmeralda vs 🔵 Ciano</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-gold-purple')">🟡 Dourado Real vs 🟣 Roxo Profundo</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-silver-fire')">⚪ Prata Metálico vs 🟠 Laranja Fogo</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-neon-lime')">🍏 Lima Neon vs 🌺 Pink Choque</button>
-                <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-ruby-indigo')">❤️ Rubi Intenso vs 🫐 Índigo Espacial</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-blue-pink')">🔵 Azul Elétrico vs 🔴 Rosa Choque</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-green-cyan')">🟢 Verde Esmeralda vs 🔵 Ciano</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-gold-purple')">🟡 Dourado Real vs 🟣 Roxo Profundo</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-silver-fire')">⚪ Prata Metálico vs 🟠 Laranja Fogo</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-neon-lime')">🍏 Lima Neon vs 🌺 Pink Choque</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-ruby-indigo')">❤️ Rubi Intenso vs 🫐 Índigo Espacial</button>
             </div>
 
             <div id="tab-sfx" class="tab-content" style="grid-template-columns: 1fr; gap: 6px; text-align: left; padding: 4px;">
-                <label style="font-size: 10px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; background: var(--chat-bg); padding: 6px; border-radius: 6px; border: 1px solid var(--panel-border);">
+                <label style="font-size: 9.5px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; background: var(--chat-bg); padding: 5px; border-radius: 6px; border: 1px solid var(--panel-border);">
                     <span>🔊 Sons de Captura e Lance (SFX)</span>
                     <input type="checkbox" id="sfxToggle" checked onchange="toggleSFX(this)" style="cursor: pointer;">
                 </label>
-                <label style="font-size: 10px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; background: var(--chat-bg); padding: 6px; border-radius: 6px; border: 1px solid var(--panel-border);">
+                <label style="font-size: 9.5px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; background: var(--chat-bg); padding: 5px; border-radius: 6px; border: 1px solid var(--panel-border);">
                     <span>✨ Animação de Rastro (Trail)</span>
                     <input type="checkbox" id="trailToggle" checked onchange="toggleTrail(this)" style="cursor: pointer;">
                 </label>
             </div>
 
-            <button class="action-btn" onclick="closeSettingsModal()" style="margin-top: 10px; padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff;">APLICAR</button>
+            <button class="action-btn" onclick="closeSettingsModal()" style="margin-top: 8px; padding: 7px; font-size: 9.5px; width: 100%; background: var(--modal-border); color: #fff;">APLICAR</button>
         </div>
     </div>
 
     <!-- MODAL DE LOGS -->
     <div id="log-modal">
         <div class="log-content">
-            <div style="font-size: 13px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 12px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center;">
                 <span>📜 Telemetria & Diagnóstico Profundo</span>
                 <button class="action-btn" onclick="closeLogModal()">✕ Fechar</button>
             </div>
-            <p style="font-size: 9px; color: var(--text-muted); margin-top: 4px; text-align: left;">
+            <p style="font-size: 8.5px; color: var(--text-muted); margin-top: 4px; text-align: left;">
                 Relatório de engenharia avançada (Memória JS, FEN, Erros e Performance Bot vs Bot).
             </p>
             <textarea id="logTextarea" class="log-textarea" readonly></textarea>
             <div style="display: flex; gap: 6px; margin-top: 8px;">
-                <button class="action-btn" style="flex: 1; padding: 8px; font-size: 9.5px; background: #0284c7; color: #fff;" onclick="copyLogContent()">📋 Copiar Relatório</button>
-                <button class="action-btn" style="flex: 1; padding: 8px; font-size: 9.5px; background: #16a34a; color: #fff;" onclick="sendLogByEmail()">📧 Enviar por E-mail</button>
+                <button class="action-btn" style="flex: 1; padding: 7px; font-size: 9px; background: #0284c7; color: #fff;" onclick="copyLogContent()">📋 Copiar Relatório</button>
+                <button class="action-btn" style="flex: 1; padding: 7px; font-size: 9px; background: #16a34a; color: #fff;" onclick="sendLogByEmail()">📧 Enviar por E-mail</button>
             </div>
         </div>
     </div>
@@ -867,10 +847,10 @@
     <!-- TELA DE VITÓRIA / FIM DE JOGO -->
     <div id="victory-screen">
         <div class="victory-card">
-            <div style="font-size: 34px; margin-bottom: 4px;" id="victoryCandyIcon">🍫</div>
-            <div class="victory-title" id="victoryHeaderTitle" style="font-weight: bold; margin-bottom: 4px; font-size: 14px;">FIM DE JOGO!</div>
-            <div id="victory-subtitle" class="victory-desc" style="font-size: 10.5px; margin-bottom: 10px; line-height: 1.4;">Partida encerrada.</div>
-            <button class="action-btn" onclick="closeVictoryScreen()" style="padding: 9px; font-size: 10.5px; width: 100%; background: var(--modal-border); color: #fff; font-weight: bold;">VER TABULEIRO & LOGS</button>
+            <div style="font-size: 30px; margin-bottom: 4px;" id="victoryCandyIcon">🍫</div>
+            <div class="victory-title" id="victoryHeaderTitle" style="font-weight: bold; margin-bottom: 4px; font-size: 13px;">FIM DE JOGO!</div>
+            <div id="victory-subtitle" class="victory-desc" style="font-size: 10px; margin-bottom: 10px; line-height: 1.4;">Partida encerrada.</div>
+            <button class="action-btn" onclick="closeVictoryScreen()" style="padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff; font-weight: bold;">VER TABULEIRO & LOGS</button>
         </div>
     </div>
 
@@ -878,14 +858,14 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.6</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.7</p>
         </div>
         
         <div class="menu-dashboard">
             <div class="menu-section-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; font-weight: bold;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: bold;">
                     <span>🤖 Desafiar a Máquina (Oráculo)</span>
-                    <span style="color: var(--board-border); font-size: 8.5px;">Selecione a Dificuldade</span>
+                    <span style="color: var(--board-border); font-size: 8px;">Selecione a Dificuldade</span>
                 </div>
                 <div class="menu-grid-5">
                     <button class="menu-grid-btn" style="background: linear-gradient(135deg, #15803d, #16a34a);" onclick="selectAndStartPvE(1)">🌱 1<span>Iniciante</span></button>
@@ -901,7 +881,7 @@
                 <button class="menu-main-btn menu-ai-battle-btn" onclick="startBotVsBot()">🤖 <span>Bot vs Bot (Mestre)</span></button>
             </div>
             
-            <div style="font-size: 10px; font-weight: bold; color: var(--board-border); margin-top: 2px; text-transform: uppercase; text-align: left;">🌐 Salas Globais (LAN P2P Multiplayer):</div>
+            <div style="font-size: 9.5px; font-weight: bold; color: var(--board-border); margin-top: 1px; text-transform: uppercase; text-align: left;">🌐 Salas Globais (LAN P2P Multiplayer):</div>
             
             <div class="room-grid">
                 <button class="room-btn" style="background: linear-gradient(135deg, #f472b6, #db2777);" onclick="joinCityRoom('paris')">🌸 Paris (Rosa) <span id="status-paris" class="room-status">Verif...</span></button>
@@ -958,7 +938,7 @@
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
-                    <button class="action-btn" style="flex: 0 0 42px; padding: 4px; font-size: 8.5px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
+                    <button class="action-btn" style="flex: 0 0 38px; padding: 3px; font-size: 8px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
                 </div>
                 <div class="taunt-scroll-container" id="tauntScrollContainer">
                     <button class="taunt-btn" onclick="sendStandUpJoke()">🎤 Stand up</button>
@@ -1017,7 +997,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.6 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.7 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1130,7 +1110,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.6&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.7&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
@@ -1262,7 +1242,7 @@
             <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} capturou 
             <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}
         </div>
-        <div style="font-size: 8.5px; opacity: 0.85; margin-top: 2px;">Captura na casa: ${square.toUpperCase()}</div>`;
+        <div style="font-size: 8px; opacity: 0.85; margin-top: 1px;">Captura na casa: ${square.toUpperCase()}</div>`;
         
         addChatMessage("Árbitro", chatText, true, true);
         addLog(`Captura efetuada: ${attName} (${attCol}) levou ${capName} em ${square}`, "MOVE");
