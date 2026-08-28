@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.4</title>
+    <title>Xadrez - v3.8.5</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -203,7 +203,6 @@
             gap: 1.5vw;
         }
 
-        /* --- OTIMIZAÇÃO MÁXIMA DO TABULEIRO QUANDO O MENU ESTIVER MINIMIZADO NO CELULAR --- */
         .board-section {
             display: flex;
             flex-direction: column;
@@ -278,6 +277,7 @@
             transform: translate3d(0, 0, 0);
         }
 
+        /* --- PAINEL LATERAL / INFERIOR (LAYOUT RESPONSIVO INTELIGENTE) --- */
         .side-section {
             display: flex;
             flex-direction: column;
@@ -296,12 +296,13 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .side-section.minimized {
-            width: 0px;
-            min-width: 0px;
-            padding: 0px;
-            border: none;
+            width: 0px !important;
+            min-width: 0px !important;
+            padding: 0px !important;
+            border: none !important;
             overflow: hidden;
             opacity: 0;
+            pointer-events: none;
         }
 
         #restore-btn {
@@ -447,7 +448,7 @@
             display: flex;
             flex-direction: column;
             flex: 1;
-            min-height: 150px;
+            min-height: 120px;
             gap: 4px;
             overflow: hidden;
         }
@@ -699,38 +700,41 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-color: #fff; }
         .room-status { font-size: 8px; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- RESPONSIVIDADE MOBILE: APROVEITAMENTO MÁXIMO DA LARGURA E ALTURA --- */
+        /* --- RESPONSIVIDADE MOBILE CORRIGIDA: DIVISÃO VERTICAL DE ESPAÇO PARA O MENU NÃO COBRIR O TABULEIRO --- */
         @media (max-width: 900px) {
             body, html { overflow: hidden; height: 100vh; width: 100vw; }
             #game-wrapper {
                 flex-direction: column;
                 padding: 4px;
-                gap: 0px;
+                gap: 4px;
                 height: 100vh;
                 width: 100vw;
-                justify-content: center;
+                justify-content: flex-start;
                 align-items: center;
             }
             .board-section {
-                /* Quando o menu está visível, ocupa uma área confortável. Quando minimizado, expande preenchendo quase toda a tela (lateral a lateral) */
-                width: 94vw;
-                height: 94vw;
-                max-width: 96vh;
-                max-height: 96vh;
-                padding: 6px;
+                /* O tabuleiro fica fixo na metade superior, dimensionado perfeitamente para nunca ser coberto */
+                width: 46vh;
+                height: 46vh;
+                max-width: 46vw;
+                max-height: 46vw;
+                padding: 4px;
+                margin-top: 4px;
+                flex-shrink: 0;
             }
             .side-section {
-                position: fixed;
-                bottom: 0;
-                left: 0;
+                position: relative;
+                bottom: auto;
+                left: auto;
                 width: 100vw;
-                height: 52vh;
-                max-height: 52vh;
-                border-radius: 20px 20px 0 0;
+                height: calc(52vh - 10px);
+                max-height: calc(52vh - 10px);
+                border-radius: 12px;
                 border: 2px solid var(--panel-border);
-                box-shadow: 0 -10px 30px rgba(0,0,0,0.25);
-                z-index: 2500;
-                padding: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+                z-index: 500;
+                padding: 6px;
+                flex-shrink: 0;
             }
             .side-section.minimized {
                 height: 0px !important;
@@ -740,15 +744,16 @@
                 opacity: 0;
                 pointer-events: none;
             }
-            /* Se o menu estiver minimizado no celular, o tabuleiro maximiza ocupando todo o espaço vertical disponível na tela */
+            /* Quando o painel inferior for ocultado via botão, o tabuleiro expande com folga e segurança */
             body.menu-hidden .board-section {
-                width: calc(100vh - 80px);
-                height: calc(100vh - 80px);
-                max-width: 96vw;
-                max-height: 96vw;
+                width: 82vh;
+                height: 82vh;
+                max-width: 92vw;
+                max-height: 92vw;
                 padding: 8px;
+                margin-top: 1vh;
             }
-            .chat-container { height: 110px; min-height: 90px; }
+            .chat-container { height: 90px; min-height: 70px; }
             .hero-box h1 { font-size: 30px; }
         }
     </style>
@@ -838,7 +843,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.4</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.5</p>
         </div>
         
         <div class="menu-dashboard">
@@ -977,7 +982,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.4 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.5 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1066,7 +1071,7 @@
         "Por que o bispo anda na diagonal? Para desviar dos impostos e das fofocas do clero.",
         "A paciência é uma virtude, mas no xadrez relâmpago ela costuma virar infarto.",
         "Dizem que a esperança é a última que morre. No meu caso, ela foi capturada no lance 12.",
-        "Por que o peixe vive no fundo do mar? Para fugir dos boletos da superfície.",
+        "Por que o pe鱼 vive no fundo do mar? Para fugir dos boletos da superfície.",
         "Errar é humano, mas culpar a IA por perder no xadrez é pura autodefesa."
     ];
     let currentJokeIndex = 0;
@@ -1090,7 +1095,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.4&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.5&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
@@ -1279,7 +1284,7 @@
         addLog("Modal de vitória fechado. Usuário permaneceu no tabuleiro para análise e logs.", "UI");
     }
 
-    /* --- CONTROLE DE EXPANSÃO MÁXIMA DO TABULEIRO AO OCULTAR O MENU --- */
+    /* --- CONTROLE DE LAYOUT VERTICAL: TABULEIRO SEMPRE ACIMA E VISÍVEL --- */
     function togglePanel() {
         const panel = document.getElementById("sidePanel");
         const restoreBtn = document.getElementById("restore-btn");
@@ -1288,11 +1293,11 @@
         if (panel.classList.contains("minimized")) {
             document.body.classList.add("menu-hidden");
             restoreBtn.style.display = "block";
-            addLog("Painel lateral ocultado. Tabuleiro expandido para ocupar as laterais da tela.", "UI");
+            addLog("Painel inferior ocultado. Tabuleiro expandido verticalmente com segurança.", "UI");
         } else {
             document.body.classList.remove("menu-hidden");
             restoreBtn.style.display = "none";
-            addLog("Painel lateral restaurado.", "UI");
+            addLog("Painel inferior restaurado.", "UI");
         }
     }
 
