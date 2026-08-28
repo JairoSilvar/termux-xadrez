@@ -3,104 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.4.6</title>
+    <title>Termux Xadrez - v3.5.0</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
         
         :root {
-            --bg-main: #f8fafc;
-            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #e2e8f0 100%);
-            --panel-bg: #ffffff;
-            --panel-border: #cbd5e1;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --board-bg: #ffffff;
+            --bg-main: #0b0f19;
+            --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0b0f19 100%);
+            --panel-bg: rgba(30, 41, 59, 0.85);
+            --panel-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --board-bg: #1e293b;
             --board-border: #0284c7;
             --light-square: #f1f5f9;
             --dark-square: #64748b;
-            --chat-bg: #f8fafc;
-            --chat-input-bg: #ffffff;
-            --chat-msg-bg: #e2e8f0;
-            --btn-bg: #e2e8f0;
-            --btn-hover: #cbd5e1;
-            --modal-bg: #ffffff;
+            --chat-bg: rgba(15, 23, 42, 0.6);
+            --chat-input-bg: #0f172a;
+            --chat-msg-bg: #1e293b;
+            --btn-bg: #334155;
+            --btn-hover: #475569;
+            --modal-bg: #1e293b;
             --modal-border: #0284c7;
-            --modal-text: #0f172a;
+            --modal-text: #f8fafc;
             --trail-color: rgba(2, 132, 199, 0.95);
             --hint-dot-color: #0284c7;
             --candy-w-bg: #0284c7;
             --candy-b-bg: #e11d48;
-            --neon-glow-btn: 0 0 10px rgba(2, 132, 199, 0.4), inset 0 0 5px rgba(2, 132, 199, 0.2);
+            --neon-glow-btn: 0 0 12px rgba(2, 132, 199, 0.5), inset 0 0 5px rgba(2, 132, 199, 0.2);
             --turn-active-color: #16a34a;
         }
 
         body.theme-rosa {
-            --bg-main: #fdf2f8;
-            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
-            --panel-bg: #ffffff;
+            --bg-main: #180914;
+            --bg-gradient: radial-gradient(circle at center, #2d0d25 0%, #180914 100%);
+            --panel-bg: rgba(45, 13, 37, 0.85);
             --panel-border: #f472b6;
-            --text-main: #831843;
-            --text-muted: #be185d;
-            --board-bg: #ffffff;
+            --text-main: #fce7f3;
+            --text-muted: #f472b6;
             --board-border: #ec4899;
             --light-square: #fce7f3;
             --dark-square: #f472b6;
-            --chat-bg: #fdf2f8;
-            --chat-input-bg: #ffffff;
-            --chat-msg-bg: #fce7f3;
-            --btn-bg: #fbcfe8;
-            --btn-hover: #f472b6;
-            --modal-bg: #fff0f6;
+            --chat-bg: rgba(24, 9, 20, 0.6);
+            --chat-input-bg: #180914;
+            --chat-msg-bg: #2d0d25;
+            --btn-bg: #831843;
+            --btn-hover: #be185d;
+            --modal-bg: #2d0d25;
             --modal-border: #ec4899;
-            --modal-text: #831843;
+            --modal-text: #fce7f3;
             --trail-color: rgba(219, 39, 119, 0.95);
             --hint-dot-color: #db2777;
             --candy-w-bg: #ec4899;
             --candy-b-bg: #831843;
-            --neon-glow-btn: 0 0 12px rgba(236, 72, 153, 0.5), inset 0 0 6px rgba(236, 72, 153, 0.3);
-            --turn-active-color: #16a34a;
+            --neon-glow-btn: 0 0 12px rgba(236, 72, 153, 0.5);
         }
 
         body.theme-ouro {
-            --bg-main: #fefce8;
-            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fef08a 100%);
-            --panel-bg: #ffffff;
+            --bg-main: #161204;
+            --bg-gradient: radial-gradient(circle at center, #2e2408 0%, #161204 100%);
+            --panel-bg: rgba(46, 36, 8, 0.85);
             --panel-border: #eab308;
-            --text-main: #713f12;
-            --text-muted: #854d0e;
-            --board-bg: #ffffff;
+            --text-main: #fef9c3;
+            --text-muted: #eab308;
             --board-border: #ca8a04;
             --light-square: #fef9c3;
             --dark-square: #ca8a04;
-            --chat-bg: #fefce8;
-            --chat-input-bg: #ffffff;
-            --chat-msg-bg: #fef08a;
-            --btn-bg: #fef08a;
-            --btn-hover: #fde047;
-            --modal-bg: #fffdeb;
+            --chat-bg: rgba(22, 18, 4, 0.6);
+            --chat-input-bg: #161204;
+            --chat-msg-bg: #2e2408;
+            --btn-bg: #713f12;
+            --btn-hover: #854d0e;
+            --modal-bg: #2e2408;
             --modal-border: #ca8a04;
-            --modal-text: #713f12;
+            --modal-text: #fef9c3;
             --trail-color: rgba(194, 65, 12, 0.95);
             --hint-dot-color: #9a3412;
             --candy-w-bg: #ca8a04;
             --candy-b-bg: #854d0e;
-            --neon-glow-btn: 0 0 12px rgba(234, 179, 8, 0.6), inset 0 0 6px rgba(234, 179, 8, 0.3);
-            --turn-active-color: #16a34a;
+            --neon-glow-btn: 0 0 12px rgba(234, 179, 8, 0.6);
         }
 
         body.theme-escuro {
             --bg-main: #0f172a;
             --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            --panel-bg: #1e293b;
+            --panel-bg: rgba(30, 41, 59, 0.85);
             --panel-border: #334155;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --board-bg: #1e293b;
             --board-border: #38bdf8;
             --light-square: #cbd5e1;
             --dark-square: #475569;
-            --chat-bg: #0f172a;
+            --chat-bg: rgba(15, 23, 42, 0.6);
             --chat-input-bg: #0f172a;
             --chat-msg-bg: #1e293b;
             --btn-bg: #334155;
@@ -112,22 +107,20 @@
             --hint-dot-color: #38bdf8;
             --candy-w-bg: #38bdf8;
             --candy-b-bg: #f43f5e;
-            --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6), inset 0 0 6px rgba(56, 189, 248, 0.3);
-            --turn-active-color: #22c55e;
+            --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6);
         }
 
         body.theme-cyberpunk {
             --bg-main: #050508;
             --bg-gradient: radial-gradient(circle at center, #120a2a 0%, #050508 100%);
-            --panel-bg: #120e26;
+            --panel-bg: rgba(18, 14, 38, 0.85);
             --panel-border: #f43f5e;
             --text-main: #00f0ff;
             --text-muted: #a855f7;
-            --board-bg: #120e26;
             --board-border: #00f0ff;
             --light-square: #2a1b4e;
             --dark-square: #120a2a;
-            --chat-bg: #0b071a;
+            --chat-bg: rgba(11, 7, 26, 0.6);
             --chat-input-bg: #0b071a;
             --chat-msg-bg: #1a103c;
             --btn-bg: #2d1b4e;
@@ -139,22 +132,20 @@
             --hint-dot-color: #00f0ff;
             --candy-w-bg: #00f0ff;
             --candy-b-bg: #f43f5e;
-            --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7), inset 0 0 8px rgba(0, 240, 255, 0.4);
-            --turn-active-color: #22c55e;
+            --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7);
         }
 
         body.theme-floresta {
             --bg-main: #062314;
             --bg-gradient: radial-gradient(circle at center, #0c3b22 0%, #062314 100%);
-            --panel-bg: #0c3b22;
+            --panel-bg: rgba(12, 59, 34, 0.85);
             --panel-border: #22c55e;
             --text-main: #d1fae5;
             --text-muted: #6ee7b7;
-            --board-bg: #0c3b22;
             --board-border: #10b981;
             --light-square: #166534;
             --dark-square: #064e3b;
-            --chat-bg: #052314;
+            --chat-bg: rgba(5, 35, 20, 0.6);
             --chat-input-bg: #052314;
             --chat-msg-bg: #0f4c28;
             --btn-bg: #14532d;
@@ -166,113 +157,7 @@
             --hint-dot-color: #4ade80;
             --candy-w-bg: #22c55e;
             --candy-b-bg: #10b981;
-            --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6), inset 0 0 6px rgba(34, 197, 94, 0.3);
-            --turn-active-color: #4ade80;
-        }
-
-        body.room-paris {
-            --bg-main: #fdf2f8;
-            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
-            --panel-bg: #ffffff;
-            --panel-border: #f472b6;
-            --text-main: #831843;
-            --text-muted: #be185d;
-            --board-border: #ec4899;
-            --light-square: #fce7f3;
-            --dark-square: #f472b6;
-            --chat-bg: #fdf2f8;
-            --chat-input-bg: #ffffff;
-            --chat-msg-bg: #fce7f3;
-            --btn-bg: #fbcfe8;
-            --btn-hover: #f472b6;
-            --modal-bg: #fff0f6;
-            --modal-border: #ec4899;
-            --modal-text: #831843;
-            --trail-color: rgba(219, 39, 119, 0.95);
-            --hint-dot-color: #db2777;
-            --candy-w-bg: #ec4899;
-            --candy-b-bg: #831843;
-            --neon-glow-btn: 0 0 12px rgba(236, 72, 153, 0.5), inset 0 0 6px rgba(236, 72, 153, 0.3);
-            --turn-active-color: #16a34a;
-        }
-
-        body.room-toquio {
-            --bg-main: #050508;
-            --bg-gradient: radial-gradient(circle at center, #120a2a 0%, #050508 100%);
-            --panel-bg: #120e26;
-            --panel-border: #f43f5e;
-            --text-main: #00f0ff;
-            --text-muted: #a855f7;
-            --board-border: #00f0ff;
-            --light-square: #2a1b4e;
-            --dark-square: #120a2a;
-            --chat-bg: #0b071a;
-            --chat-input-bg: #0b071a;
-            --chat-msg-bg: #1a103c;
-            --btn-bg: #2d1b4e;
-            --btn-hover: #3b2363;
-            --modal-bg: #120e26;
-            --modal-border: #00f0ff;
-            --modal-text: #00f0ff;
-            --trail-color: rgba(0, 240, 255, 0.95);
-            --hint-dot-color: #00f0ff;
-            --candy-w-bg: #00f0ff;
-            --candy-b-bg: #f43f5e;
-            --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7), inset 0 0 8px rgba(0, 240, 255, 0.4);
-            --turn-active-color: #22c55e;
-        }
-
-        body.room-novayork {
-            --bg-main: #0f172a;
-            --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            --panel-bg: #1e293b;
-            --panel-border: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --board-border: #38bdf8;
-            --light-square: #cbd5e1;
-            --dark-square: #475569;
-            --chat-bg: #0f172a;
-            --chat-input-bg: #0f172a;
-            --chat-msg-bg: #1e293b;
-            --btn-bg: #334155;
-            --btn-hover: #475569;
-            --modal-bg: #1e293b;
-            --modal-border: #38bdf8;
-            --modal-text: #f8fafc;
-            --trail-color: rgba(56, 189, 248, 0.95);
-            --hint-dot-color: #38bdf8;
-            --candy-w-bg: #38bdf8;
-            --candy-b-bg: #f43f5e;
-            --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6), inset 0 0 6px rgba(56, 189, 248, 0.3);
-            --turn-active-color: #22c55e;
-        }
-
-        body.room-londres {
-            --bg-main: #062314;
-            --bg-gradient: radial-gradient(circle at center, #0c3b22 0%, #062314 100%);
-            --panel-bg: #0c3b22;
-            --panel-border: #22c55e;
-            --text-main: #d1fae5;
-            --text-muted: #6ee7b7;
-            --board-bg: #0c3b22;
-            --board-border: #10b981;
-            --light-square: #166534;
-            --dark-square: #064e3b;
-            --chat-bg: #052314;
-            --chat-input-bg: #052314;
-            --chat-msg-bg: #0f4c28;
-            --btn-bg: #14532d;
-            --btn-hover: #166534;
-            --modal-bg: #0c3b22;
-            --modal-border: #22c55e;
-            --modal-text: #d1fae5;
-            --trail-color: rgba(74, 222, 128, 0.95);
-            --hint-dot-color: #4ade80;
-            --candy-w-bg: #22c55e;
-            --candy-b-bg: #10b981;
-            --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6), inset 0 0 6px rgba(34, 197, 94, 0.3);
-            --turn-active-color: #4ade80;
+            --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6);
         }
 
         /* --- PEÇAS NEON --- */
@@ -327,10 +212,11 @@
             background: var(--panel-bg);
             border: 2px solid var(--board-border);
             border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             padding: 10px;
             position: relative;
             flex-shrink: 0;
+            backdrop-filter: blur(10px);
         }
         #chessboard {
             display: grid;
@@ -395,10 +281,11 @@
             background: var(--panel-bg);
             border: 2px solid var(--panel-border);
             border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             padding: 8px;
             flex-shrink: 0;
             z-index: 500;
+            backdrop-filter: blur(10px);
         }
         .side-section.minimized {
             width: 0px;
@@ -605,29 +492,47 @@
         }
         .taunt-btn:hover { background: var(--btn-hover); box-shadow: var(--neon-glow-btn); border-color: var(--board-border); }
 
-        #victory-screen, #settings-modal {
+        #victory-screen, #settings-modal, #log-modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.45);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 3000;
         }
-        .victory-card, .settings-content {
+        .victory-card, .settings-content, .log-content {
             background: var(--modal-bg);
-            border: 3px solid var(--modal-border);
+            border: 2px solid var(--modal-border);
             border-radius: 16px;
             padding: 18px;
             text-align: center;
-            max-width: 360px;
+            max-width: 420px;
             width: 90%;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
             color: var(--modal-text);
             max-height: 85vh;
             overflow-y: auto;
         }
 
+        .log-textarea {
+            width: 100%;
+            height: 220px;
+            background: #090d16;
+            color: #38bdf8;
+            border: 1px solid var(--panel-border);
+            font-family: monospace;
+            font-size: 9.5px;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 8px;
+            resize: none;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+
+        /* --- REDESIGN ELEGANTE DA TELA DE MENU --- */
         #menu-screen {
             position: fixed;
             inset: 0;
@@ -639,93 +544,120 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 15px;
+            padding: 20px;
             z-index: 4000;
             overflow-y: auto;
         }
-        #menu-screen h1 { font-size: 26px; color: var(--board-border); margin-bottom: 3px; text-shadow: 0 0 10px var(--board-border); }
+        .hero-box {
+            margin-bottom: 20px;
+        }
+        .hero-box h1 {
+            font-size: 38px;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+        .hero-box p {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .menu-dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 460px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px);
+        }
 
         .menu-section-card {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             width: 100%;
-            max-width: 340px;
-            background: var(--panel-bg);
-            border: 2px solid var(--panel-border);
-            padding: 8px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 10px;
+            border-radius: 12px;
         }
-        .menu-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-top: 2px; }
+        .menu-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 2px; }
         .menu-grid-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 7px 1px;
-            border-radius: 6px;
-            border: 2px solid var(--panel-border);
+            padding: 8px 2px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
             cursor: pointer;
             color: #fff;
             font-weight: bold;
-            font-size: 10px;
+            font-size: 11px;
             gap: 2px;
-            background: var(--chat-bg);
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .menu-grid-btn span { font-size: 7.5px; opacity: 0.85; }
+        .menu-grid-btn span { font-size: 7.5px; opacity: 0.8; font-weight: 600; }
         .menu-grid-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--neon-glow-btn);
-            border-color: var(--board-border);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+            border-color: #38bdf8;
         }
 
         .menu-main-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 11px 16px;
-            border-radius: 10px;
-            border: 2px solid rgba(255,255,255,0.2);
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.15);
             cursor: pointer;
             color: #fff;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 12px;
             gap: 8px;
             width: 100%;
-            max-width: 340px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .menu-main-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--neon-glow-btn);
-            border-color: var(--board-border);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            border-color: #38bdf8;
         }
 
-        .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 340px; }
+        .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
         .room-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 9px;
-            border-radius: 8px;
-            border: 2px solid rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
             cursor: pointer;
             color: #fff;
             font-weight: bold;
-            font-size: 10px;
-            gap: 3px;
-            transition: all 0.2s ease;
+            font-size: 10.5px;
+            gap: 4px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .room-btn:hover {
             transform: translateY(-2px);
-            box-shadow: var(--neon-glow-btn);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
             border-color: #fff;
         }
-        .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
+        .room-status { font-size: 8px; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.6); text-transform: uppercase; font-weight: 700; }
 
         @media (max-width: 900px) {
             body, html { overflow-y: auto; height: 100vh; }
@@ -734,6 +666,8 @@
             .side-section { width: 100%; height: 47vh; max-height: 47vh; padding: 6px; }
             .side-section.minimized { height: 0px; width: 100%; padding: 0px; }
             .chat-container { height: 160px; max-height: 180px; min-height: 130px; }
+            .menu-dashboard { max-width: 94vw; padding: 12px; }
+            .hero-box h1 { font-size: 30px; }
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
@@ -774,6 +708,24 @@
         </div>
     </div>
 
+    <!-- MODAL DE LOGS DO SISTEMA -->
+    <div id="log-modal">
+        <div class="log-content">
+            <div style="font-size: 13px; font-weight: bold; color: #38bdf8; display: flex; justify-content: space-between; align-items: center;">
+                <span>📜 Relatório de Logs & Diagnóstico</span>
+                <button class="action-btn" onclick="closeLogModal()">✕ Fechar</button>
+            </div>
+            <p style="font-size: 9px; color: var(--text-muted); margin-top: 4px; text-align: left;">
+                Histórico detalhado das conexões P2P, lances e diagnósticos de rede para análise técnica.
+            </p>
+            <textarea id="logTextarea" class="log-textarea" readonly></textarea>
+            <div style="display: flex; gap: 6px; margin-top: 8px;">
+                <button class="action-btn" style="flex: 1; padding: 8px; font-size: 9.5px; background: #0284c7; color: #fff;" onclick="copyLogContent()">📋 Copiar Log</button>
+                <button class="action-btn" style="flex: 1; padding: 8px; font-size: 9.5px; background: #16a34a; color: #fff;" onclick="sendLogByEmail()">📧 Enviar por E-mail</button>
+            </div>
+        </div>
+    </div>
+
     <div id="victory-screen">
         <div class="victory-card">
             <div style="font-size: 34px; margin-bottom: 4px;" id="victoryCandyIcon">🍫</div>
@@ -784,15 +736,17 @@
     </div>
 
     <div id="menu-screen">
-        <h1>Termux Xadrez</h1>
-        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.6</p>
+        <div class="hero-box">
+            <h1>Termux Xadrez</h1>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.0</p>
+        </div>
         
-        <div style="display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 340px; align-items: center;">
+        <div class="menu-dashboard">
             
             <div class="menu-section-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: bold;">
-                    <span>🤖 Contra a Máquina (Oráculo):</span>
-                    <span style="color: var(--board-border); font-size: 8.5px;">Nível</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; font-weight: bold;">
+                    <span>🤖 Desafiar a Máquina (Oráculo)</span>
+                    <span style="color: #38bdf8; font-size: 8.5px;">Selecione a Dificuldade</span>
                 </div>
                 <div class="menu-grid-5">
                     <button class="menu-grid-btn" style="background: linear-gradient(135deg, #064e3b, #065f46);" onclick="selectAndStartPvE(1)">🌱 1<span>Inic</span></button>
@@ -803,15 +757,15 @@
                 </div>
             </div>
 
-            <button class="menu-main-btn" style="background: linear-gradient(135deg, #1e3a8a, #2563eb);" onclick="startGame('pvp')">👥 <span>2 Jogadores (Local / Amigos)</span></button>
+            <button class="menu-main-btn" style="background: linear-gradient(135deg, #1e3a8a, #2563eb);" onclick="startGame('pvp')">👥 <span>2 Jogadores (Mesa Local)</span></button>
             
-            <div style="font-size: 9.5px; font-weight: bold; color: var(--board-border); margin-top: 1px; text-transform: uppercase; width: 100%; text-align: left;">Salas Globais (LAN P2P):</div>
+            <div style="font-size: 10px; font-weight: bold; color: #38bdf8; margin-top: 2px; text-transform: uppercase; text-align: left;">🌐 Salas Globais (LAN P2P Multiplayer):</div>
             
             <div class="room-grid">
-                <button class="room-btn" style="background: linear-gradient(135deg, #f472b6, #db2777);" onclick="joinCityRoom('paris')">🌸 Paris (Rosa) <span id="status-paris" class="room-status">Verif...</span></button>
-                <button class="room-btn" style="background: linear-gradient(135deg, #050508, #120a2a);" onclick="joinCityRoom('toquio')">⚡ Tóquio (Cyber) <span id="status-toquio" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #831843, #db2777);" onclick="joinCityRoom('paris')">🌸 Paris (Rosa) <span id="status-paris" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #120e26, #4c1d95);" onclick="joinCityRoom('toquio')">⚡ Tóquio (Cyber) <span id="status-toquio" class="room-status">Verif...</span></button>
                 <button class="room-btn" style="background: linear-gradient(135deg, #0f172a, #334155);" onclick="joinCityRoom('novayork')">🌙 N. York (Escuro) <span id="status-novayork" class="room-status">Verif...</span></button>
-                <button class="room-btn" style="background: linear-gradient(135deg, #0c3b22, #10b981);" onclick="joinCityRoom('londres')">🌲 Londres (Floresta) <span id="status-londres" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #062314, #059669);" onclick="joinCityRoom('londres')">🌲 Londres (Floresta) <span id="status-londres" class="room-status">Verif...</span></button>
             </div>
 
         </div>
@@ -828,6 +782,7 @@
                 <div class="header-actions">
                     <button class="action-btn" onclick="safeResetGame()" title="Novo">♻️ Novo</button>
                     <button class="action-btn" onclick="openSettingsModal()" title="Temas">🎨 Temas</button>
+                    <button class="action-btn" onclick="openLogModal()" title="Logs">📜 Log</button>
                     <button class="action-btn" onclick="safeLeaveRoom()" title="Sair">🚪 Sair</button>
                     <button class="action-btn" onclick="togglePanel()" title="Ocultar">◀</button>
                 </div>
@@ -902,7 +857,19 @@
     let lastPathCoords = [];
     let trailTimeout = null;
     let heartbeatInterval = null;
-    let isTransitioningMove = false;
+    
+    // SISTEMA DE LOGS INTERNO
+    let systemLogs = [];
+    function addLog(msg) {
+        let time = new Date().toLocaleTimeString();
+        let logMsg = `[${time}] ${msg}`;
+        systemLogs.push(logMsg);
+        if (systemLogs.length > 300) systemLogs.shift();
+        let textarea = document.getElementById("logTextarea");
+        if (textarea) textarea.value = systemLogs.join('\n');
+    }
+
+    addLog("Sistema iniciado. Termux Xadrez v3.5.0 pronto.");
 
     // Zera os bombons ao carregar ou recarregar a página
     let candiesWhite = 1;
@@ -958,6 +925,26 @@
     ];
     let currentJokeIndex = 0;
 
+    function openLogModal() {
+        document.getElementById("logTextarea").value = systemLogs.join('\n');
+        document.getElementById("log-modal").style.display = "flex";
+    }
+    function closeLogModal() { document.getElementById("log-modal").style.display = "none"; }
+
+    function copyLogContent() {
+        let text = systemLogs.join('\n');
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Log copiado para a área de transferência!");
+        }).catch(() => {
+            alert("Copie o texto manualmente da caixa de log.");
+        });
+    }
+
+    function sendLogByEmail() {
+        let text = encodeURIComponent(systemLogs.join('\n'));
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.0&body=${text}`;
+    }
+
     function updateFightBarDisplay() {
         const total = candiesWhite + candiesBlack;
         let pctW = total === 0 ? 50 : Math.round((candiesWhite / total) * 100);
@@ -981,11 +968,13 @@
         document.body.classList.remove('theme-claro', 'theme-rosa', 'theme-ouro', 'theme-escuro', 'theme-cyberpunk', 'theme-floresta', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
         document.body.classList.add(`theme-${themeName}`);
         currentCityKey = null;
+        addLog(`Tema alterado para: ${themeName}`);
     }
 
     function setPieceColors(colorScheme) {
         document.body.classList.remove('pieces-blue-pink', 'pieces-green-cyan', 'pieces-gold-purple', 'pieces-silver-fire', 'pieces-neon-lime', 'pieces-ruby-indigo');
         document.body.classList.add(colorScheme);
+        addLog(`Esquema de cores das peças: ${colorScheme}`);
     }
 
     function openSettingsModal() { document.getElementById("settings-modal").style.display = "flex"; }
@@ -993,6 +982,7 @@
 
     function selectAndStartPvE(level) {
         aiDifficulty = level;
+        addLog(`Iniciando jogo contra Oráculo Nível ${level}`);
         startGame('pve');
     }
 
@@ -1048,6 +1038,7 @@
         <div style="font-size: 8.5px; opacity: 0.85; margin-top: 2px;">Captura na casa: ${square.toUpperCase()}</div>`;
         
         addChatMessage("Árbitro", chatText, true, true);
+        addLog(`Captura efetuada: ${attName} (${attCol}) levou ${capName} em ${square}`);
     }
 
     function sendStandUpJoke() {
@@ -1080,6 +1071,7 @@
         candiesBlack = savedB;
         updateFightBarDisplay();
 
+        addLog(`Fim de jogo: ${reason}. Placar Bombons: W:${savedW} x B:${savedB}`);
         document.getElementById("victory-subtitle").innerText = reason;
         document.getElementById("victory-screen").style.display = "flex";
     }
@@ -1098,6 +1090,7 @@
 
     function safeLeaveRoom() {
         if (confirm("Deseja sair da partida e retornar ao menu?")) {
+            addLog("Saindo da partida. Resetando estado.");
             localStorage.setItem('termux_candies_w', '1');
             localStorage.setItem('termux_candies_b', '1');
             if (heartbeatInterval) clearInterval(heartbeatInterval);
@@ -1109,6 +1102,7 @@
 
     function safeResetGame() {
         if (confirm("Reiniciar o tabuleiro?")) {
+            addLog("Solicitado reinício do tabuleiro.");
             if (conn && conn.open) { try { conn.send({ type: 'reset-board' }); } catch(e){} }
             resetGame();
         }
@@ -1118,9 +1112,13 @@
         if (heartbeatInterval) clearInterval(heartbeatInterval);
         heartbeatInterval = setInterval(() => {
             if (conn && conn.open) {
-                try { conn.send({ type: 'ping', fen: chess.fen() }); } catch(e) {}
+                try { 
+                    conn.send({ type: 'ping', fen: chess.fen() }); 
+                } catch(e) {
+                    addLog(`Erro no heartbeat: ${e.message}`);
+                }
             }
-        }, 5000);
+        }, 3000);
     }
 
     function startGame(mode) {
@@ -1128,7 +1126,6 @@
         playerColor = 'w';
         isSpectator = false;
         lastPathCoords = [];
-        isTransitioningMove = false;
         applyCityVisualTheme(null);
         
         candiesWhite = parseInt(localStorage.getItem('termux_candies_w') || '1');
@@ -1145,6 +1142,7 @@
         updateTurnIndicators();
         updateCapturedDisplay();
         renderBoard();
+        addLog(`Jogo iniciado no modo: ${mode}`);
     }
 
     function closeMenuTransition() {
@@ -1189,11 +1187,13 @@
 
     function joinCityRoom(cityName) {
         let roomId = "termux-cities-v3016-" + cityName;
+        addLog(`Tentando conectar à sala P2P: ${cityName}`);
         if (peer) { try { peer.destroy(); } catch(e){} }
         peer = new Peer();
 
-        peer.on('open', () => {
-            let connAttempt = peer.connect(roomId, { reliable: false });
+        peer.on('open', (id) => {
+            addLog(`PeerJS local aberto com ID: ${id}`);
+            let connAttempt = peer.connect(roomId, { reliable: true });
             let established = false;
 
             connAttempt.on('open', () => {
@@ -1205,6 +1205,7 @@
 
             setTimeout(() => {
                 if (!established) {
+                    addLog(`Sala ${cityName} sem host ativo. Assumindo como Host...`);
                     try { peer.destroy(); } catch(e){}
                     peer = new Peer(roomId);
                     peer.on('open', () => {
@@ -1216,6 +1217,7 @@
                         setupHostServer(cityName);
                         setupHeartbeat();
                         startGameSetup();
+                        addLog(`Host criado com sucesso na sala: ${cityName}`);
                     });
                 }
             }, 1000);
@@ -1225,6 +1227,7 @@
     function setupHostServer(cityName) {
         let guestConn = null;
         peer.on('connection', (c) => {
+            addLog(`Nova conexão de convidado recebida.`);
             c.on('data', (data) => {
                 if (data.type === 'check-slot') {
                     if (!guestConn) {
@@ -1235,6 +1238,7 @@
                         try { c.send({ type: 'slot-response', status: 'accepted', fen: chess.fen() }); } catch(e){}
                         document.getElementById("player2-label").innerText = "Oponente (Pretas)";
                         addChatMessage("Sistema", "Oponente entrou na sala!", false, true);
+                        addLog("Oponente conectado como Pretas.");
                     } else {
                         try { c.send({ type: 'slot-response', status: 'full' }); } catch(e){}
                     }
@@ -1245,16 +1249,19 @@
 
     function setupHostListeners(cityName) {
         conn.on('data', (data) => {
-            if (data.type === 'ping' && data.fen && chess.history().length === 0) {
-                chess.load(data.fen);
-                renderBoard();
+            if (data.type === 'ping' && data.fen) {
+                // Sincronizador de FEN se houver divergência
+                if (data.fen !== chess.fen() && chess.history().length === 0) {
+                    chess.load(data.fen);
+                    renderBoard();
+                }
             } else if (data.type === 'reset-board') {
                 resetGame();
             } else if (data.type === 'move') {
                 try {
                     const result = chess.move(data.move);
                     if (result) {
-                        isTransitioningMove = false;
+                        addLog(`Lance recebido do oponente: ${data.move.from}->${data.move.to}`);
                         triggerMoveTrail(data.move.from, data.move.to);
                         updateTurnIndicators();
                         updateCapturedDisplay();
@@ -1262,11 +1269,12 @@
                         if (result.captured) showCaptureInChat(result);
                         checkGameStateEvents(result, false);
                     }
-                } catch(err) { isTransitioningMove = false; }
+                } catch(err) { addLog(`Erro ao aplicar lance recebido: ${err.message}`); }
             } else if (data.type === 'chat') {
                 addChatMessage(data.sender || "Oponente", data.text, data.isAI || false, data.isAlert || false);
             }
         });
+        conn.on('close', () => { addLog("Conexão P2P encerrada pelo oponente."); });
     }
 
     function setupClientListeners(cityName) {
@@ -1281,12 +1289,14 @@
                     closeMenuTransition();
                     startGameSetup();
                     addChatMessage("Sistema", "Modo Espectador.", true);
+                    addLog("Conectado como Espectador.");
                 } else {
                     playerColor = 'b';
                     isSpectator = false;
                     closeMenuTransition();
                     startGameSetup();
                     addChatMessage("Sistema", "Conectado com sucesso na sala!", false, true);
+                    addLog("Conectado como Jogador 2 (Pretas).");
                 }
             } else if (data.type === 'reset-board') {
                 resetGame();
@@ -1294,7 +1304,7 @@
                 try {
                     const result = chess.move(data.move);
                     if (result) {
-                        isTransitioningMove = false;
+                        addLog(`Lance recebido do Host: ${data.move.from}->${data.move.to}`);
                         triggerMoveTrail(data.move.from, data.move.to);
                         updateTurnIndicators();
                         updateCapturedDisplay();
@@ -1302,7 +1312,7 @@
                         if (result.captured) showCaptureInChat(result);
                         checkGameStateEvents(result, false);
                     }
-                } catch(err) { isTransitioningMove = false; }
+                } catch(err) { addLog(`Erro ao aplicar lance: ${err.message}`); }
             } else if (data.type === 'chat') {
                 addChatMessage(data.sender || "Oponente", data.text, data.isAI || false, data.isAlert || false);
             }
@@ -1315,7 +1325,6 @@
         selectedSquare = null;
         possibleMoves = [];
         lastPathCoords = [];
-        isTransitioningMove = false;
         updateFightBarDisplay();
         updateTurnIndicators();
         updateCapturedDisplay();
@@ -1327,11 +1336,11 @@
         selectedSquare = null;
         possibleMoves = [];
         lastPathCoords = [];
-        isTransitioningMove = false;
         updateFightBarDisplay();
         updateTurnIndicators();
         updateCapturedDisplay();
         renderBoard();
+        addLog("Tabuleiro reiniciado.");
     }
 
     function triggerMoveTrail(from, to) {
@@ -1503,6 +1512,7 @@
                 possibleMoves = [];
 
                 if (move) {
+                    addLog(`Lance executado: ${move.from}->${move.to}`);
                     triggerMoveTrail(move.from, move.to);
                     updateTurnIndicators();
                     updateCapturedDisplay();
@@ -1532,6 +1542,7 @@
                     }
                 }
             } catch (err) {
+                addLog(`Exceção ao mover: ${err.message}`);
                 selectedSquare = null;
                 possibleMoves = [];
                 renderBoard();
@@ -1551,6 +1562,7 @@
 
         const moveResult = chess.move(selectedMove);
         if (moveResult) {
+            addLog(`IA moveu: ${moveResult.from}->${moveResult.to}`);
             triggerMoveTrail(moveResult.from, moveResult.to);
             if (moveResult.captured) showCaptureInChat(moveResult);
         }
