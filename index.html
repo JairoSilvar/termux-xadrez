@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.4.5</title>
+    <title>Termux Xadrez - v3.4.6</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -785,7 +785,7 @@
 
     <div id="menu-screen">
         <h1>Termux Xadrez</h1>
-        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.5</p>
+        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.6</p>
         
         <div style="display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 340px; align-items: center;">
             
@@ -904,7 +904,7 @@
     let heartbeatInterval = null;
     let isTransitioningMove = false;
 
-    // Regra de bombons: Zera ao carregar/recarregar a página ou sair. Só acumula ao clicar em "Novo".
+    // Zera os bombons ao carregar ou recarregar a página
     let candiesWhite = 1;
     let candiesBlack = 1;
     localStorage.setItem('termux_candies_w', '1');
@@ -1061,7 +1061,6 @@
     }
 
     function showVictoryScreen(reason, winnerColor = null) {
-        // Acumula os pontos apenas ao terminar a partida corretamente e clicar em Novo
         let savedW = parseInt(localStorage.getItem('termux_candies_w') || '1');
         let savedB = parseInt(localStorage.getItem('termux_candies_b') || '1');
 
@@ -1099,7 +1098,6 @@
 
     function safeLeaveRoom() {
         if (confirm("Deseja sair da partida e retornar ao menu?")) {
-            // Ao sair, reseta os bombons para 1 vs 1
             localStorage.setItem('termux_candies_w', '1');
             localStorage.setItem('termux_candies_b', '1');
             if (heartbeatInterval) clearInterval(heartbeatInterval);
@@ -1236,7 +1234,6 @@
                         setupHeartbeat();
                         try { c.send({ type: 'slot-response', status: 'accepted', fen: chess.fen() }); } catch(e){}
                         document.getElementById("player2-label").innerText = "Oponente (Pretas)";
-                        // Notificação de entrada na sala destacada em neon (a próxima mensagem removerá o destaque)
                         addChatMessage("Sistema", "Oponente entrou na sala!", false, true);
                     } else {
                         try { c.send({ type: 'slot-response', status: 'full' }); } catch(e){}
@@ -1289,7 +1286,6 @@
                     isSpectator = false;
                     closeMenuTransition();
                     startGameSetup();
-                    // Notificação de entrada do cliente destacada em neon
                     addChatMessage("Sistema", "Conectado com sucesso na sala!", false, true);
                 }
             } else if (data.type === 'reset-board') {
@@ -1358,7 +1354,6 @@
         badgeBlack.style.display = "none";
 
         if (gameMode === 'pvp') {
-            // 2 jogadores na mesma tela: Exibe "Sua Vez" apenas para o lado correspondente ao turno atual com neon
             if (turn === 'w') {
                 cardWhite.classList.add('active-turn');
                 badgeWhite.style.display = "inline-block";
@@ -1369,7 +1364,6 @@
                 badgeBlack.innerText = "Sua Vez";
             }
         } else if (gameMode === 'network') {
-            // Salas de rede: "Sua Vez" com neon para você, e "Aguardando jogada..." discreto sem neon para o oponente
             if (turn === 'w') {
                 if (playerColor === 'w') {
                     cardWhite.classList.add('active-turn');
@@ -1390,7 +1384,6 @@
                 }
             }
         } else {
-            // PvE (contra IA)
             if (turn === 'w') {
                 cardWhite.classList.add('active-turn');
                 badgeWhite.style.display = "inline-block";
@@ -1483,7 +1476,6 @@
                 }
 
                 squareEl.addEventListener('click', () => {
-                    if (isTransitioningMove) return;
                     handleSquareClick(squareCoord);
                 });
                 fragment.appendChild(squareEl);
@@ -1496,18 +1488,16 @@
     function handleSquareClick(square) {
         if (isSpectator) return;
         if (gameMode === 'network' && chess.turn() !== playerColor) return;
-        if (isTransitioningMove) return;
 
         if (selectedSquare === null) {
             const piece = chess.get(square);
-            if (piece && (gameMode === 'pvp' || piece.color === chess.turn())) {
+            if (piece && (gameMode === 'pvp' || gameMode === 'network' || piece.color === chess.turn())) {
                 selectedSquare = square;
                 try { possibleMoves = chess.moves({ square: square, verbose: true }).map(m => m.to); } catch (e) { possibleMoves = []; }
                 renderBoard();
             }
         } else {
             try {
-                isTransitioningMove = true;
                 const move = chess.move({ from: selectedSquare, to: square, promotion: 'q' });
                 selectedSquare = null;
                 possibleMoves = [];
@@ -1527,29 +1517,23 @@
                     if (!chess.game_over() && gameMode === 'pve' && chess.turn() === 'b') {
                         setTimeout(() => { 
                             makeAIMove(); 
-                            isTransitioningMove = false;
                         }, 80);
-                    } else if (!move.captured && !chess.in_check() && !chess.in_checkmate()) {
-                        isTransitioningMove = false;
                     }
                 } else {
                     const piece = chess.get(square);
-                    if (piece && (gameMode === 'pvp' || piece.color === chess.turn())) {
+                    if (piece && (gameMode === 'pvp' || gameMode === 'network' || piece.color === chess.turn())) {
                         selectedSquare = square;
                         possibleMoves = chess.moves({ square: square, verbose: true }).map(m => m.to);
-                        isTransitioningMove = false;
                         renderBoard();
                     } else {
                         selectedSquare = null;
                         possibleMoves = [];
-                        isTransitioningMove = false;
                         renderBoard();
                     }
                 }
             } catch (err) {
                 selectedSquare = null;
                 possibleMoves = [];
-                isTransitioningMove = false;
                 renderBoard();
             }
         }
