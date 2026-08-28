@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.22</title>
+    <title>Xadrez - v3.8.23</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -200,8 +200,8 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            padding: 3px;
-            gap: 4px;
+            padding: 4px;
+            gap: 6px;
         }
 
         .board-section {
@@ -279,7 +279,7 @@
             border: 2px solid var(--panel-border);
             border-radius: 10px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            padding: 5px;
+            padding: 6px;
             flex-shrink: 0;
             z-index: 500;
             backdrop-filter: blur(10px);
@@ -678,32 +678,33 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
         .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- SINTONIA FINA DEFINITIVA MOBILE PORTRAIT (ENQUADRAMENTO PERFEITO) --- */
+        /* --- SINTONIA FINA MOBILE PORTRAIT (ENQUADRAMENTO FIXO ESTÁVEL) --- */
         @media (max-width: 900px) and (orientation: portrait) {
             #game-wrapper {
                 flex-direction: column !important;
-                padding: 3px !important;
+                padding: 4px !important;
                 gap: 4px !important;
                 height: 100vh !important;
                 width: 100vw !important;
-                justify-content: center !important;
+                justify-content: flex-start !important;
                 align-items: center !important;
                 overflow: hidden !important;
             }
-            /* Tabuleiro ajustado milimetricamente para dar folga ao card inferior */
+            /* Tabuleiro com tamanho fixo ideal que nunca encolhe e mantém estabilidade absoluta */
             .board-section {
                 width: calc(100vw - 8px) !important;
                 height: calc(100vw - 8px) !important;
-                max-width: 42vh !important;
-                max-height: 42vh !important;
+                max-width: 52vh !important;
+                max-height: 52vh !important;
                 padding: 3px !important;
                 flex-shrink: 0 !important;
+                margin-top: 2px !important;
             }
-            /* Painel lateral perfeitamente dimensionado para conter ambos os cards e chat confortavelmente */
+            /* Painel lateral perfeitamente dimensionado para o restante da tela vertical */
             .side-section {
                 width: calc(100vw - 8px) !important;
-                height: calc(100vh - 42vh - 12px) !important;
-                max-height: calc(100vh - 42vh - 12px) !important;
+                height: calc(100vh - 52vh - 14px) !important;
+                max-height: calc(100vh - 52vh - 14px) !important;
                 border-radius: 10px !important;
                 padding: 5px !important;
                 flex-shrink: 0 !important;
@@ -721,11 +722,17 @@
                 opacity: 0;
                 pointer-events: none;
             }
+            /* Quando o painel é ocultado, fixamos o tabuleiro no topo sem pular ou centralizar agressivamente */
+            body.menu-hidden #game-wrapper {
+                justify-content: flex-start !important;
+                padding-top: 8px !important;
+            }
             body.menu-hidden .board-section {
                 width: calc(100vw - 8px) !important;
                 height: calc(100vw - 8px) !important;
                 max-width: 88vh !important;
                 max-height: 88vh !important;
+                margin-top: 0 !important;
             }
             .chat-container { 
                 flex: 1 !important;
@@ -738,7 +745,7 @@
             .chat-box {
                 flex: 1 !important;
                 min-height: 0px !important;
-                max-height: 85px !important;
+                max-height: 70px !important;
                 overflow-y: auto !important;
             }
         }
@@ -882,7 +889,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.22</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.23</p>
         </div>
         
         <div class="menu-dashboard">
@@ -1023,7 +1030,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.22 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.23 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1136,7 +1143,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.22&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.23&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
@@ -1333,7 +1340,7 @@
         if (panel.classList.contains("minimized")) {
             document.body.classList.add("menu-hidden");
             restoreBtn.style.display = "block";
-            addLog("Painel de menu ocultado. Tabuleiro expandido ao máximo em toda a tela.", "UI");
+            addLog("Painel de menu ocultado. Tabuleiro expandido ao máximo.", "UI");
         } else {
             document.body.classList.remove("menu-hidden");
             restoreBtn.style.display = "none";
