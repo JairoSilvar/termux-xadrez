@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.12</title>
+    <title>Xadrez - v3.8.13</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -200,8 +200,8 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            padding: 4px;
-            gap: 8px;
+            padding: 2px;
+            gap: 6px;
         }
 
         .board-section {
@@ -211,9 +211,9 @@
             justify-content: center;
             background: var(--panel-bg);
             border: 2px solid var(--board-border);
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            padding: 4px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            padding: 3px;
             position: relative;
             flex-shrink: 0;
             backdrop-filter: blur(10px);
@@ -243,13 +243,13 @@
         .dark { background-color: var(--dark-square); }
         
         .square.selected { background-color: rgba(56, 189, 248, 0.4) !important; }
-        .square.last-move:not(.selected) { box-shadow: inset 0 0 12px var(--trail-color); }
+        .square.last-move:not(.selected) { box-shadow: inset 0 0 10px var(--trail-color); }
 
         .square.highlight::after {
             content: '';
             position: absolute;
-            width: 26%;
-            height: 26%;
+            width: 24%;
+            height: 24%;
             background-color: var(--hint-dot-color);
             border-radius: 50%;
         }
@@ -257,7 +257,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            border: 3px solid #f43f5e;
+            border: 2px solid #f43f5e;
             border-radius: 50%;
         }
 
@@ -278,9 +278,9 @@
             width: 310px;
             background: var(--panel-bg);
             border: 2px solid var(--panel-border);
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            padding: 5px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            padding: 4px;
             flex-shrink: 0;
             z-index: 500;
             backdrop-filter: blur(10px);
@@ -316,22 +316,23 @@
             #restore-btn { top: 20px; right: 20px; padding: 10px 18px; border-radius: 10px; font-size: 11px; }
         }
         @media (max-width: 900px) {
-            #restore-btn { bottom: 8px; left: 50%; transform: translateX(-50%); padding: 6px 18px; border-radius: 20px; font-size: 10px; }
+            #restore-btn { bottom: 6px; left: 50%; transform: translateX(-50%); padding: 5px 16px; border-radius: 20px; font-size: 9.5px; }
         }
 
         .brand-title {
-            font-size: 9px;
+            font-size: 8.5px;
             font-weight: bold;
             color: var(--text-main);
             border-bottom: 1px solid var(--panel-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 4px;
-            padding: 3px 5px;
+            border-radius: 3px;
+            padding: 2px 4px;
             background: var(--chat-bg);
             gap: 2px;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .brand-title > span { overflow: hidden; text-overflow: ellipsis; max-width: 75px; }
 
@@ -340,10 +341,10 @@
             background: var(--btn-bg);
             color: var(--text-main);
             border: 1px solid var(--panel-border);
-            padding: 2px 4px;
-            border-radius: 4px;
+            padding: 2px 3px;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 7.5px;
+            font-size: 7px;
             font-weight: bold;
             transition: all 0.2s ease;
             white-space: nowrap;
@@ -358,16 +359,17 @@
         .candy-fight-bar-container {
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
-            border-radius: 4px;
-            padding: 2px 4px;
+            border-radius: 3px;
+            padding: 2px 3px;
             display: flex;
             flex-direction: column;
             gap: 1px;
+            flex-shrink: 0;
         }
         .candy-bar-header {
             display: flex;
             justify-content: space-between;
-            font-size: 7px;
+            font-size: 6.5px;
             font-weight: bold;
             color: var(--text-muted);
         }
@@ -386,7 +388,7 @@
         .candy-icons-row {
             display: flex;
             justify-content: space-between;
-            font-size: 6.5px;
+            font-size: 6px;
             color: var(--text-muted);
             font-weight: 600;
         }
@@ -397,28 +399,29 @@
             gap: 1px;
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
-            padding: 2px 4px;
-            border-radius: 4px;
+            padding: 2px 3px;
+            border-radius: 3px;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
         .player-card.active-turn {
             border: 2px solid var(--turn-active-color);
             background: rgba(34, 197, 94, 0.08);
-            box-shadow: 0 0 8px var(--turn-active-color);
+            box-shadow: 0 0 6px var(--turn-active-color);
         }
-        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; font-weight: bold; }
+        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 8px; font-weight: bold; }
         .turn-badge {
-            font-size: 7px;
+            font-size: 6.5px;
             background: var(--turn-active-color);
             color: #fff;
             padding: 1px 3px;
-            border-radius: 3px;
+            border-radius: 2px;
             display: none;
             font-weight: 800;
         }
 
-        .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 8px; align-items: center; }
-        .captured-icon { width: 9px; height: 9px; background-size: contain; background-repeat: no-repeat; }
+        .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 6px; align-items: center; }
+        .captured-icon { width: 8px; height: 8px; background-size: contain; background-repeat: no-repeat; }
         .captured-icon.white-cap { filter: brightness(1.2); }
         .captured-icon.black-cap { filter: brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
 
@@ -434,20 +437,20 @@
             flex: 1;
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
-            border-radius: 4px;
-            padding: 3px;
+            border-radius: 3px;
+            padding: 2px 3px;
             overflow-y: auto;
-            font-size: 9px;
+            font-size: 8.5px;
             color: var(--text-main);
             display: flex;
             flex-direction: column;
             gap: 2px;
             min-height: 0px;
         }
-        .chat-msg { background: var(--chat-msg-bg); padding: 2px 4px; border-radius: 3px; border-left: 3px solid #f43f5e; line-height: 1.15; }
+        .chat-msg { background: var(--chat-msg-bg); padding: 2px 3px; border-radius: 3px; border-left: 2px solid #f43f5e; line-height: 1.1; }
         .chat-msg span { color: #f43f5e; font-weight: bold; }
         .chat-msg.ai span { color: var(--board-border); }
-        .chat-msg.ai { border-left: 3px solid var(--board-border); }
+        .chat-msg.ai { border-left: 2px solid var(--board-border); }
         
         .chat-msg.alert-neon {
             background: rgba(34, 197, 94, 0.15);
@@ -462,9 +465,9 @@
             background: var(--chat-input-bg);
             border: 1px solid var(--panel-border);
             color: var(--text-main);
-            padding: 2px 4px;
+            padding: 2px 3px;
             border-radius: 3px;
-            font-size: 8.5px;
+            font-size: 8px;
             outline: none;
         }
         .chat-input:focus { border-color: var(--board-border); box-shadow: var(--neon-glow-btn); }
@@ -480,7 +483,7 @@
             cursor: default;
             user-select: none;
         }
-        .taunt-scroll-container::-webkit-scrollbar { height: 3px; }
+        .taunt-scroll-container::-webkit-scrollbar { height: 2px; }
         .taunt-scroll-container::-webkit-scrollbar-track { background: var(--chat-bg); border-radius: 2px; }
         .taunt-scroll-container::-webkit-scrollbar-thumb { background: var(--board-border); border-radius: 2px; }
 
@@ -488,9 +491,9 @@
             background: var(--chat-input-bg);
             color: var(--board-border);
             border: 1px solid var(--panel-border);
-            font-size: 7px;
-            padding: 2px 5px;
-            border-radius: 3px;
+            font-size: 6.5px;
+            padding: 2px 4px;
+            border-radius: 2px;
             cursor: pointer;
             text-align: center;
             font-weight: 600;
@@ -676,34 +679,34 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
         .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- CORREÇÃO ABSOLUTA E PRECISA BASEADA NA SUA REFERÊNCIA (MOBILE PORTRAIT) --- */
+        /* --- CORREÇÃO DEFINITIVA (MOBILE PORTRAIT): TABULEIRO PROPORCIONAL E PAINEL COMPLETO NA TELA --- */
         @media (max-width: 900px) and (orientation: portrait) {
             #game-wrapper {
                 flex-direction: column !important;
                 padding: 2px !important;
-                gap: 4px !important;
+                gap: 3px !important;
                 height: 100vh !important;
                 width: 100vw !important;
                 justify-content: center !important;
                 align-items: center !important;
                 overflow: hidden !important;
             }
-            /* Tabuleiro milimetricamente dimensionado para liberar espaço exato para a tabela inferior */
+            /* Tabuleiro levemente menor para garantir espaço soberano ao painel de chat e controles */
             .board-section {
-                width: calc(100vw - 8px) !important;
-                height: calc(100vw - 8px) !important;
-                max-width: 45vh !important;
-                max-height: 45vh !important;
-                padding: 3px !important;
+                width: calc(100vw - 6px) !important;
+                height: calc(100vw - 6px) !important;
+                max-width: 38vh !important;
+                max-height: 38vh !important;
+                padding: 2px !important;
                 flex-shrink: 0 !important;
             }
-            /* Painel lateral perfeitamente dimensionado para caber na tela sem cortes */
+            /* Painel lateral com altura exata calculada para que TODOS os botões inferiores apareçam */
             .side-section {
-                width: calc(100vw - 8px) !important;
-                height: calc(100vh - 45vh - 16px) !important;
-                max-height: calc(100vh - 45vh - 16px) !important;
-                border-radius: 10px !important;
-                padding: 4px !important;
+                width: calc(100vw - 6px) !important;
+                height: calc(100vh - 38vh - 14px) !important;
+                max-height: calc(100vh - 38vh - 14px) !important;
+                border-radius: 8px !important;
+                padding: 3px !important;
                 flex-shrink: 0 !important;
                 display: flex !important;
                 flex-direction: column !important;
@@ -720,8 +723,8 @@
                 pointer-events: none;
             }
             body.menu-hidden .board-section {
-                width: calc(100vw - 8px) !important;
-                height: calc(100vw - 8px) !important;
+                width: calc(100vw - 6px) !important;
+                height: calc(100vw - 6px) !important;
                 max-width: 88vh !important;
                 max-height: 88vh !important;
             }
@@ -745,7 +748,7 @@
             #game-wrapper {
                 flex-direction: row !important;
                 padding: 4px;
-                gap: 8px;
+                gap: 6px;
                 height: 100vh;
                 width: 100vw;
                 justify-content: center;
@@ -753,20 +756,20 @@
                 overflow: hidden;
             }
             .board-section {
-                width: calc(96vh - 8px) !important;
-                height: calc(96vh - 8px) !important;
+                width: calc(96vh - 6px) !important;
+                height: calc(96vh - 6px) !important;
                 max-width: 62vw !important;
                 max-height: 96vh !important;
-                padding: 4px;
+                padding: 3px;
                 flex-shrink: 0;
             }
             .side-section {
-                width: 300px !important;
+                width: 290px !important;
                 height: 96vh !important;
                 max-height: 96vh !important;
-                border-radius: 12px;
+                border-radius: 10px;
                 flex-shrink: 0;
-                padding: 5px;
+                padding: 4px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
@@ -879,7 +882,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.12</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.13</p>
         </div>
         
         <div class="menu-dashboard">
@@ -959,7 +962,7 @@
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
-                    <button class="action-btn" style="flex: 0 0 34px; padding: 2px; font-size: 7.5px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
+                    <button class="action-btn" style="flex: 0 0 32px; padding: 2px; font-size: 7px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
                 </div>
                 <div class="taunt-scroll-container" id="tauntScrollContainer">
                     <button class="taunt-btn" onclick="sendStandUpJoke()">🎤 Stand up</button>
@@ -1018,7 +1021,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.12 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.13 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1131,7 +1134,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.12&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.13&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
@@ -1259,11 +1262,11 @@
         let attCss = attCol === 'w' ? 'white-cap' : 'black-cap';
         let capCss = capCol === 'w' ? 'white-cap' : 'black-cap';
 
-        let chatText = `<div style="display:flex; align-items:center; gap:4px; font-weight:bold;">
+        let chatText = `<div style="display:flex; align-items:center; gap:3px; font-weight:bold;">
             <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} capturou 
             <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}
         </div>
-        <div style="font-size: 7px; opacity: 0.85; margin-top: 1px;">Captura na casa: ${square.toUpperCase()}</div>`;
+        <div style="font-size: 6px; opacity: 0.85; margin-top: 1px;">Captura na casa: ${square.toUpperCase()}</div>`;
         
         addChatMessage("Árbitro", chatText, true, true);
         addLog(`Captura efetuada: ${attName} (${attCol}) levou ${capName} em ${square}`, "MOVE");
