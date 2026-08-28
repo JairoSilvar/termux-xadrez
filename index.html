@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.6.0</title>
+    <title>Xadrez - v3.7.0</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -24,7 +24,7 @@
             --chat-msg-bg: #e2e8f0;
             --btn-bg: #e2e8f0;
             --btn-hover: #cbd5e1;
-            --modal-bg: #ffffff;
+            --modal-bg: rgba(255, 255, 255, 0.85);
             --modal-border: #0284c7;
             --modal-text: #0f172a;
             --trail-color: rgba(2, 132, 199, 0.95);
@@ -39,7 +39,7 @@
         body.theme-paris, body.room-paris {
             --bg-main: #fff0f5;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
-            --panel-bg: rgba(255, 240, 245, 0.95);
+            --panel-bg: rgba(255, 240, 245, 0.85);
             --panel-border: #f472b6;
             --text-main: #831843;
             --text-muted: #db2777;
@@ -51,7 +51,7 @@
             --chat-msg-bg: #fbcfe8;
             --btn-bg: #f472b6;
             --btn-hover: #ec4899;
-            --modal-bg: #fff1f2;
+            --modal-bg: rgba(255, 241, 242, 0.85);
             --modal-border: #db2777;
             --modal-text: #831843;
             --trail-color: rgba(219, 39, 119, 0.95);
@@ -64,7 +64,7 @@
         body.theme-ouro {
             --bg-main: #fefce8;
             --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fef08a 100%);
-            --panel-bg: rgba(255, 255, 255, 0.9);
+            --panel-bg: rgba(255, 255, 255, 0.85);
             --panel-border: #eab308;
             --text-main: #713f12;
             --text-muted: #854d0e;
@@ -76,7 +76,7 @@
             --chat-msg-bg: #fef08a;
             --btn-bg: #fef08a;
             --btn-hover: #fde047;
-            --modal-bg: #fffdeb;
+            --modal-bg: rgba(255, 253, 235, 0.85);
             --modal-border: #ca8a04;
             --modal-text: #713f12;
             --trail-color: rgba(194, 65, 12, 0.95);
@@ -102,7 +102,7 @@
             --chat-msg-bg: #1e293b;
             --btn-bg: #334155;
             --btn-hover: #475569;
-            --modal-bg: #1e293b;
+            --modal-bg: rgba(30, 41, 59, 0.85);
             --modal-border: #38bdf8;
             --modal-text: #f8fafc;
             --trail-color: rgba(56, 189, 248, 0.95);
@@ -128,7 +128,7 @@
             --chat-msg-bg: #1a103c;
             --btn-bg: #2d1b4e;
             --btn-hover: #3b2363;
-            --modal-bg: #120e26;
+            --modal-bg: rgba(18, 14, 38, 0.85);
             --modal-border: #00f0ff;
             --modal-text: #00f0ff;
             --trail-color: rgba(0, 240, 255, 0.95);
@@ -154,7 +154,7 @@
             --chat-msg-bg: #0f4c28;
             --btn-bg: #14532d;
             --btn-hover: #166534;
-            --modal-bg: #0c3b22;
+            --modal-bg: rgba(12, 59, 34, 0.85);
             --modal-border: #22c55e;
             --modal-text: #d1fae5;
             --trail-color: rgba(74, 222, 128, 0.95);
@@ -486,16 +486,15 @@
         }
         .chat-input:focus { border-color: var(--board-border); box-shadow: var(--neon-glow-btn); }
         
-        /* --- CARROSSEL HORIZONTAL DE TAUNTS (Otimização Mobile) --- */
         .taunt-scroll-container {
             display: flex;
             gap: 4px;
             overflow-x: auto;
             flex-shrink: 0;
             padding-bottom: 2px;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
-        .taunt-scroll-container::-webkit-scrollbar { display: none; /* Chrome/Safari */ }
+        .taunt-scroll-container::-webkit-scrollbar { display: none; }
         .taunt-btn {
             background: var(--chat-input-bg);
             color: var(--board-border);
@@ -512,31 +511,34 @@
         }
         .taunt-btn:hover { background: var(--btn-hover); box-shadow: var(--neon-glow-btn); border-color: var(--board-border); }
 
+        /* --- MODAL DE CONFIGURAÇÕES COM TRANSPARÊNCIA E POSICIONAMENTO INFERIOR --- */
         #victory-screen, #settings-modal, #log-modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(4px);
             display: none;
-            align-items: center;
+            align-items: flex-end; /* Posicionado mais abaixo na tela */
             justify-content: center;
             z-index: 3000;
+            padding-bottom: 4vh;
         }
         .victory-card, .settings-content, .log-content {
-            background: var(--modal-bg);
+            background: var(--modal-bg); /* Vidro fosco transparente */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 2px solid var(--modal-border);
             border-radius: 16px;
             padding: 18px;
             text-align: center;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             color: var(--modal-text);
-            max-height: 85vh;
+            max-height: 80vh;
             overflow-y: auto;
         }
 
-        /* Abas Colapsáveis no Modal de Configurações */
         .settings-tabs {
             display: flex;
             gap: 4px;
@@ -594,7 +596,7 @@
             overflow-y: auto;
         }
         .hero-box {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .hero-box h1 {
             font-size: 38px;
@@ -615,12 +617,12 @@
         .menu-dashboard {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
             max-width: 460px;
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
-            padding: 16px;
+            padding: 14px;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.12);
             backdrop-filter: blur(16px);
@@ -660,28 +662,46 @@
             filter: brightness(1.1);
         }
 
+        /* Container para os botões duplos lado a lado (2 Jogadores & Bot vs Bot Mestre) */
+        .menu-dual-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            width: 100%;
+        }
+
         .menu-main-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 13px 18px;
+            padding: 11px 10px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.25);
             cursor: pointer;
             color: #fff;
             font-weight: 800;
-            font-size: 12px;
-            gap: 8px;
+            font-size: 11px;
+            gap: 6px;
             width: 100%;
             background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #1d4ed8 100%);
             box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
         }
         .menu-main-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 18px rgba(2, 132, 199, 0.6);
             border-color: #38bdf8;
             filter: brightness(1.08);
+        }
+
+        .menu-ai-battle-btn {
+            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #c026d3 100%);
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.35);
+        }
+        .menu-ai-battle-btn:hover {
+            box-shadow: 0 0 18px rgba(147, 51, 234, 0.6);
+            border-color: #e879f9;
         }
 
         .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
@@ -725,6 +745,7 @@
 
     <button id="restore-btn" onclick="togglePanel()">MENU</button>
 
+    <!-- MODAL DE CONFIGURAÇÕES TRANSPARENTE E POSICIONADO ABAIXO -->
     <div id="settings-modal">
         <div class="settings-content">
             <div style="font-size: 13px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -732,14 +753,12 @@
                 <button class="action-btn" onclick="closeSettingsModal()">✕ Fechar</button>
             </div>
             
-            <!-- ABAS DE NAVEGAÇÃO DO MODAL -->
             <div class="settings-tabs">
                 <button class="tab-btn active" onclick="switchSettingsTab(event, 'tab-board')">🎨 Tabuleiro</button>
                 <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-pieces')">✨ Peças Neon</button>
                 <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-sfx')">🔊 Áudio & FX</button>
             </div>
 
-            <!-- CONTEÚDO ABA 1: TABULEIRO -->
             <div id="tab-board" class="tab-content active" style="grid-template-columns: 1fr 1fr;">
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('claro')">☀️ Claro (Padrão)</button>
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('paris')">🌸 Paris (Rosa Barbie)</button>
@@ -749,7 +768,6 @@
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setTheme('londres')">🌲 Londres (Floresta)</button>
             </div>
 
-            <!-- CONTEÚDO ABA 2: PEÇAS -->
             <div id="tab-pieces" class="tab-content" style="grid-template-columns: 1fr;">
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-blue-pink')">🔵 Azul Elétrico vs 🔴 Rosa Choque</button>
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-green-cyan')">🟢 Verde Esmeralda vs 🔵 Ciano</button>
@@ -759,7 +777,6 @@
                 <button class="action-btn" style="padding: 7px; font-size: 9.5px;" onclick="setPieceColors('pieces-ruby-indigo')">❤️ Rubi Intenso vs 🫐 Índigo Espacial</button>
             </div>
 
-            <!-- CONTEÚDO ABA 3: ÁUDIO E EFEITOS -->
             <div id="tab-sfx" class="tab-content" style="grid-template-columns: 1fr; gap: 6px; text-align: left; padding: 4px;">
                 <label style="font-size: 10px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; background: var(--chat-bg); padding: 6px; border-radius: 6px; border: 1px solid var(--panel-border);">
                     <span>🔊 Sons de Captura e Lance (SFX)</span>
@@ -775,19 +792,19 @@
         </div>
     </div>
 
-    <!-- MODAL DE LOGS DO SISTEMA -->
+    <!-- MODAL DE LOGS DO SISTEMA COM TELEMETRIA PROFUNDA -->
     <div id="log-modal">
         <div class="log-content">
             <div style="font-size: 13px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center;">
-                <span>📜 Relatório de Logs & Diagnóstico</span>
+                <span>📜 Telemetria & Diagnóstico Profundo</span>
                 <button class="action-btn" onclick="closeLogModal()">✕ Fechar</button>
             </div>
             <p style="font-size: 9px; color: var(--text-muted); margin-top: 4px; text-align: left;">
-                Histórico detalhado das conexões P2P, lances e diagnósticos de rede para análise técnica.
+                Relatório de engenharia avançada (Memória JS, FEN, Erros de Execução e Performance do Bot vs Bot).
             </p>
             <textarea id="logTextarea" class="log-textarea" readonly></textarea>
             <div style="display: flex; gap: 6px; margin-top: 8px;">
-                <button class="action-btn" style="flex: 1; padding: 8px; font-size: 9.5px; background: #0284c7; color: #fff;" onclick="copyLogContent()">📋 Copiar Log</button>
+                <button class="action-btn" style="flex: 1; padding: 8px; font-size: 9.5px; background: #0284c7; color: #fff;" onclick="copyLogContent()">📋 Copiar Relatório</button>
                 <button class="action-btn" style="flex: 1; padding: 8px; font-size: 9.5px; background: #16a34a; color: #fff;" onclick="sendLogByEmail()">📧 Enviar por E-mail</button>
             </div>
         </div>
@@ -804,8 +821,8 @@
 
     <div id="menu-screen">
         <div class="hero-box">
-            <h1>Termux Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.6.0</p>
+            <h1>Xadrez</h1>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.7.0</p>
         </div>
         
         <div class="menu-dashboard">
@@ -824,7 +841,11 @@
                 </div>
             </div>
 
-            <button class="menu-main-btn" onclick="startGame('pvp')">👥 <span>2 Jogadores (Mesa Local)</span></button>
+            <!-- Botões divididos lado a lado: 2 Jogadores & Bot vs Bot (Mestre) -->
+            <div class="menu-dual-row">
+                <button class="menu-main-btn" onclick="startGame('pvp')">👥 <span>2 Jogadores</span></button>
+                <button class="menu-main-btn menu-ai-battle-btn" onclick="startBotVsBot()">🤖 <span>Bot vs Bot (Mestre)</span></button>
+            </div>
             
             <div style="font-size: 10px; font-weight: bold; color: var(--board-border); margin-top: 2px; text-transform: uppercase; text-align: left;">🌐 Salas Globais (LAN P2P Multiplayer):</div>
             
@@ -886,7 +907,6 @@
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
                     <button class="action-btn" style="flex: 0 0 42px; padding: 4px; font-size: 8.5px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
                 </div>
-                <!-- Carrossel Horizontal Otimizado para Mobile -->
                 <div class="taunt-scroll-container">
                     <button class="taunt-btn" onclick="sendStandUpJoke()">🎤 Stand up</button>
                     <button class="taunt-btn" onclick="sendTaunt('O destino do rei foi selado!')">⚡ Profético</button>
@@ -919,6 +939,7 @@
     let currentTheme = 'claro';
     let soundEnabled = true;
     let trailEnabled = true;
+    let botVsBotInterval = null;
     
     let peer = null;
     let conn = null;
@@ -928,17 +949,24 @@
     let trailTimeout = null;
     let heartbeatInterval = null;
     
+    // --- SISTEMA DE TELEMETRIA E LOG PROFUNDO (v3.7.0) ---
     let systemLogs = [];
-    function addLog(msg) {
-        let time = new Date().toLocaleTimeString();
-        let logMsg = `[${time}] ${msg}`;
+    function addLog(msg, level = 'INFO') {
+        let time = new Date().toISOString();
+        let memoryUsage = performance && performance.memory ? ` | JS Heap: ${(performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2)} MB` : '';
+        let logMsg = `[${time}] [${level}] [FEN: ${chess.fen()}]${memoryUsage} -> ${msg}`;
         systemLogs.push(logMsg);
-        if (systemLogs.length > 300) systemLogs.shift();
+        if (systemLogs.length > 500) systemLogs.shift();
         let textarea = document.getElementById("logTextarea");
         if (textarea) textarea.value = systemLogs.join('\n');
     }
 
-    addLog("Sistema iniciado. Termux Xadrez v3.6.0 pronto.");
+    // Captura global de erros para o relatório de diagnóstico
+    window.onerror = function(message, source, lineno, colno, error) {
+        addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
+    };
+
+    addLog("Sistema Xadrez v3.7.0 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -946,7 +974,6 @@
     localStorage.setItem('termux_candies_b', '1');
     updateFightBarDisplay();
 
-    // Sintetizador simples de áudio SFX via Web Audio API (Sem dependência externa)
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSFX(type = 'move') {
         if (!soundEnabled) return;
@@ -1026,13 +1053,15 @@
     function openLogModal() {
         document.getElementById("logTextarea").value = systemLogs.join('\n');
         document.getElementById("log-modal").style.display = "flex";
+        addLog("Modal de telemetria aberto pelo usuário.", "UI");
     }
     function closeLogModal() { document.getElementById("log-modal").style.display = "none"; }
 
     function copyLogContent() {
         let text = systemLogs.join('\n');
         navigator.clipboard.writeText(text).then(() => {
-            alert("Log copiado para a área de transferência!");
+            alert("Relatório de telemetria completo copiado para a área de transferência!");
+            addLog("Relatório copiado para a área de transferência.", "UI");
         }).catch(() => {
             alert("Copie o texto manualmente da caixa de log.");
         });
@@ -1040,7 +1069,8 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.6.0&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.7.0&body=${text}`;
+        addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
     function switchSettingsTab(evt, tabId) {
@@ -1050,8 +1080,8 @@
         evt.currentTarget.classList.add('active');
     }
 
-    function toggleSFX(el) { soundEnabled = el.checked; addLog(`Efeitos sonoros: ${soundEnabled ? 'Ativados' : 'Desativados'}`); }
-    function toggleTrail(el) { trailEnabled = el.checked; addLog(`Animação de rastro: ${trailEnabled ? 'Ativada' : 'Desativada'}`); }
+    function toggleSFX(el) { soundEnabled = el.checked; addLog(`Efeitos sonoros: ${soundEnabled ? 'Ativados' : 'Desativados'}`, "CONFIG"); }
+    function toggleTrail(el) { trailEnabled = el.checked; addLog(`Animação de rastro: ${trailEnabled ? 'Ativada' : 'Desativada'}`, "CONFIG"); }
 
     function updateFightBarDisplay() {
         const total = candiesWhite + candiesBlack;
@@ -1076,22 +1106,49 @@
         document.body.classList.remove('theme-claro', 'theme-paris', 'theme-ouro', 'theme-novayork', 'theme-toquio', 'theme-londres', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
         document.body.classList.add(`theme-${themeName}`);
         currentCityKey = null;
-        addLog(`Tema alterado para: ${themeName}`);
+        addLog(`Tema alterado para: ${themeName}`, "CONFIG");
     }
 
     function setPieceColors(colorScheme) {
         document.body.classList.remove('pieces-blue-pink', 'pieces-green-cyan', 'pieces-gold-purple', 'pieces-silver-fire', 'pieces-neon-lime', 'pieces-ruby-indigo');
         document.body.classList.add(colorScheme);
-        addLog(`Esquema de cores das peças: ${colorScheme}`);
+        addLog(`Esquema de cores das peças alterado para: ${colorScheme}`, "CONFIG");
     }
 
-    function openSettingsModal() { document.getElementById("settings-modal").style.display = "flex"; }
+    function openSettingsModal() { document.getElementById("settings-modal").style.display = "flex"; addLog("Modal de configurações aberto.", "UI"); }
     function closeSettingsModal() { document.getElementById("settings-modal").style.display = "none"; }
 
     function selectAndStartPvE(level) {
         aiDifficulty = level;
-        addLog(`Iniciando jogo contra Oráculo Nível ${level}`);
+        if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
+        addLog(`Iniciando jogo contra Oráculo Nível ${level}`, "GAME");
         startGame('pve');
+    }
+
+    // --- MODO BOT VS BOT (Mestre) PARA ESTRESSE DE ENGENHARIA E TELEMETRIA ---
+    function startBotVsBot() {
+        if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
+        aiDifficulty = 5; // Nível Mestre
+        addLog("Modo Bot vs Bot (Mestre) iniciado para teste de carga e diagnóstico.", "BENCHMARK");
+        startGame('bot-vs-bot');
+
+        botVsBotInterval = setInterval(() => {
+            if (chess.game_over()) {
+                clearInterval(botVsBotInterval);
+                botVsBotInterval = null;
+                addLog("Modo Bot vs Bot encerrado por Fim de Jogo.", "BENCHMARK");
+                return;
+            }
+            try {
+                let startTime = performance.now();
+                makeAIMove();
+                let duration = performance.now() - startTime;
+                addLog(`Bot vs Bot jogada executada. Tempo de processamento: ${duration.toFixed(2)}ms`, "BENCHMARK");
+            } catch(e) {
+                addLog(`Erro crítico no loop Bot vs Bot: ${e.message}`, "FATAL");
+                clearInterval(botVsBotInterval);
+            }
+        }, 700); // Executa lances a cada 700ms para teste de estresse contínuo
     }
 
     function applyCityVisualTheme(cityKey) {
@@ -1104,7 +1161,7 @@
             document.body.classList.add(details.roomClass);
             setPieceColors(details.pieceColor);
             roomTitle.innerText = `${details.name}`;
-            addLog(`Sala aplicada: ${cityKey} com peças ${details.pieceColor}`);
+            addLog(`Sala aplicada: ${cityKey} com peças ${details.pieceColor}`, "ROOM");
         } else {
             document.body.classList.add(`theme-${currentTheme}`);
             roomTitle.innerText = "XADREZ";
@@ -1148,7 +1205,7 @@
         <div style="font-size: 8.5px; opacity: 0.85; margin-top: 2px;">Captura na casa: ${square.toUpperCase()}</div>`;
         
         addChatMessage("Árbitro", chatText, true, true);
-        addLog(`Captura efetuada: ${attName} (${attCol}) levou ${capName} em ${square}`);
+        addLog(`Captura efetuada: ${attName} (${attCol}) levou ${capName} em ${square}`, "MOVE");
     }
 
     function sendStandUpJoke() {
@@ -1181,7 +1238,7 @@
         candiesBlack = savedB;
         updateFightBarDisplay();
 
-        addLog(`Fim de jogo: ${reason}. Placar Bombons: W:${savedW} x B:${savedB}`);
+        addLog(`Fim de jogo: ${reason}. Placar Bombons: W:${savedW} x B:${savedB}`, "ENDGAME");
         document.getElementById("victory-subtitle").innerText = reason;
         document.getElementById("victory-screen").style.display = "flex";
     }
@@ -1200,7 +1257,8 @@
 
     function safeLeaveRoom() {
         if (confirm("Deseja sair da partida e retornar ao menu?")) {
-            addLog("Saindo da partida. Resetando estado.");
+            if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
+            addLog("Saindo da partida. Resetando estado.", "SYSTEM");
             localStorage.setItem('termux_candies_w', '1');
             localStorage.setItem('termux_candies_b', '1');
             if (heartbeatInterval) clearInterval(heartbeatInterval);
@@ -1212,7 +1270,8 @@
 
     function safeResetGame() {
         if (confirm("Reiniciar o tabuleiro?")) {
-            addLog("Solicitado reinício do tabuleiro.");
+            if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
+            addLog("Solicitado reinício do tabuleiro.", "SYSTEM");
             if (conn && conn.open) { try { conn.send({ type: 'reset-board' }); } catch(e){} }
             resetGame();
         }
@@ -1225,7 +1284,7 @@
                 try { 
                     conn.send({ type: 'ping', fen: chess.fen() }); 
                 } catch(e) {
-                    addLog(`Erro no heartbeat: ${e.message}`);
+                    addLog(`Erro no heartbeat: ${e.message}`, "WARN");
                 }
             }
         }, 3000);
@@ -1237,14 +1296,14 @@
         isSpectator = false;
         lastPathCoords = [];
         applyCityVisualTheme(null);
-        setPieceColors('pieces-blue-pink');
+        if (mode !== 'bot-vs-bot') setPieceColors('pieces-blue-pink');
         
         candiesWhite = parseInt(localStorage.getItem('termux_candies_w') || '1');
         candiesBlack = parseInt(localStorage.getItem('termux_candies_b') || '1');
         updateFightBarDisplay();
 
-        document.getElementById("player1-label").innerText = mode === 'pvp' ? "Jogador 1 (Brancas)" : "Você (Brancas)";
-        document.getElementById("player2-label").innerText = mode === 'pvp' ? "Jogador 2 (Pretas)" : (mode === 'pve' ? `IA Mestre (${aiDifficulty})` : "Oponente");
+        document.getElementById("player1-label").innerText = mode === 'pvp' ? "Jogador 1 (Brancas)" : (mode === 'bot-vs-bot' ? "Bot Mestre (Brancas)" : "Você (Brancas)");
+        document.getElementById("player2-label").innerText = mode === 'pvp' ? "Jogador 2 (Pretas)" : (mode === 'bot-vs-bot' ? "Bot Mestre (Pretas)" : (mode === 'pve' ? `IA Mestre (${aiDifficulty})` : "Oponente"));
         
         closeMenuTransition();
         chess.reset();
@@ -1253,7 +1312,7 @@
         updateTurnIndicators();
         updateCapturedDisplay();
         renderBoard();
-        addLog(`Jogo iniciado no modo: ${mode}`);
+        addLog(`Jogo iniciado no modo: ${mode}`, "GAME");
     }
 
     function closeMenuTransition() {
@@ -1298,12 +1357,12 @@
 
     function joinCityRoom(cityName) {
         let roomId = "termux-cities-v3016-" + cityName;
-        addLog(`Tentando conectar à sala P2P: ${cityName}`);
+        addLog(`Tentando conectar à sala P2P: ${cityName}`, "NET");
         if (peer) { try { peer.destroy(); } catch(e){} }
         peer = new Peer();
 
         peer.on('open', (id) => {
-            addLog(`PeerJS local aberto com ID: ${id}`);
+            addLog(`PeerJS local aberto com ID: ${id}`, "NET");
             let connAttempt = peer.connect(roomId, { reliable: true });
             let established = false;
 
@@ -1316,7 +1375,7 @@
 
             setTimeout(() => {
                 if (!established) {
-                    addLog(`Sala ${cityName} sem host ativo. Assumindo como Host...`);
+                    addLog(`Sala ${cityName} sem host ativo. Assumindo como Host...`, "NET");
                     try { peer.destroy(); } catch(e){}
                     peer = new Peer(roomId);
                     peer.on('open', () => {
@@ -1328,7 +1387,7 @@
                         setupHostServer(cityName);
                         setupHeartbeat();
                         startGameSetup();
-                        addLog(`Host criado com sucesso na sala: ${cityName}`);
+                        addLog(`Host criado com sucesso na sala: ${cityName}`, "NET");
                     });
                 }
             }, 1000);
@@ -1338,7 +1397,7 @@
     function setupHostServer(cityName) {
         let guestConn = null;
         peer.on('connection', (c) => {
-            addLog(`Nova conexão de convidado recebida.`);
+            addLog(`Nova conexão de convidado recebida.`, "NET");
             c.on('data', (data) => {
                 if (data.type === 'check-slot') {
                     if (!guestConn) {
@@ -1349,7 +1408,7 @@
                         try { c.send({ type: 'slot-response', status: 'accepted', fen: chess.fen(), city: cityName }); } catch(e){}
                         document.getElementById("player2-label").innerText = "Oponente (Pretas)";
                         addChatMessage("Sistema", "Oponente entrou na sala!", false, true);
-                        addLog("Oponente conectado como Pretas.");
+                        addLog("Oponente conectado como Pretas.", "NET");
                     } else {
                         try { c.send({ type: 'slot-response', status: 'full' }); } catch(e){}
                     }
@@ -1371,7 +1430,7 @@
                 try {
                     const result = chess.move(data.move);
                     if (result) {
-                        addLog(`Lance recebido do oponente: ${data.move.from}->${data.move.to}`);
+                        addLog(`Lance recebido do oponente: ${data.move.from}->${data.move.to}`, "NET");
                         triggerMoveTrail(data.move.from, data.move.to);
                         updateTurnIndicators();
                         updateCapturedDisplay();
@@ -1379,12 +1438,12 @@
                         if (result.captured) { showCaptureInChat(result); playSFX('capture'); } else { playSFX('move'); }
                         checkGameStateEvents(result, false);
                     }
-                } catch(err) { addLog(`Erro ao aplicar lance recebido: ${err.message}`); }
+                } catch(err) { addLog(`Erro ao aplicar lance recebido: ${err.message}`, "ERROR"); }
             } else if (data.type === 'chat') {
                 addChatMessage(data.sender || "Oponente", data.text, data.isAI || false, data.isAlert || false);
             }
         });
-        conn.on('close', () => { addLog("Conexão P2P encerrada pelo oponente."); });
+        conn.on('close', () => { addLog("Conexão P2P encerrada pelo oponente.", "NET"); });
     }
 
     function setupClientListeners(cityName) {
@@ -1399,14 +1458,14 @@
                     closeMenuTransition();
                     startGameSetup();
                     addChatMessage("Sistema", "Modo Espectador.", true);
-                    addLog("Conectado como Espectador.");
+                    addLog("Conectado como Espectador.", "NET");
                 } else {
                     playerColor = 'b';
                     isSpectator = false;
                     closeMenuTransition();
                     startGameSetup();
                     addChatMessage("Sistema", "Conectado com sucesso na sala!", false, true);
-                    addLog("Conectado como Jogador 2 (Pretas).");
+                    addLog("Conectado como Jogador 2 (Pretas).", "NET");
                 }
             } else if (data.type === 'reset-board') {
                 resetGame();
@@ -1414,7 +1473,7 @@
                 try {
                     const result = chess.move(data.move);
                     if (result) {
-                        addLog(`Lance recebido do Host: ${data.move.from}->${data.move.to}`);
+                        addLog(`Lance recebido do Host: ${data.move.from}->${data.move.to}`, "NET");
                         triggerMoveTrail(data.move.from, data.move.to);
                         updateTurnIndicators();
                         updateCapturedDisplay();
@@ -1422,7 +1481,7 @@
                         if (result.captured) { showCaptureInChat(result); playSFX('capture'); } else { playSFX('move'); }
                         checkGameStateEvents(result, false);
                     }
-                } catch(err) { addLog(`Erro ao aplicar lance: ${err.message}`); }
+                } catch(err) { addLog(`Erro ao aplicar lance: ${err.message}`, "ERROR"); }
             } else if (data.type === 'chat') {
                 addChatMessage(data.sender || "Oponente", data.text, data.isAI || false, data.isAlert || false);
             }
@@ -1450,7 +1509,7 @@
         updateTurnIndicators();
         updateCapturedDisplay();
         renderBoard();
-        addLog("Tabuleiro reiniciado.");
+        addLog("Tabuleiro reiniciado.", "SYSTEM");
     }
 
     function triggerMoveTrail(from, to) {
@@ -1473,15 +1532,15 @@
         badgeWhite.style.display = "none";
         badgeBlack.style.display = "none";
 
-        if (gameMode === 'pvp') {
+        if (gameMode === 'pvp' || gameMode === 'bot-vs-bot') {
             if (turn === 'w') {
                 cardWhite.classList.add('active-turn');
                 badgeWhite.style.display = "inline-block";
-                badgeWhite.innerText = "Sua Vez";
+                badgeWhite.innerText = gameMode === 'bot-vs-bot' ? "Processando..." : "Sua Vez";
             } else {
                 cardBlack.classList.add('active-turn');
                 badgeBlack.style.display = "inline-block";
-                badgeBlack.innerText = "Sua Vez";
+                badgeBlack.innerText = gameMode === 'bot-vs-bot' ? "Processando..." : "Sua Vez";
             }
         } else if (gameMode === 'network') {
             if (turn === 'w') {
@@ -1549,6 +1608,7 @@
 
     function checkGameStateEvents(move, broadcast = true) {
         if (chess.in_checkmate()) {
+            if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
             let loserColor = chess.turn();
             let winner = loserColor === 'w' ? "Pretas" : "Brancas";
             showVictoryScreen(`XEQUE-MATE! Vitória das ${winner}!`, loserColor === 'w' ? 'b' : 'w');
@@ -1606,7 +1666,7 @@
     }
 
     function handleSquareClick(square) {
-        if (isSpectator) return;
+        if (isSpectator || gameMode === 'bot-vs-bot') return;
         if (gameMode === 'network' && chess.turn() !== playerColor) return;
 
         if (selectedSquare === null) {
@@ -1623,7 +1683,7 @@
                 possibleMoves = [];
 
                 if (move) {
-                    addLog(`Lance executado: ${move.from}->${move.to}`);
+                    addLog(`Lance executado pelo jogador: ${move.from}->${move.to}`, "MOVE");
                     triggerMoveTrail(move.from, move.to);
                     updateTurnIndicators();
                     updateCapturedDisplay();
@@ -1653,7 +1713,7 @@
                     }
                 }
             } catch (err) {
-                addLog(`Exceção ao mover: ${err.message}`);
+                addLog(`Exceção ao mover: ${err.message}`, "ERROR");
                 selectedSquare = null;
                 possibleMoves = [];
                 renderBoard();
@@ -1673,7 +1733,7 @@
 
         const moveResult = chess.move(selectedMove);
         if (moveResult) {
-            addLog(`IA moveu: ${moveResult.from}->${moveResult.to}`);
+            addLog(`IA Nível ${aiDifficulty} moveu: ${moveResult.from}->${moveResult.to}`, "AI");
             triggerMoveTrail(moveResult.from, moveResult.to);
             if (moveResult.captured) { showCaptureInChat(moveResult); playSFX('capture'); } else { playSFX('move'); }
         }
