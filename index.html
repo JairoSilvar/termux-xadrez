@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.4.1</title>
+    <title>Termux Xadrez - v3.4.2</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -32,7 +32,7 @@
             --candy-w-bg: #0284c7;
             --candy-b-bg: #e11d48;
             --neon-glow-btn: 0 0 10px rgba(2, 132, 199, 0.4), inset 0 0 5px rgba(2, 132, 199, 0.2);
-            --turn-glow-color: #0284c7;
+            --turn-active-color: #16a34a;
         }
 
         body.theme-rosa {
@@ -59,7 +59,7 @@
             --candy-w-bg: #ec4899;
             --candy-b-bg: #831843;
             --neon-glow-btn: 0 0 12px rgba(236, 72, 153, 0.5), inset 0 0 6px rgba(236, 72, 153, 0.3);
-            --turn-glow-color: #ec4899;
+            --turn-active-color: #16a34a;
         }
 
         body.theme-ouro {
@@ -86,7 +86,7 @@
             --candy-w-bg: #ca8a04;
             --candy-b-bg: #854d0e;
             --neon-glow-btn: 0 0 12px rgba(234, 179, 8, 0.6), inset 0 0 6px rgba(234, 179, 8, 0.3);
-            --turn-glow-color: #eab308;
+            --turn-active-color: #16a34a;
         }
 
         body.theme-escuro {
@@ -113,7 +113,7 @@
             --candy-w-bg: #38bdf8;
             --candy-b-bg: #f43f5e;
             --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6), inset 0 0 6px rgba(56, 189, 248, 0.3);
-            --turn-glow-color: #38bdf8;
+            --turn-active-color: #22c55e;
         }
 
         body.theme-cyberpunk {
@@ -140,7 +140,7 @@
             --candy-w-bg: #00f0ff;
             --candy-b-bg: #f43f5e;
             --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7), inset 0 0 8px rgba(0, 240, 255, 0.4);
-            --turn-glow-color: #00f0ff;
+            --turn-active-color: #22c55e;
         }
 
         body.theme-floresta {
@@ -167,7 +167,7 @@
             --candy-w-bg: #22c55e;
             --candy-b-bg: #10b981;
             --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6), inset 0 0 6px rgba(34, 197, 94, 0.3);
-            --turn-glow-color: #22c55e;
+            --turn-active-color: #4ade80;
         }
 
         body.room-paris {
@@ -193,7 +193,7 @@
             --candy-w-bg: #ec4899;
             --candy-b-bg: #831843;
             --neon-glow-btn: 0 0 12px rgba(236, 72, 153, 0.5), inset 0 0 6px rgba(236, 72, 153, 0.3);
-            --turn-glow-color: #ec4899;
+            --turn-active-color: #16a34a;
         }
 
         body.room-toquio {
@@ -219,7 +219,7 @@
             --candy-w-bg: #00f0ff;
             --candy-b-bg: #f43f5e;
             --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7), inset 0 0 8px rgba(0, 240, 255, 0.4);
-            --turn-glow-color: #00f0ff;
+            --turn-active-color: #22c55e;
         }
 
         body.room-novayork {
@@ -245,7 +245,7 @@
             --candy-w-bg: #38bdf8;
             --candy-b-bg: #f43f5e;
             --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6), inset 0 0 6px rgba(56, 189, 248, 0.3);
-            --turn-glow-color: #38bdf8;
+            --turn-active-color: #22c55e;
         }
 
         body.room-londres {
@@ -271,7 +271,7 @@
             --candy-w-bg: #22c55e;
             --candy-b-bg: #10b981;
             --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6), inset 0 0 6px rgba(34, 197, 94, 0.3);
-            --turn-glow-color: #22c55e;
+            --turn-active-color: #4ade80;
         }
 
         /* --- PEÇAS NEON --- */
@@ -509,11 +509,11 @@
             transition: all 0.3s ease;
         }
 
-        /* DESTAQUE INTENSO PARA QUANDO FOR A VEZ DO OUTRO (OPONENTE) */
+        /* DESTAQUE APENAS PARA O JOGADOR ATUAL EM SEU RESPECTIVO TURNO */
         .player-card.active-turn {
-            border: 2px solid var(--turn-glow-color);
-            background: rgba(2, 132, 199, 0.08);
-            box-shadow: 0 0 15px var(--turn-glow-color), inset 0 0 5px var(--turn-glow-color);
+            border: 2px solid var(--turn-active-color);
+            background: rgba(34, 197, 94, 0.08);
+            box-shadow: 0 0 15px var(--turn-active-color), inset 0 0 5px var(--turn-active-color);
             transform: scale(1.01);
         }
 
@@ -526,13 +526,13 @@
         }
         .turn-badge {
             font-size: 8.5px;
-            background: var(--turn-glow-color);
+            background: var(--turn-active-color);
             color: #fff;
             padding: 2px 6px;
             border-radius: 4px;
             display: none;
             font-weight: 800;
-            box-shadow: 0 0 8px var(--turn-glow-color);
+            box-shadow: 0 0 8px var(--turn-active-color);
         }
 
         .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 14px; align-items: center; }
@@ -566,11 +566,12 @@
         .chat-msg.ai span { color: var(--board-border); }
         .chat-msg.ai { border-left: 3px solid var(--board-border); }
         
+        /* APENAS A NOTIFICAÇÃO ATUAL/MAIS RECENTE FICA DESTACADA EM NEON */
         .chat-msg.alert-neon {
-            background: rgba(2, 132, 199, 0.15);
-            border: 2px solid var(--board-border);
-            border-left: 5px solid var(--board-border);
-            box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid var(--turn-active-color);
+            border-left: 5px solid var(--turn-active-color);
+            box-shadow: 0 0 12px var(--turn-active-color);
             font-weight: bold;
         }
         
@@ -785,7 +786,7 @@
 
     <div id="menu-screen">
         <h1>Termux Xadrez</h1>
-        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.1</p>
+        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.2</p>
         
         <div style="display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 340px; align-items: center;">
             
@@ -851,7 +852,7 @@
             <div class="player-card" id="card-black">
                 <div class="player-info">
                     <span style="color:#f43f5e;" id="player2-label">Oponente</span>
-                    <span id="turn-badge-black" class="turn-badge">AGUARDANDO...</span>
+                    <span id="turn-badge-black" class="turn-badge">TURNO DELE</span>
                 </div>
                 <div id="captured-by-black" class="captured-area"></div>
             </div>
@@ -1011,6 +1012,13 @@
     function addChatMessage(sender, text, isAI = false, isAlert = false) {
         const box = document.getElementById("chat-box");
         if(!box) return;
+
+        // Remove o destaque de alertas anteriores para manter apenas a notificação atual destacada
+        if (isAlert) {
+            const oldAlerts = box.querySelectorAll('.alert-neon');
+            oldAlerts.forEach(el => el.classList.remove('alert-neon'));
+        }
+
         const msg = document.createElement("div");
         msg.className = `chat-msg ${isAI ? 'ai' : ''} ${isAlert ? 'alert-neon' : ''}`;
         msg.innerHTML = `<span>${sender}:</span> ${text}`;
@@ -1329,22 +1337,22 @@
         badgeWhite.style.display = "none";
         badgeBlack.style.display = "none";
 
-        // Regra de foco: Se for sua vez, seu card fica limpo/comportado. Se for a vez do oponente, o card dele ganha o destaque neon de alerta.
+        // Regra atualizada: O destaque neon (active-turn) aparece APENAS se for a sua vez de jogar e corresponder ao seu campo. Quando for a vez do oponente, o painel dele NÃO brilha na sua tela.
         if (turn === 'w') {
             if (playerColor === 'w') {
+                cardWhite.classList.add('active-turn');
                 badgeWhite.style.display = "inline-block";
                 badgeWhite.innerText = "SUA VEZ";
             } else {
-                cardWhite.classList.add('active-turn');
                 badgeWhite.style.display = "inline-block";
                 badgeWhite.innerText = "VEZ DO OPONENTE";
             }
         } else {
             if (playerColor === 'b') {
+                cardBlack.classList.add('active-turn');
                 badgeBlack.style.display = "inline-block";
                 badgeBlack.innerText = "SUA VEZ";
             } else {
-                cardBlack.classList.add('active-turn');
                 badgeBlack.style.display = "inline-block";
                 badgeBlack.innerText = "VEZ DO OPONENTE";
             }
