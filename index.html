@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.5.4</title>
+    <title>Termux Xadrez - v3.5.5</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -86,7 +86,7 @@
             --neon-glow-btn: 0 0 10px rgba(234, 179, 8, 0.4);
         }
 
-        /* --- TEMA NOVA YORK (Escuro Minimalista / room-novayork) --- */
+        /* --- TEMA NOVA YORK (Escuro Minimalista) --- */
         body.theme-novayork, body.room-novayork {
             --bg-main: #0f172a;
             --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
@@ -112,7 +112,7 @@
             --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6);
         }
 
-        /* --- TEMA TÓQUIO (Cyberpunk Neon / room-toquio) --- */
+        /* --- TEMA TÓQUIO (Cyberpunk Neon) --- */
         body.theme-toquio, body.room-toquio {
             --bg-main: #050508;
             --bg-gradient: radial-gradient(circle at center, #120a2a 0%, #050508 100%);
@@ -138,7 +138,7 @@
             --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7);
         }
 
-        /* --- TEMA LONDRES (Floresta Mística / room-londres) --- */
+        /* --- TEMA LONDRES (Floresta Mística) --- */
         body.theme-londres, body.room-londres {
             --bg-main: #062314;
             --bg-gradient: radial-gradient(circle at center, #0c3b22 0%, #062314 100%);
@@ -627,7 +627,6 @@
             filter: brightness(1.1);
         }
 
-        /* Botão 2 Jogadores Estilizado e Harmonioso (Imagem 1) */
         .menu-main-btn {
             display: flex;
             align-items: center;
@@ -754,7 +753,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Termux Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.4</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.5.5</p>
         </div>
         
         <div class="menu-dashboard">
@@ -884,7 +883,7 @@
         if (textarea) textarea.value = systemLogs.join('\n');
     }
 
-    addLog("Sistema iniciado. Termux Xadrez v3.5.4 pronto.");
+    addLog("Sistema iniciado. Termux Xadrez v3.5.5 pronto.");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -956,7 +955,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.4&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Termux%20Xadrez%20v3.5.5&body=${text}`;
     }
 
     function updateFightBarDisplay() {
