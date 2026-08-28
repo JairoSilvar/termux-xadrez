@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.3.7</title>
+    <title>Termux Xadrez - v3.3.9</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -28,9 +28,7 @@
             --modal-border: #0284c7;
             --modal-text: #0f172a;
             --trail-color: rgba(2, 132, 199, 0.95);
-            --trail-glow: rgba(2, 132, 199, 0.8);
             --hint-dot-color: #0284c7;
-            --hint-dot-border: #ffffff;
             --candy-w-bg: #0284c7;
             --candy-b-bg: #e11d48;
             --neon-glow-btn: 0 0 10px rgba(2, 132, 199, 0.4), inset 0 0 5px rgba(2, 132, 199, 0.2);
@@ -56,9 +54,7 @@
             --modal-border: #ec4899;
             --modal-text: #831843;
             --trail-color: rgba(219, 39, 119, 0.95);
-            --trail-glow: rgba(219, 39, 119, 0.8);
             --hint-dot-color: #db2777;
-            --hint-dot-border: #fce7f3;
             --candy-w-bg: #ec4899;
             --candy-b-bg: #831843;
             --neon-glow-btn: 0 0 12px rgba(236, 72, 153, 0.5), inset 0 0 6px rgba(236, 72, 153, 0.3);
@@ -84,9 +80,7 @@
             --modal-border: #ca8a04;
             --modal-text: #713f12;
             --trail-color: rgba(194, 65, 12, 0.95);
-            --trail-glow: rgba(234, 179, 8, 0.9);
             --hint-dot-color: #9a3412;
-            --hint-dot-border: #fef9c3;
             --candy-w-bg: #ca8a04;
             --candy-b-bg: #854d0e;
             --neon-glow-btn: 0 0 12px rgba(234, 179, 8, 0.6), inset 0 0 6px rgba(234, 179, 8, 0.3);
@@ -112,9 +106,7 @@
             --modal-border: #38bdf8;
             --modal-text: #f8fafc;
             --trail-color: rgba(56, 189, 248, 0.95);
-            --trail-glow: rgba(56, 189, 248, 0.9);
             --hint-dot-color: #38bdf8;
-            --hint-dot-border: #0f172a;
             --candy-w-bg: #38bdf8;
             --candy-b-bg: #f43f5e;
             --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6), inset 0 0 6px rgba(56, 189, 248, 0.3);
@@ -140,9 +132,7 @@
             --modal-border: #00f0ff;
             --modal-text: #00f0ff;
             --trail-color: rgba(0, 240, 255, 0.95);
-            --trail-glow: rgba(0, 240, 255, 0.9);
             --hint-dot-color: #00f0ff;
-            --hint-dot-border: #120e26;
             --candy-w-bg: #00f0ff;
             --candy-b-bg: #f43f5e;
             --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7), inset 0 0 8px rgba(0, 240, 255, 0.4);
@@ -168,9 +158,7 @@
             --modal-border: #22c55e;
             --modal-text: #d1fae5;
             --trail-color: rgba(74, 222, 128, 0.95);
-            --trail-glow: rgba(74, 222, 128, 0.9);
             --hint-dot-color: #4ade80;
-            --hint-dot-border: #064e3b;
             --candy-w-bg: #22c55e;
             --candy-b-bg: #10b981;
             --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6), inset 0 0 6px rgba(34, 197, 94, 0.3);
@@ -195,9 +183,7 @@
             --modal-border: #ec4899;
             --modal-text: #831843;
             --trail-color: rgba(219, 39, 119, 0.95);
-            --trail-glow: rgba(219, 39, 119, 0.8);
             --hint-dot-color: #db2777;
-            --hint-dot-border: #fce7f3;
             --candy-w-bg: #ec4899;
             --candy-b-bg: #831843;
             --neon-glow-btn: 0 0 12px rgba(236, 72, 153, 0.5), inset 0 0 6px rgba(236, 72, 153, 0.3);
@@ -222,9 +208,7 @@
             --modal-border: #00f0ff;
             --modal-text: #00f0ff;
             --trail-color: rgba(0, 240, 255, 0.95);
-            --trail-glow: rgba(0, 240, 255, 0.9);
             --hint-dot-color: #00f0ff;
-            --hint-dot-border: #120e26;
             --candy-w-bg: #00f0ff;
             --candy-b-bg: #f43f5e;
             --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7), inset 0 0 8px rgba(0, 240, 255, 0.4);
@@ -249,9 +233,7 @@
             --modal-border: #38bdf8;
             --modal-text: #f8fafc;
             --trail-color: rgba(56, 189, 248, 0.95);
-            --trail-glow: rgba(56, 189, 248, 0.9);
             --hint-dot-color: #38bdf8;
-            --hint-dot-border: #0f172a;
             --candy-w-bg: #38bdf8;
             --candy-b-bg: #f43f5e;
             --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6), inset 0 0 6px rgba(56, 189, 248, 0.3);
@@ -276,32 +258,25 @@
             --modal-border: #22c55e;
             --modal-text: #d1fae5;
             --trail-color: rgba(74, 222, 128, 0.95);
-            --trail-glow: rgba(74, 222, 128, 0.9);
             --hint-dot-color: #4ade80;
-            --hint-dot-border: #064e3b;
             --candy-w-bg: #22c55e;
             --candy-b-bg: #10b981;
             --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6), inset 0 0 6px rgba(34, 197, 94, 0.3);
         }
 
-        /* --- NEON ATIVO NAS PEÇAS E BOTÕES --- */
-        body.pieces-blue-pink .piece.white-piece { filter: drop-shadow(0 0 6px #00f0ff) brightness(1.2); }
-        body.pieces-blue-pink .piece.black-piece { filter: drop-shadow(0 0 6px #ff007f) brightness(1.1); }
-
-        body.pieces-green-cyan .piece.white-piece { filter: drop-shadow(0 0 6px #22c55e) brightness(1.2); }
-        body.pieces-green-cyan .piece.black-piece { filter: drop-shadow(0 0 6px #06b6d4) brightness(1.1); }
-
-        body.pieces-gold-purple .piece.white-piece { filter: drop-shadow(0 0 6px #eab308) brightness(1.2); }
-        body.pieces-gold-purple .piece.black-piece { filter: drop-shadow(0 0 6px #a855f7) brightness(1.1); }
-
-        body.pieces-silver-fire .piece.white-piece { filter: drop-shadow(0 0 6px #ffffff) brightness(1.2); }
-        body.pieces-silver-fire .piece.black-piece { filter: drop-shadow(0 0 6px #f97316) brightness(1.1); }
-
-        body.pieces-neon-lime .piece.white-piece { filter: drop-shadow(0 0 6px #a3e635) brightness(1.2); }
-        body.pieces-neon-lime .piece.black-piece { filter: drop-shadow(0 0 6px #ec4899) brightness(1.1); }
-
-        body.pieces-ruby-indigo .piece.white-piece { filter: drop-shadow(0 0 6px #e11d48) brightness(1.2); }
-        body.pieces-ruby-indigo .piece.black-piece { filter: drop-shadow(0 0 6px #6366f1) brightness(1.1); }
+        /* --- PEÇAS NEON --- */
+        body.pieces-blue-pink .piece.white-piece { filter: drop-shadow(0 0 5px #00f0ff) brightness(1.2); }
+        body.pieces-blue-pink .piece.black-piece { filter: drop-shadow(0 0 5px #ff007f) brightness(1.1); }
+        body.pieces-green-cyan .piece.white-piece { filter: drop-shadow(0 0 5px #22c55e) brightness(1.2); }
+        body.pieces-green-cyan .piece.black-piece { filter: drop-shadow(0 0 5px #06b6d4) brightness(1.1); }
+        body.pieces-gold-purple .piece.white-piece { filter: drop-shadow(0 0 5px #eab308) brightness(1.2); }
+        body.pieces-gold-purple .piece.black-piece { filter: drop-shadow(0 0 5px #a855f7) brightness(1.1); }
+        body.pieces-silver-fire .piece.white-piece { filter: drop-shadow(0 0 5px #ffffff) brightness(1.2); }
+        body.pieces-silver-fire .piece.black-piece { filter: drop-shadow(0 0 5px #f97316) brightness(1.1); }
+        body.pieces-neon-lime .piece.white-piece { filter: drop-shadow(0 0 5px #a3e635) brightness(1.2); }
+        body.pieces-neon-lime .piece.black-piece { filter: drop-shadow(0 0 5px #ec4899) brightness(1.1); }
+        body.pieces-ruby-indigo .piece.white-piece { filter: drop-shadow(0 0 5px #e11d48) brightness(1.2); }
+        body.pieces-ruby-indigo .piece.black-piece { filter: drop-shadow(0 0 5px #6366f1) brightness(1.1); }
 
         body, html {
             width: 100vw;
@@ -370,11 +345,7 @@
         .square.selected { background-color: rgba(56, 189, 248, 0.4) !important; }
         
         .square.last-move:not(.selected) {
-            animation: fadeCustomTrail 1.5s ease-out forwards;
-        }
-        @keyframes fadeCustomTrail {
-            0% { box-shadow: inset 0 0 20px var(--trail-color), 0 0 10px var(--trail-glow); opacity: 1; }
-            100% { box-shadow: inset 0 0 0px transparent, 0 0 0px transparent; opacity: 1; }
+            box-shadow: inset 0 0 15px var(--trail-color);
         }
 
         .square.highlight::after {
@@ -401,7 +372,6 @@
             background-position: center;
             pointer-events: none;
             transform: translate3d(0, 0, 0);
-            transition: transform 0.08s ease-in-out;
         }
 
         .side-section {
@@ -821,7 +791,7 @@
 
     <div id="menu-screen">
         <h1>Termux Xadrez</h1>
-        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.3.7</p>
+        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.3.9</p>
         
         <div style="display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 340px; align-items: center;">
             
@@ -991,7 +961,7 @@
         "Por que o peixe vive no fundo do mar? Para fugir dos boletos da superfície.",
         "Errar é humano, mas culpar a IA por perder no xadrez é pura autodefesa."
     ];
-    let currentJokeIndex = Math.floor(Math.random() * diverseStandUpList.length);
+    let currentJokeIndex = 0;
 
     function updateFightBarDisplay() {
         const total = candiesWhite + candiesBlack;
@@ -1060,7 +1030,7 @@
         let attCss = attCol === 'w' ? 'white-cap' : 'black-cap';
         let capCss = capCol === 'w' ? 'white-cap' : 'black-cap';
 
-        let chatText = `Captura na casa <b>${square}</b>: <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} eliminou <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}!`;
+        let chatText = `Captura em <b>${square}</b>: <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} eliminou <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}!`;
         
         addChatMessage("Árbitro", chatText, true);
     }
@@ -1385,7 +1355,7 @@
         lastPathCoords = [from, to];
         if (trailTimeout) clearTimeout(trailTimeout);
         renderBoard();
-        trailTimeout = setTimeout(() => { lastPathCoords = []; renderBoard(); }, 1500);
+        trailTimeout = setTimeout(() => { lastPathCoords = []; renderBoard(); }, 1200);
     }
 
     function updateTurnIndicators() {
@@ -1475,46 +1445,47 @@
     }
 
     function renderBoard() {
-        requestAnimationFrame(() => {
-            const boardEl = document.getElementById("chessboard");
-            if(!boardEl) return;
-            boardEl.innerHTML = "";
-            const board = chess.board();
+        const boardEl = document.getElementById("chessboard");
+        if(!boardEl) return;
+        
+        const fragment = document.createDocumentFragment();
+        const board = chess.board();
 
-            for (let r = 0; r < 8; r++) {
-                for (let c = 0; c < 8; c++) {
-                    const squareEl = document.createElement("div");
-                    const isLight = (r + c) % 2 === 0;
-                    squareEl.className = `square ${isLight ? 'light' : 'dark'}`;
-                    
-                    const squareCoord = String.fromCharCode(97 + c) + (8 - r);
-                    
-                    if (!pendingPopupData && lastPathCoords.includes(squareCoord)) {
-                        squareEl.classList.add('last-move');
-                    }
-
-                    if (selectedSquare === squareCoord) squareEl.classList.add('selected');
-                    if (possibleMoves.includes(squareCoord)) {
-                        squareEl.classList.add(chess.get(squareCoord) ? 'capture-highlight' : 'highlight');
-                    }
-
-                    const piece = board[r][c];
-                    if (piece) {
-                        const pieceKey = piece.color === 'w' ? piece.type.toUpperCase() : piece.type;
-                        const pieceEl = document.createElement("div");
-                        pieceEl.className = `piece ${piece.color === 'w' ? 'white-piece' : 'black-piece'}`;
-                        pieceEl.style.backgroundImage = `url('${pieceSvgs[pieceKey]}')`;
-                        squareEl.appendChild(pieceEl);
-                    }
-
-                    squareEl.addEventListener('click', () => {
-                        if (isTransitioningMove) return;
-                        handleSquareClick(squareCoord);
-                    });
-                    boardEl.appendChild(squareEl);
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 8; c++) {
+                const squareEl = document.createElement("div");
+                const isLight = (r + c) % 2 === 0;
+                squareEl.className = `square ${isLight ? 'light' : 'dark'}`;
+                
+                const squareCoord = String.fromCharCode(97 + c) + (8 - r);
+                
+                if (!pendingPopupData && lastPathCoords.includes(squareCoord)) {
+                    squareEl.classList.add('last-move');
                 }
+
+                if (selectedSquare === squareCoord) squareEl.classList.add('selected');
+                if (possibleMoves.includes(squareCoord)) {
+                    squareEl.classList.add(chess.get(squareCoord) ? 'capture-highlight' : 'highlight');
+                }
+
+                const piece = board[r][c];
+                if (piece) {
+                    const pieceKey = piece.color === 'w' ? piece.type.toUpperCase() : piece.type;
+                    const pieceEl = document.createElement("div");
+                    pieceEl.className = `piece ${piece.color === 'w' ? 'white-piece' : 'black-piece'}`;
+                    pieceEl.style.backgroundImage = `url('${pieceSvgs[pieceKey]}')`;
+                    squareEl.appendChild(pieceEl);
+                }
+
+                squareEl.addEventListener('click', () => {
+                    if (isTransitioningMove) return;
+                    handleSquareClick(squareCoord);
+                });
+                fragment.appendChild(squareEl);
             }
-        });
+        }
+        boardEl.innerHTML = "";
+        boardEl.appendChild(fragment);
     }
 
     function handleSquareClick(square) {
@@ -1552,7 +1523,7 @@
                         setTimeout(() => { 
                             makeAIMove(); 
                             isTransitioningMove = false;
-                        }, 100);
+                        }, 80);
                     } else if (!move.captured && !chess.in_check() && !chess.in_checkmate()) {
                         isTransitioningMove = false;
                     }
