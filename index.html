@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Termux Xadrez - v3.4.4</title>
+    <title>Termux Xadrez - v3.4.5</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -255,6 +255,7 @@
             --panel-border: #22c55e;
             --text-main: #d1fae5;
             --text-muted: #6ee7b7;
+            --board-bg: #0c3b22;
             --board-border: #10b981;
             --light-square: #166534;
             --dark-square: #064e3b;
@@ -509,7 +510,6 @@
             transition: all 0.3s ease;
         }
 
-        /* DESTAQUE NEON DE TURNO ATIVO */
         .player-card.active-turn {
             border: 2px solid var(--turn-active-color);
             background: rgba(34, 197, 94, 0.08);
@@ -785,7 +785,7 @@
 
     <div id="menu-screen">
         <h1>Termux Xadrez</h1>
-        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.4</p>
+        <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Criado por Jairo Silva - Versão 3.4.5</p>
         
         <div style="display: flex; flex-direction: column; gap: 7px; width: 100%; max-width: 340px; align-items: center;">
             
@@ -851,14 +851,14 @@
             <div class="player-card" id="card-black">
                 <div class="player-info">
                     <span style="color:#f43f5e;" id="player2-label">Oponente</span>
-                    <span id="turn-badge-black" class="turn-badge">VEZ DAS PRETAS</span>
+                    <span id="turn-badge-black" class="turn-badge">Sua Vez</span>
                 </div>
                 <div id="captured-by-black" class="captured-area"></div>
             </div>
 
             <div class="chat-container">
                 <div class="chat-box" id="chat-box">
-                    <div class="chat-msg ai"><span>Jairo Silva:</span> Boa partida.</div>
+                    <div class="chat-msg ai"><span>Jairo Silva:</span> Tabuleiro pronto. Boa sorte!</div>
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
@@ -879,7 +879,7 @@
             <div class="player-card" id="card-white">
                 <div class="player-info">
                     <span style="color:#38bdf8;" id="player1-label">Você</span>
-                    <span id="turn-badge-white" class="turn-badge">VEZ DAS BRANCAS</span>
+                    <span id="turn-badge-white" class="turn-badge">Sua Vez</span>
                 </div>
                 <div id="captured-by-white" class="captured-area"></div>
             </div>
@@ -904,9 +904,11 @@
     let heartbeatInterval = null;
     let isTransitioningMove = false;
 
-    // A pontuação inicia sempre em 1 vs 1 ao carregar/recarregar a página.
+    // Regra de bombons: Zera ao carregar/recarregar a página ou sair. Só acumula ao clicar em "Novo".
     let candiesWhite = 1;
     let candiesBlack = 1;
+    localStorage.setItem('termux_candies_w', '1');
+    localStorage.setItem('termux_candies_b', '1');
     updateFightBarDisplay();
 
     const pieceNames = {
@@ -1039,7 +1041,6 @@
         let attCss = attCol === 'w' ? 'white-cap' : 'black-cap';
         let capCss = capCol === 'w' ? 'white-cap' : 'black-cap';
 
-        // Ordem invertida: Peça com ícone capturou peça com ícone, e casa da captura abaixo em fonte menor
         let chatText = `<div style="display:flex; align-items:center; gap:4px; font-weight:bold;">
             <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} capturou 
             <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}
@@ -1060,6 +1061,7 @@
     }
 
     function showVictoryScreen(reason, winnerColor = null) {
+        // Acumula os pontos apenas ao terminar a partida corretamente e clicar em Novo
         let savedW = parseInt(localStorage.getItem('termux_candies_w') || '1');
         let savedB = parseInt(localStorage.getItem('termux_candies_b') || '1');
 
@@ -1097,6 +1099,9 @@
 
     function safeLeaveRoom() {
         if (confirm("Deseja sair da partida e retornar ao menu?")) {
+            // Ao sair, reseta os bombons para 1 vs 1
+            localStorage.setItem('termux_candies_w', '1');
+            localStorage.setItem('termux_candies_b', '1');
             if (heartbeatInterval) clearInterval(heartbeatInterval);
             if (conn) { try { conn.close(); } catch(e){} }
             if (peer) { try { peer.destroy(); } catch(e){} }
@@ -1231,7 +1236,8 @@
                         setupHeartbeat();
                         try { c.send({ type: 'slot-response', status: 'accepted', fen: chess.fen() }); } catch(e){}
                         document.getElementById("player2-label").innerText = "Oponente (Pretas)";
-                        addChatMessage("Sistema", "Oponente conectado!");
+                        // Notificação de entrada na sala destacada em neon (a próxima mensagem removerá o destaque)
+                        addChatMessage("Sistema", "Oponente entrou na sala!", false, true);
                     } else {
                         try { c.send({ type: 'slot-response', status: 'full' }); } catch(e){}
                     }
@@ -1283,7 +1289,8 @@
                     isSpectator = false;
                     closeMenuTransition();
                     startGameSetup();
-                    addChatMessage("Sistema", "Conectado como Pretas!");
+                    // Notificação de entrada do cliente destacada em neon
+                    addChatMessage("Sistema", "Conectado com sucesso na sala!", false, true);
                 }
             } else if (data.type === 'reset-board') {
                 resetGame();
@@ -1351,23 +1358,23 @@
         badgeBlack.style.display = "none";
 
         if (gameMode === 'pvp') {
-            // 2 jogadores na mesma tela: destaque neon para ambas as cores conforme o turno
+            // 2 jogadores na mesma tela: Exibe "Sua Vez" apenas para o lado correspondente ao turno atual com neon
             if (turn === 'w') {
                 cardWhite.classList.add('active-turn');
                 badgeWhite.style.display = "inline-block";
-                badgeWhite.innerText = "VEZ DAS BRANCAS";
+                badgeWhite.innerText = "Sua Vez";
             } else {
                 cardBlack.classList.add('active-turn');
                 badgeBlack.style.display = "inline-block";
-                badgeBlack.innerText = "VEZ DAS PRETAS";
+                badgeBlack.innerText = "Sua Vez";
             }
         } else if (gameMode === 'network') {
-            // Salas de rede: aviso discreto "Aguardando jogada..." sem neon quando for a vez do oponente na sua tela
+            // Salas de rede: "Sua Vez" com neon para você, e "Aguardando jogada..." discreto sem neon para o oponente
             if (turn === 'w') {
                 if (playerColor === 'w') {
                     cardWhite.classList.add('active-turn');
                     badgeWhite.style.display = "inline-block";
-                    badgeWhite.innerText = "SUA VEZ";
+                    badgeWhite.innerText = "Sua Vez";
                 } else {
                     badgeWhite.style.display = "inline-block";
                     badgeWhite.innerText = "Aguardando jogada...";
@@ -1376,7 +1383,7 @@
                 if (playerColor === 'b') {
                     cardBlack.classList.add('active-turn');
                     badgeBlack.style.display = "inline-block";
-                    badgeBlack.innerText = "SUA VEZ";
+                    badgeBlack.innerText = "Sua Vez";
                 } else {
                     badgeBlack.style.display = "inline-block";
                     badgeBlack.innerText = "Aguardando jogada...";
@@ -1387,7 +1394,7 @@
             if (turn === 'w') {
                 cardWhite.classList.add('active-turn');
                 badgeWhite.style.display = "inline-block";
-                badgeWhite.innerText = "SUA VEZ";
+                badgeWhite.innerText = "Sua Vez";
             } else {
                 badgeBlack.style.display = "inline-block";
                 badgeBlack.innerText = "Aguardando jogada...";
