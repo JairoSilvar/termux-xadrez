@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.25</title>
+    <title>Xadrez - v3.8.26</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -690,21 +690,19 @@
                 align-items: center !important;
                 overflow: hidden !important;
             }
-            /* Tabuleiro mantido no tamanho ideal sem encolher demais */
             .board-section {
                 width: calc(100vw - 6px) !important;
                 height: calc(100vw - 6px) !important;
-                max-width: 48vh !important;
-                max-height: 48vh !important;
+                max-width: 46vh !important;
+                max-height: 46vh !important;
                 padding: 2px !important;
                 flex-shrink: 0 !important;
                 margin-top: 2px !important;
             }
-            /* Painel lateral otimizado ocupando o restante exato da tela sem sobras e sem cortar o card inferior */
             .side-section {
                 width: calc(100vw - 6px) !important;
-                height: calc(100vh - 48vh - 10px) !important;
-                max-height: calc(100vh - 48vh - 10px) !important;
+                height: calc(100vh - 46vh - 10px) !important;
+                max-height: calc(100vh - 46vh - 10px) !important;
                 border-radius: 8px !important;
                 padding: 3px 5px !important;
                 flex-shrink: 0 !important;
@@ -722,7 +720,6 @@
                 opacity: 0;
                 pointer-events: none;
             }
-            /* Quando o menu/painel lateral estiver minimizado, o tabuleiro fica fixo no topo elegantemente */
             body.menu-hidden #game-wrapper {
                 justify-content: flex-start !important;
                 padding-top: 6px !important;
@@ -742,10 +739,11 @@
                 gap: 2px !important;
                 overflow: hidden !important;
             }
+            /* CORREÇÃO CRUCIAL: Limita estritamente o chat para sobrar espaço para os botões e card inferior */
             .chat-box {
                 flex: 1 !important;
-                min-height: 0px !important;
-                max-height: none !important;
+                min-height: 25px !important;
+                max-height: 75px !important;
                 overflow-y: auto !important;
             }
         }
@@ -889,7 +887,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.25</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.26</p>
         </div>
         
         <div class="menu-dashboard">
@@ -984,7 +982,7 @@
                 </div>
             </div>
 
-            <!-- CARD DO JOGADOR / VOCÊ (EMBAIXO, PERFEITAMENTE ENCAIXADO SEM ESPAÇO MORTO) -->
+            <!-- CARD DO JOGADOR / VOCÊ (EMBAIXO, VISÍVEL E GARANTIDO) -->
             <div class="player-card" id="card-white">
                 <div class="player-info">
                     <span style="color:#0284c7;" id="player1-label">Você</span>
@@ -1030,7 +1028,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.25 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.26 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1143,7 +1141,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.25&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.26&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
@@ -1818,7 +1816,7 @@
                 }
             } catch (err) {
                 addLog(`Exceção ao mover: ${err.message}`, "ERROR");
-                selectedSquare = `null`;
+                selectedSquare = null;
                 possibleMoves = [];
                 renderBoard();
             }
