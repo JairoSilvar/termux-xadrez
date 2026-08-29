@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.27</title>
+    <title>Xadrez - v3.8.28</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -197,13 +197,14 @@
             height: 100vh;
             background: var(--bg-gradient);
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             padding: 4px;
-            gap: 6px;
+            gap: 4px;
         }
 
+        /* --- TABULEIRO MÁXIMO E ABSOLUTO NO TOPO (Prioridade Zero) --- */
         .board-section {
             display: flex;
             flex-direction: column;
@@ -211,13 +212,12 @@
             justify-content: center;
             background: var(--panel-bg);
             border: 2px solid var(--board-border);
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            padding: 3px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            padding: 2px;
             position: relative;
             flex-shrink: 0;
             backdrop-filter: blur(10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #chessboard {
@@ -226,8 +226,8 @@
             grid-template-rows: repeat(8, 1fr);
             width: 100%;
             height: 100%;
-            border: 2px solid var(--panel-border);
-            border-radius: 6px;
+            border: 1.5px solid var(--panel-border);
+            border-radius: 4px;
             overflow: hidden;
             transform: translate3d(0, 0, 0);
         }
@@ -271,23 +271,29 @@
             transform: translate3d(0, 0, 0);
         }
 
+        /* --- PAINEL INFERIOR UNIFICADO (Ocupa exatamente o espaço restante sem sobras e sem cortar nada) --- */
         .side-section {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             background: var(--panel-bg);
             border: 2px solid var(--panel-border);
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            padding: 4px 6px;
             flex-shrink: 0;
             z-index: 500;
             backdrop-filter: blur(10px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100vw;
+            max-width: 520px;
+            flex: 1;
+            min-height: 0px;
+            overflow: hidden;
+            gap: 3px;
         }
         .side-section.minimized {
+            height: 0px !important;
             width: 0px !important;
-            min-width: 0px !important;
             padding: 0px !important;
             border: none !important;
             overflow: hidden;
@@ -310,8 +316,9 @@
         #restore-btn:hover { box-shadow: 0 0 18px var(--board-border); transform: scale(1.05); }
 
         @media (min-width: 901px) {
-            .board-section { height: 94vh; max-height: 920px; width: 94vh; max-width: 920px; aspect-ratio: 1/1; }
-            .side-section { width: 340px; height: 94vh; max-height: 920px; }
+            #game-wrapper { flex-direction: row; justify-content: center; align-items: center; gap: 8px; }
+            .board-section { height: 92vh; max-height: 900px; width: 92vh; max-width: 900px; aspect-ratio: 1/1; }
+            .side-section { width: 360px; height: 92vh; max-height: 900px; flex: unset; }
             #restore-btn { top: 20px; right: 20px; padding: 10px 18px; border-radius: 10px; font-size: 11px; }
         }
         @media (max-width: 900px) {
@@ -327,20 +334,20 @@
             justify-content: space-between;
             align-items: center;
             border-radius: 4px;
-            padding: 2px 5px;
+            padding: 2px 4px;
             background: var(--chat-bg);
             gap: 2px;
             white-space: nowrap;
             flex-shrink: 0;
         }
-        .brand-title > span { overflow: hidden; text-overflow: ellipsis; max-width: 85px; }
+        .brand-title > span { overflow: hidden; text-overflow: ellipsis; max-width: 120px; }
 
         .header-actions { display: flex; gap: 2px; align-items: center; flex-wrap: nowrap; }
         .action-btn {
             background: var(--btn-bg);
             color: var(--text-main);
             border: 1px solid var(--panel-border);
-            padding: 2px 4px;
+            padding: 2px 5px;
             border-radius: 3px;
             cursor: pointer;
             font-size: 7.5px;
@@ -445,7 +452,6 @@
             flex-direction: column;
             gap: 2px;
             min-height: 20px;
-            max-height: 60px;
         }
         .chat-msg { background: var(--chat-msg-bg); padding: 2px 4px; border-radius: 3px; border-left: 2px solid #f43f5e; line-height: 1.15; }
         .chat-msg span { color: #f43f5e; font-weight: bold; }
@@ -679,38 +685,40 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
         .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- SINTONIA FINA MOBILE PORTRAIT (ENQUADRAMENTO PERFEITO SEM SOBRAS) --- */
+        /* --- SINTONIA FINA MOBILE PORTRAIT (GARANTIA MÁXIMA DE TAMANHO DO TABULEIRO E VISIBILIDADE DO CARD INFERIOR) --- */
         @media (max-width: 900px) and (orientation: portrait) {
             #game-wrapper {
                 flex-direction: column !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
                 padding: 3px !important;
-                gap: 3px !important;
+                gap: 2px !important;
                 height: 100vh !important;
                 width: 100vw !important;
-                justify-content: center !important;
-                align-items: center !important;
                 overflow: hidden !important;
             }
+            /* O tabuleiro agora usa o tamanho máximo da largura da tela (quase quadrado perfeito), dando prioridade total */
             .board-section {
                 width: calc(100vw - 6px) !important;
                 height: calc(100vw - 6px) !important;
-                max-width: 44vh !important;
-                max-height: 44vh !important;
+                max-width: 54vh !important;
+                max-height: 54vh !important;
                 padding: 2px !important;
                 flex-shrink: 0 !important;
             }
+            /* Painel compacto e ajustado milimetricamente para que o card inferior apareça sempre */
             .side-section {
                 width: calc(100vw - 6px) !important;
-                height: calc(100vh - 44vh - 12px) !important;
-                max-height: calc(100vh - 44vh - 12px) !important;
-                border-radius: 8px !important;
+                height: calc(100vh - 54vh - 10px) !important;
+                max-height: calc(100vh - 54vh - 10px) !important;
+                border-radius: 6px !important;
                 padding: 3px 5px !important;
                 flex-shrink: 0 !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-between !important;
                 overflow: hidden !important;
-                gap: 1px !important;
+                gap: 2px !important;
             }
             .side-section.minimized {
                 height: 0px !important;
@@ -722,58 +730,13 @@
             }
             body.menu-hidden #game-wrapper {
                 justify-content: flex-start !important;
-                padding-top: 6px !important;
+                padding-top: 4px !important;
             }
             body.menu-hidden .board-section {
                 width: calc(100vw - 6px) !important;
                 height: calc(100vw - 6px) !important;
-                max-width: 90vh !important;
-                max-height: 90vh !important;
-            }
-        }
-
-        /* --- CORREÇÃO PARA CELULAR/TABLET DEITADO (LANDSCAPE) --- */
-        @media (max-width: 900px) and (orientation: landscape) {
-            #game-wrapper {
-                flex-direction: row !important;
-                padding: 4px;
-                gap: 6px;
-                height: 100vh;
-                width: 100vw;
-                justify-content: center;
-                align-items: center;
-                overflow: hidden;
-            }
-            .board-section {
-                width: calc(96vh - 8px) !important;
-                height: calc(96vh - 8px) !important;
-                max-width: 62vw !important;
-                max-height: 96vh !important;
-                padding: 4px;
-                flex-shrink: 0;
-            }
-            .side-section {
-                width: 320px !important;
-                height: 96vh !important;
-                max-height: 96vh !important;
-                border-radius: 12px;
-                flex-shrink: 0;
-                padding: 6px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                overflow: hidden;
-            }
-            .side-section.minimized {
-                width: 0px !important;
-                height: 96vh !important;
-                padding: 0px !important;
-            }
-            body.menu-hidden .board-section {
-                width: 98vh !important;
-                height: 98vh !important;
-                max-width: 92vw !important;
-                max-height: 98vh !important;
+                max-width: 92vh !important;
+                max-height: 92vh !important;
             }
         }
     </style>
@@ -863,7 +826,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.27</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.28</p>
         </div>
         
         <div class="menu-dashboard">
@@ -958,7 +921,7 @@
                 </div>
             </div>
 
-            <!-- CARD DO JOGADOR / VOCÊ (EMBAIXO, 100% GARANTIDO E VISÍVEL SEM SOBRAS) -->
+            <!-- CARD DO JOGADOR / VOCÊ (EMBAIXO, 100% GARANTIDO E VISÍVEL) -->
             <div class="player-card" id="card-white">
                 <div class="player-info">
                     <span style="color:#0284c7;" id="player1-label">Você</span>
@@ -1004,7 +967,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.27 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.28 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1117,7 +1080,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.27&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.28&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
@@ -1800,12 +1763,12 @@
     }
 
     function makeAIMove() {
-        const moves = chess.moves({ verbose: true });
-        if (moves.length === 0) return;
-        let selectedMove = moves[Math.floor(Math.random() * moves.length)];
+        const losses = chess.moves({ verbose: true });
+        if (losses.length === 0) return;
+        let selectedMove = losses[Math.floor(Math.random() * losses.length)];
         
         if (aiDifficulty >= 3) {
-            let captures = moves.filter(m => m.captured);
+            let captures = losses.filter(m => m.captured);
             if (captures.length > 0) selectedMove = captures[0];
         }
 
