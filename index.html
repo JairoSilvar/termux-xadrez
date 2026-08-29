@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.33</title>
+    <title>Xadrez - v3.8.34</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -305,7 +305,7 @@
         }
         #restore-btn:hover { box-shadow: 0 0 18px var(--board-border); transform: scale(1.05); }
 
-        /* --- MODO PC / DESKTOP (USANDO 100% DO ESPAÇO COM TABULEIRO GIGANTE E PROPORCIONAL) --- */
+        /* --- MODO PC / DESKTOP (USANDO 100% DA TELA COM TABULEIRO GIGANTE) --- */
         @media (min-width: 901px) {
             #game-wrapper { 
                 flex-direction: row !important; 
@@ -380,10 +380,10 @@
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
             border-radius: 6px;
-            padding: 5px 8px;
+            padding: 4px 8px;
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
             flex-shrink: 0;
         }
         .candy-bar-header {
@@ -396,7 +396,7 @@
         .candy-bar-track {
             position: relative;
             width: 100%;
-            height: 6px;
+            height: 5px;
             background: rgba(0,0,0,0.15);
             border-radius: 3px;
             overflow: hidden;
@@ -408,7 +408,7 @@
         .candy-icons-row {
             display: flex;
             justify-content: space-between;
-            font-size: 9px;
+            font-size: 8.5px;
             color: var(--text-muted);
             font-weight: 600;
         }
@@ -416,10 +416,10 @@
         .player-card {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
-            padding: 6px 8px;
+            padding: 5px 8px;
             border-radius: 6px;
             transition: all 0.3s ease;
             flex-shrink: 0;
@@ -429,19 +429,19 @@
             background: rgba(34, 197, 94, 0.08);
             box-shadow: 0 0 8px var(--turn-active-color);
         }
-        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; font-weight: bold; }
+        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: bold; }
         .turn-badge {
-            font-size: 8.5px;
+            font-size: 8px;
             background: var(--turn-active-color);
             color: #fff;
-            padding: 2px 5px;
+            padding: 1px 4px;
             border-radius: 3px;
             display: none;
             font-weight: 800;
         }
 
-        .captured-area { display: flex; gap: 3px; flex-wrap: wrap; min-height: 12px; align-items: center; }
-        .captured-icon { width: 12px; height: 12px; background-size: contain; background-repeat: no-repeat; }
+        .captured-area { display: flex; gap: 3px; flex-wrap: wrap; min-height: 10px; align-items: center; }
+        .captured-icon { width: 11px; height: 11px; background-size: contain; background-repeat: no-repeat; }
         .captured-icon.white-cap { filter: brightness(1.2); }
         .captured-icon.black-cap { filter: brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
 
@@ -450,7 +450,7 @@
             flex-direction: column;
             flex: 1;
             min-height: 0px;
-            gap: 5px;
+            gap: 4px;
             overflow: hidden;
         }
         .chat-box {
@@ -458,16 +458,17 @@
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
             border-radius: 6px;
-            padding: 6px;
+            padding: 5px;
             overflow-y: auto;
-            font-size: 10px;
+            font-size: 9.5px;
             color: var(--text-main);
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            min-height: 40px;
+            gap: 3px;
+            min-height: 25px;
+            max-height: 60px;
         }
-        .chat-msg { background: var(--chat-msg-bg); padding: 4px 6px; border-radius: 4px; border-left: 3px solid #f43f5e; line-height: 1.3; }
+        .chat-msg { background: var(--chat-msg-bg); padding: 3px 5px; border-radius: 4px; border-left: 3px solid #f43f5e; line-height: 1.25; }
         .chat-msg span { color: #f43f5e; font-weight: bold; }
         .chat-msg.ai span { color: var(--board-border); }
         .chat-msg.ai { border-left: 3px solid var(--board-border); }
@@ -485,26 +486,26 @@
             background: var(--chat-input-bg);
             border: 1px solid var(--panel-border);
             color: var(--text-main);
-            padding: 6px 8px;
+            padding: 5px 8px;
             border-radius: 4px;
-            font-size: 10px;
+            font-size: 9.5px;
             outline: none;
         }
         .chat-input:focus { border-color: var(--board-border); box-shadow: var(--neon-glow-btn); }
         
         .taunt-scroll-container {
             display: flex;
-            gap: 5px;
+            gap: 4px;
             overflow-x: auto;
             flex-shrink: 0;
-            padding: 3px 0;
+            padding: 2px 0;
             scrollbar-width: thin;
             scrollbar-color: var(--board-border) var(--chat-bg);
             cursor: default;
             user-select: none;
             -webkit-overflow-scrolling: touch;
         }
-        .taunt-scroll-container::-webkit-scrollbar { height: 4px; }
+        .taunt-scroll-container::-webkit-scrollbar { height: 3px; }
         .taunt-scroll-container::-webkit-scrollbar-track { background: var(--chat-bg); border-radius: 3px; }
         .taunt-scroll-container::-webkit-scrollbar-thumb { background: var(--board-border); border-radius: 3px; }
 
@@ -512,8 +513,8 @@
             background: var(--chat-input-bg);
             color: var(--board-border);
             border: 1px solid var(--panel-border);
-            font-size: 9px;
-            padding: 5px 9px;
+            font-size: 8.5px;
+            padding: 4px 8px;
             border-radius: 4px;
             cursor: pointer;
             text-align: center;
@@ -700,38 +701,38 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
         .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- MODO CELULAR / MOBILE PORTRAIT (EXATAMENTE COMO NA IMAGEM 1: CHAT ROLÁVEL, BOTÕES CÔMODOS E CARD 100% VISÍVEL) --- */
+        /* --- MODO CELULAR / MOBILE PORTRAIT (AJUSTE FINO DO RODAPÉ E BOTÕES) --- */
         @media (max-width: 900px) and (orientation: portrait) {
             #game-wrapper {
                 flex-direction: column !important;
                 justify-content: flex-start !important;
                 align-items: center !important;
-                padding: 4px !important;
-                gap: 4px !important;
+                padding: 3px !important;
+                gap: 3px !important;
                 height: 100vh !important;
                 width: 100vw !important;
                 overflow: hidden !important;
             }
             .board-section {
-                width: calc(100vw - 8px) !important;
-                height: calc(100vw - 8px) !important;
-                max-width: 47vh !important;
-                max-height: 47vh !important;
-                padding: 3px !important;
+                width: calc(100vw - 6px) !important;
+                height: calc(100vw - 6px) !important;
+                max-width: 44vh !important;
+                max-height: 44vh !important;
+                padding: 2px !important;
                 flex-shrink: 0 !important;
             }
             .side-section {
-                width: calc(100vw - 8px) !important;
-                height: calc(100vh - 47vh - 14px) !important;
-                max-height: calc(100vh - 47vh - 14px) !important;
+                width: calc(100vw - 6px) !important;
+                height: calc(100vh - 44vh - 10px) !important;
+                max-height: calc(100vh - 44vh - 10px) !important;
                 border-radius: 8px !important;
-                padding: 5px 6px !important;
+                padding: 4px 6px !important;
                 flex-shrink: 0 !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-between !important;
                 overflow: hidden !important;
-                gap: 3px !important;
+                gap: 2px !important;
             }
             .side-section.minimized {
                 height: 0px !important;
@@ -743,18 +744,18 @@
             }
             .chat-box {
                 flex: 1 !important;
-                min-height: 25px !important;
-                max-height: 70px !important;
+                min-height: 18px !important;
+                max-height: 48px !important;
             }
             body.menu-hidden #game-wrapper {
                 justify-content: flex-start !important;
-                padding-top: 6px !important;
+                padding-top: 4px !important;
             }
             body.menu-hidden .board-section {
-                width: calc(100vw - 8px) !important;
-                height: calc(100vw - 8px) !important;
-                max-width: 90vh !important;
-                max-height: 90vh !important;
+                width: calc(100vw - 6px) !important;
+                height: calc(100vw - 6px) !important;
+                max-width: 92vh !important;
+                max-height: 92vh !important;
             }
         }
     </style>
@@ -844,7 +845,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.33</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.34</p>
         </div>
         
         <div class="menu-dashboard">
@@ -985,7 +986,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.33 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.34 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1098,7 +1099,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.33&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.34&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
@@ -1760,7 +1761,6 @@
                         }, 80);
                     }
                 } else {
-                    const percent = chess.get(square);
                     const piece = chess.get(square);
                     if (piece && (gameMode === 'pvp' || gameMode === 'network' || piece.color === chess.turn())) {
                         selectedSquare = square;
