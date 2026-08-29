@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.32</title>
+    <title>Xadrez - v3.8.33</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -197,11 +197,10 @@
             height: 100vh;
             background: var(--bg-gradient);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2px;
-            gap: 2px;
+            padding: 6px;
+            gap: 12px;
         }
 
         /* --- TABULEIRO PRINCIPAL --- */
@@ -214,7 +213,7 @@
             border: 2px solid var(--board-border);
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            padding: 2px;
+            padding: 3px;
             position: relative;
             flex-shrink: 0;
             backdrop-filter: blur(10px);
@@ -280,11 +279,11 @@
             border: 2px solid var(--panel-border);
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            padding: 3px 5px;
+            padding: 8px 10px;
             flex-shrink: 0;
             z-index: 500;
             backdrop-filter: blur(10px);
-            gap: 2px;
+            gap: 6px;
         }
         .side-section.minimized {
             height: 0px !important;
@@ -296,7 +295,7 @@
             pointer-events: none;
         }
 
-        /* --- BOTÃO DE RESTAURAR MENU MAIS BONITO E BEM POSICIONADO MAIS EMBAIXO --- */
+        /* --- BOTÃO DE RESTAURAR MENU --- */
         #restore-btn {
             position: fixed;
             bottom: 15px;
@@ -318,35 +317,44 @@
         }
         #restore-btn:hover { box-shadow: 0 0 20px var(--board-border); transform: translateX(-50%) scale(1.05); }
 
+        /* --- LAYOUT COMPUTADOR (PC) / DESKTOP (Tabuleiro Altura Total e Chat Preenchendo o Espaço) --- */
         @media (min-width: 901px) {
             #game-wrapper {
                 flex-direction: row !important;
                 justify-content: center !important;
                 align-items: center !important;
-                gap: 12px !important;
-                padding: 10px !important;
+                gap: 16px !important;
+                padding: 6px !important;
                 height: 100vh !important;
                 width: 100vw !important;
             }
+            /* Tabuleiro ocupa exatamente a altura máxima da tela sem margens verticais sobrando */
             .board-section {
-                height: 94vh !important;
-                max-height: 94vh !important;
-                width: 94vh !important;
-                max-width: 94vh !important;
+                height: calc(100vh - 12px) !important;
+                max-height: calc(100vh - 12px) !important;
+                width: calc(100vh - 12px) !important;
+                max-width: calc(100vh - 12px) !important;
                 aspect-ratio: 1/1 !important;
             }
             .side-section {
-                width: 380px !important;
-                height: 94vh !important;
-                max-height: 94vh !important;
+                width: 420px !important;
+                height: calc(100vh - 12px) !important;
+                max-height: calc(100vh - 12px) !important;
                 flex: unset !important;
+            }
+            /* No PC, o chat-box ganha flex: 1 expansivo preenchendo todo o espaço em branco destacado na imagem */
+            .chat-box {
+                flex: 1 !important;
+                max-height: none !important;
+                min-height: 180px !important;
+                font-size: 10px !important;
             }
             #restore-btn { top: 15px; bottom: auto; left: auto; right: 15px; transform: none; padding: 8px 16px; border-radius: 8px; font-size: 11px; }
             #restore-btn:hover { transform: scale(1.05); }
         }
 
         .brand-title {
-            font-size: 8.5px;
+            font-size: 9.5px;
             font-weight: bold;
             color: var(--text-main);
             border-bottom: 1px solid var(--panel-border);
@@ -354,23 +362,23 @@
             justify-content: space-between;
             align-items: center;
             border-radius: 4px;
-            padding: 2px 4px;
+            padding: 4px 6px;
             background: var(--chat-bg);
-            gap: 2px;
+            gap: 4px;
             white-space: nowrap;
             flex-shrink: 0;
         }
-        .brand-title > span { overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+        .brand-title > span { overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
 
-        .header-actions { display: flex; gap: 2px; align-items: center; flex-wrap: nowrap; }
+        .header-actions { display: flex; gap: 3px; align-items: center; flex-wrap: nowrap; }
         .action-btn {
             background: var(--btn-bg);
             color: var(--text-main);
             border: 1px solid var(--panel-border);
-            padding: 2px 5px;
-            border-radius: 3px;
+            padding: 3px 7px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 7.5px;
+            font-size: 8.5px;
             font-weight: bold;
             transition: all 0.2s ease;
             white-space: nowrap;
@@ -386,23 +394,23 @@
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
             border-radius: 4px;
-            padding: 2px 5px;
+            padding: 4px 6px;
             display: flex;
             flex-direction: column;
-            gap: 1px;
+            gap: 2px;
             flex-shrink: 0;
         }
         .candy-bar-header {
             display: flex;
             justify-content: space-between;
-            font-size: 7px;
+            font-size: 8px;
             font-weight: bold;
             color: var(--text-muted);
         }
         .candy-bar-track {
             position: relative;
             width: 100%;
-            height: 3px;
+            height: 4px;
             background: rgba(0,0,0,0.15);
             border-radius: 2px;
             overflow: hidden;
@@ -414,7 +422,7 @@
         .candy-icons-row {
             display: flex;
             justify-content: space-between;
-            font-size: 7px;
+            font-size: 8px;
             color: var(--text-muted);
             font-weight: 600;
         }
@@ -422,11 +430,11 @@
         .player-card {
             display: flex;
             flex-direction: column;
-            gap: 1px;
+            gap: 2px;
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
-            padding: 3px 5px;
-            border-radius: 4px;
+            padding: 5px 8px;
+            border-radius: 5px;
             transition: all 0.3s ease;
             flex-shrink: 0;
         }
@@ -435,19 +443,19 @@
             background: rgba(34, 197, 94, 0.08);
             box-shadow: 0 0 6px var(--turn-active-color);
         }
-        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; font-weight: bold; }
+        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; font-weight: bold; }
         .turn-badge {
-            font-size: 7px;
+            font-size: 8px;
             background: var(--turn-active-color);
             color: #fff;
-            padding: 1px 3px;
-            border-radius: 2px;
+            padding: 1px 4px;
+            border-radius: 3px;
             display: none;
             font-weight: 800;
         }
 
-        .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 8px; align-items: center; }
-        .captured-icon { width: 9px; height: 9px; background-size: contain; background-repeat: no-repeat; }
+        .captured-area { display: flex; gap: 3px; flex-wrap: wrap; min-height: 11px; align-items: center; }
+        .captured-icon { width: 11px; height: 11px; background-size: contain; background-repeat: no-repeat; }
         .captured-icon.white-cap { filter: brightness(1.2); }
         .captured-icon.black-cap { filter: brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
 
@@ -456,25 +464,22 @@
             flex-direction: column;
             flex: 1;
             min-height: 0px;
-            gap: 2px;
+            gap: 4px;
             overflow: hidden;
         }
         .chat-box {
-            flex: 1;
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
-            border-radius: 4px;
-            padding: 3px;
+            border-radius: 5px;
+            padding: 6px;
             overflow-y: auto;
-            font-size: 8.5px;
+            font-size: 9px;
             color: var(--text-main);
             display: flex;
             flex-direction: column;
-            gap: 2px;
-            min-height: 25px;
-            max-height: 52px; /* Altura estritamente otimizada para eliminar espaço em branco */
+            gap: 3px;
         }
-        .chat-msg { background: var(--chat-msg-bg); padding: 2px 4px; border-radius: 3px; border-left: 2px solid #f43f5e; line-height: 1.15; }
+        .chat-msg { background: var(--chat-msg-bg); padding: 3px 6px; border-radius: 3px; border-left: 2px solid #f43f5e; line-height: 1.25; }
         .chat-msg span { color: #f43f5e; font-weight: bold; }
         .chat-msg.ai span { color: var(--board-border); }
         .chat-msg.ai { border-left: 2px solid var(--board-border); }
@@ -486,48 +491,49 @@
             font-weight: bold;
         }
         
-        .chat-input-row { display: flex; gap: 2px; flex-shrink: 0; }
+        .chat-input-row { display: flex; gap: 4px; flex-shrink: 0; }
         .chat-input {
             flex: 1;
             background: var(--chat-input-bg);
             border: 1px solid var(--panel-border);
             color: var(--text-main);
-            padding: 3px 5px;
-            border-radius: 3px;
-            font-size: 8.5px;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 9px;
             outline: none;
         }
         .chat-input:focus { border-color: var(--board-border); box-shadow: var(--neon-glow-btn); }
         
         .taunt-scroll-container {
             display: flex;
-            gap: 3px;
+            gap: 4px;
             overflow-x: auto;
             flex-shrink: 0;
-            padding: 2px 0;
+            padding: 3px 2px;
             scrollbar-width: thin;
             scrollbar-color: var(--board-border) var(--chat-bg);
             cursor: default;
             user-select: none;
             -webkit-overflow-scrolling: touch;
         }
-        .taunt-scroll-container::-webkit-scrollbar { height: 3px; }
-        .taunt-scroll-container::-webkit-scrollbar-track { background: var(--chat-bg); border-radius: 2px; }
-        .taunt-scroll-container::-webkit-scrollbar-thumb { background: var(--board-border); border-radius: 2px; }
+        .taunt-scroll-container::-webkit-scrollbar { height: 4px; }
+        .taunt-scroll-container::-webkit-scrollbar-track { background: var(--chat-bg); border-radius: 3px; }
+        .taunt-scroll-container::-webkit-scrollbar-thumb { background: var(--board-border); border-radius: 3px; }
 
         .taunt-btn {
             background: var(--chat-input-bg);
             color: var(--board-border);
             border: 1px solid var(--panel-border);
-            font-size: 7.5px;
-            padding: 3px 6px;
-            border-radius: 3px;
+            font-size: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
             cursor: pointer;
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
             white-space: nowrap;
             flex-shrink: 0;
             transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
         .taunt-btn:hover { background: var(--btn-hover); box-shadow: var(--neon-glow-btn); border-color: var(--board-border); }
 
@@ -707,32 +713,33 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
         .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- SINTONIA FINA MOBILE PORTRAIT (TABULEIRO OTIMIZADO + SEM ESPAÇO EM BRANCO) --- */
+        /* --- SINTONIA FINA MOBILE PORTRAIT (Mantém o tamanho do tabuleiro ótimo e garante o card final 100% visível) --- */
         @media (max-width: 900px) and (orientation: portrait) {
             #game-wrapper {
                 flex-direction: column !important;
                 justify-content: flex-start !important;
                 align-items: center !important;
-                padding: 2px !important;
-                gap: 2px !important;
+                padding: 4px !important;
+                gap: 4px !important;
                 height: 100vh !important;
                 width: 100vw !important;
                 overflow: hidden !important;
             }
+            /* Tabuleiro mantido no tamanho ideal que você aprovou (50vh) */
             .board-section {
-                width: calc(100vw - 4px) !important;
-                height: calc(100vw - 4px) !important;
-                max-width: 53vh !important;
-                max-height: 53vh !important;
+                width: calc(100vw - 8px) !important;
+                height: calc(100vw - 8px) !important;
+                max-width: 50vh !important;
+                max-height: 50vh !important;
                 padding: 2px !important;
                 flex-shrink: 0 !important;
             }
             .side-section {
-                width: calc(100vw - 4px) !important;
-                height: calc(100vh - 53vh - 6px) !important;
-                max-height: calc(100vh - 53vh - 6px) !important;
+                width: calc(100vw - 8px) !important;
+                height: calc(100vh - 50vh - 14px) !important;
+                max-height: calc(100vh - 50vh - 14px) !important;
                 border-radius: 6px !important;
-                padding: 3px 5px !important;
+                padding: 4px 6px !important;
                 flex-shrink: 0 !important;
                 display: flex !important;
                 flex-direction: column !important;
@@ -748,7 +755,12 @@
                 opacity: 0;
                 pointer-events: none;
             }
-            /* Quando o menu está ocultado, o tabuleiro assume tamanho máximo impecável ocupando a tela inteira */
+            /* No celular, limitamos o chat-box especificamente para que o card de baixo nunca seja empurrado para fora */
+            .chat-box {
+                flex: 1 !important;
+                min-height: 20px !important;
+                max-height: 42px !important;
+            }
             body.menu-hidden #game-wrapper {
                 justify-content: center !important;
                 padding: 4px !important;
@@ -847,7 +859,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.32</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.33</p>
         </div>
         
         <div class="menu-dashboard">
@@ -928,7 +940,7 @@
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
-                    <button class="action-btn" style="flex: 0 0 38px; padding: 3px; font-size: 8px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
+                    <button class="action-btn" style="flex: 0 0 38px; padding: 4px; font-size: 8.5px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
                 </div>
                 <div class="taunt-scroll-container" id="tauntScrollContainer">
                     <button class="taunt-btn" onclick="sendStandUpJoke()">🎤 Stand up</button>
@@ -988,7 +1000,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.32 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.33 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1101,7 +1113,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.32&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.33&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
