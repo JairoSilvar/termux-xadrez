@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.32</title>
+    <title>Xadrez - v3.8.33</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -305,26 +305,28 @@
         }
         #restore-btn:hover { box-shadow: 0 0 18px var(--board-border); transform: scale(1.05); }
 
-        /* --- CONFIGURAÇÃO EXCLUSIVA PARA PC / DESKTOP (Tabuleiro Gigante e Proporcional) --- */
+        /* --- MODO PC / DESKTOP (USANDO 100% DO ESPAÇO COM TABULEIRO GIGANTE E PROPORCIONAL) --- */
         @media (min-width: 901px) {
             #game-wrapper { 
                 flex-direction: row !important; 
                 justify-content: center !important; 
                 align-items: center !important; 
-                gap: 20px !important; 
-                padding: 20px !important;
+                gap: 16px !important; 
+                padding: 16px !important;
+                width: 100vw !important;
+                height: 100vh !important;
             }
             .board-section { 
-                height: 92vh !important; 
-                max-height: 940px !important; 
-                width: 92vh !important; 
-                max-width: 940px !important; 
+                height: calc(100vh - 32px) !important; 
+                max-height: 980px !important; 
+                width: calc(100vh - 32px) !important; 
+                max-width: 980px !important; 
                 aspect-ratio: 1/1 !important; 
             }
             .side-section { 
-                width: 420px !important; 
-                height: 92vh !important; 
-                max-height: 940px !important; 
+                width: 440px !important; 
+                height: calc(100vh - 32px) !important; 
+                max-height: 980px !important; 
                 flex: unset !important; 
             }
             .chat-box { 
@@ -698,11 +700,11 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
         .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- CONFIGURAÇÃO EXCLUSIVA PARA CELULAR / MOBILE PORTRAIT (Garantia do card 100% visível) --- */
+        /* --- MODO CELULAR / MOBILE PORTRAIT (EXATAMENTE COMO NA IMAGEM 1: CHAT ROLÁVEL, BOTÕES CÔMODOS E CARD 100% VISÍVEL) --- */
         @media (max-width: 900px) and (orientation: portrait) {
             #game-wrapper {
                 flex-direction: column !important;
-                justify-content: space-between !important;
+                justify-content: flex-start !important;
                 align-items: center !important;
                 padding: 4px !important;
                 gap: 4px !important;
@@ -713,15 +715,15 @@
             .board-section {
                 width: calc(100vw - 8px) !important;
                 height: calc(100vw - 8px) !important;
-                max-width: 50vh !important;
-                max-height: 50vh !important;
+                max-width: 47vh !important;
+                max-height: 47vh !important;
                 padding: 3px !important;
                 flex-shrink: 0 !important;
             }
             .side-section {
                 width: calc(100vw - 8px) !important;
-                height: calc(100vh - 50vh - 12px) !important;
-                max-height: calc(100vh - 50vh - 12px) !important;
+                height: calc(100vh - 47vh - 14px) !important;
+                max-height: calc(100vh - 47vh - 14px) !important;
                 border-radius: 8px !important;
                 padding: 5px 6px !important;
                 flex-shrink: 0 !important;
@@ -741,7 +743,8 @@
             }
             .chat-box {
                 flex: 1 !important;
-                max-height: 42px !important;
+                min-height: 25px !important;
+                max-height: 70px !important;
             }
             body.menu-hidden #game-wrapper {
                 justify-content: flex-start !important;
@@ -841,7 +844,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.32</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.33</p>
         </div>
         
         <div class="menu-dashboard">
@@ -982,7 +985,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.32 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.33 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1095,7 +1098,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.32&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.33&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
@@ -1757,6 +1760,7 @@
                         }, 80);
                     }
                 } else {
+                    const percent = chess.get(square);
                     const piece = chess.get(square);
                     if (piece && (gameMode === 'pvp' || gameMode === 'network' || piece.color === chess.turn())) {
                         selectedSquare = square;
