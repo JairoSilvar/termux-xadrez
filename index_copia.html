@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Xadrez - v3.8.35</title>
+    <title>Xadrez - v3.8.36</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -200,8 +200,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 6px;
-            gap: 6px;
+            padding: 4px;
+            gap: 4px;
         }
 
         /* --- TABULEIRO PRINCIPAL --- */
@@ -212,9 +212,9 @@
             justify-content: center;
             background: var(--panel-bg);
             border: 2px solid var(--board-border);
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            padding: 4px;
+            padding: 2px;
             position: relative;
             flex-shrink: 0;
             backdrop-filter: blur(10px);
@@ -227,7 +227,7 @@
             width: 100%;
             height: 100%;
             border: 1.5px solid var(--panel-border);
-            border-radius: 6px;
+            border-radius: 4px;
             overflow: hidden;
             transform: translate3d(0, 0, 0);
         }
@@ -278,13 +278,13 @@
             justify-content: space-between;
             background: var(--panel-bg);
             border: 2px solid var(--panel-border);
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            padding: 8px;
+            padding: 6px;
             flex-shrink: 0;
             z-index: 500;
             backdrop-filter: blur(10px);
-            gap: 6px;
+            gap: 4px;
         }
         .side-section.minimized {
             height: 0px !important;
@@ -318,28 +318,28 @@
         }
         #restore-btn:hover { box-shadow: 0 0 20px var(--board-border); transform: translateX(-50%) scale(1.05); }
 
-        /* --- OTIMIZAÇÃO EXATA PARA PC (TABULEIRO MAIOR 94vh E PAINEL LATERAL REDUZIDO) --- */
+        /* --- OTIMIZAÇÃO MÁXIMA PC (Tabuleiro 98vh ocupando quase toda a altura e painel lateral com 290px) --- */
         @media (min-width: 901px) {
             #game-wrapper {
                 flex-direction: row !important;
                 justify-content: center !important;
                 align-items: center !important;
-                gap: 16px !important;
-                padding: 12px !important;
+                gap: 12px !important;
+                padding: 4px !important;
                 height: 100vh !important;
                 width: 100vw !important;
             }
             .board-section {
-                height: 94vh !important;
-                max-height: 94vh !important;
-                width: 94vh !important;
-                max-width: 94vh !important;
+                height: 98vh !important;
+                max-height: 98vh !important;
+                width: 98vh !important;
+                max-width: 98vh !important;
                 aspect-ratio: 1/1 !important;
             }
             .side-section {
-                width: 320px !important; /* Reduzido de 400px para ficar mais compacto e elegante */
-                height: 94vh !important;
-                max-height: 94vh !important;
+                width: 290px !important; /* Mais estreito para dar máximo destaque ao tabuleiro */
+                height: 98vh !important;
+                max-height: 98vh !important;
                 flex: unset !important;
             }
             .chat-box {
@@ -365,17 +365,17 @@
             white-space: nowrap;
             flex-shrink: 0;
         }
-        .brand-title > span { overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        .brand-title > span { overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
 
-        .header-actions { display: flex; gap: 4px; align-items: center; flex-wrap: nowrap; }
+        .header-actions { display: flex; gap: 3px; align-items: center; flex-wrap: nowrap; }
         .action-btn {
             background: var(--btn-bg);
             color: var(--text-main);
             border: 1px solid var(--panel-border);
-            padding: 3px 7px;
+            padding: 3px 6px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 9px;
+            font-size: 8.5px;
             font-weight: bold;
             transition: all 0.2s ease;
             white-space: nowrap;
@@ -391,25 +391,25 @@
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
             border-radius: 6px;
-            padding: 5px 8px;
+            padding: 4px 6px;
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
             flex-shrink: 0;
         }
         .candy-bar-header {
             display: flex;
             justify-content: space-between;
-            font-size: 9px;
+            font-size: 8.5px;
             font-weight: bold;
             color: var(--text-muted);
         }
         .candy-bar-track {
             position: relative;
             width: 100%;
-            height: 5px;
+            height: 4px;
             background: rgba(0,0,0,0.15);
-            border-radius: 3px;
+            border-radius: 2px;
             overflow: hidden;
             display: flex;
             border: 1px solid var(--panel-border);
@@ -419,7 +419,7 @@
         .candy-icons-row {
             display: flex;
             justify-content: space-between;
-            font-size: 8.5px;
+            font-size: 8px;
             color: var(--text-muted);
             font-weight: 600;
         }
@@ -427,10 +427,10 @@
         .player-card {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
-            padding: 6px 8px;
+            padding: 5px 6px;
             border-radius: 6px;
             transition: all 0.3s ease;
             flex-shrink: 0;
@@ -440,19 +440,19 @@
             background: rgba(34, 197, 94, 0.08);
             box-shadow: 0 0 8px var(--turn-active-color);
         }
-        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: bold; }
+        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; font-weight: bold; }
         .turn-badge {
-            font-size: 8px;
+            font-size: 7.5px;
             background: var(--turn-active-color);
             color: #fff;
-            padding: 2px 5px;
+            padding: 2px 4px;
             border-radius: 3px;
             display: none;
             font-weight: 800;
         }
 
-        .captured-area { display: flex; gap: 3px; flex-wrap: wrap; min-height: 12px; align-items: center; }
-        .captured-icon { width: 13px; height: 13px; background-size: contain; background-repeat: no-repeat; }
+        .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 10px; align-items: center; }
+        .captured-icon { width: 11px; height: 11px; background-size: contain; background-repeat: no-repeat; }
         .captured-icon.white-cap { filter: brightness(1.2); }
         .captured-icon.black-cap { filter: brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
 
@@ -461,7 +461,7 @@
             flex-direction: column;
             flex: 1;
             min-height: 0px;
-            gap: 5px;
+            gap: 4px;
             overflow: hidden;
         }
         .chat-box {
@@ -469,16 +469,16 @@
             background: var(--chat-bg);
             border: 1px solid var(--panel-border);
             border-radius: 6px;
-            padding: 6px;
+            padding: 5px;
             overflow-y: auto;
-            font-size: 10px;
+            font-size: 9.5px;
             color: var(--text-main);
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            min-height: 60px;
+            gap: 3px;
+            min-height: 50px;
         }
-        .chat-msg { background: var(--chat-msg-bg); padding: 4px 6px; border-radius: 4px; border-left: 3px solid #f43f5e; line-height: 1.25; }
+        .chat-msg { background: var(--chat-msg-bg); padding: 3px 5px; border-radius: 4px; border-left: 3px solid #f43f5e; line-height: 1.2; }
         .chat-msg span { color: #f43f5e; font-weight: bold; }
         .chat-msg.ai span { color: var(--board-border); }
         .chat-msg.ai { border-left: 3px solid var(--board-border); }
@@ -490,32 +490,32 @@
             font-weight: bold;
         }
         
-        .chat-input-row { display: flex; gap: 4px; flex-shrink: 0; }
+        .chat-input-row { display: flex; gap: 3px; flex-shrink: 0; }
         .chat-input {
             flex: 1;
             background: var(--chat-input-bg);
             border: 1px solid var(--panel-border);
             color: var(--text-main);
-            padding: 6px 8px;
+            padding: 5px 6px;
             border-radius: 5px;
-            font-size: 10px;
+            font-size: 9.5px;
             outline: none;
         }
         .chat-input:focus { border-color: var(--board-border); box-shadow: var(--neon-glow-btn); }
         
         .taunt-scroll-container {
             display: flex;
-            gap: 4px;
+            gap: 3px;
             overflow-x: auto;
             flex-shrink: 0;
-            padding: 3px 0;
+            padding: 2px 0;
             scrollbar-width: thin;
             scrollbar-color: var(--board-border) var(--chat-bg);
             cursor: default;
             user-select: none;
             -webkit-overflow-scrolling: touch;
         }
-        .taunt-scroll-container::-webkit-scrollbar { height: 4px; }
+        .taunt-scroll-container::-webkit-scrollbar { height: 3px; }
         .taunt-scroll-container::-webkit-scrollbar-track { background: var(--chat-bg); border-radius: 3px; }
         .taunt-scroll-container::-webkit-scrollbar-thumb { background: var(--board-border); border-radius: 3px; }
 
@@ -523,8 +523,8 @@
             background: var(--chat-input-bg);
             color: var(--board-border);
             border: 1px solid var(--panel-border);
-            font-size: 9px;
-            padding: 5px 8px;
+            font-size: 8.5px;
+            padding: 4px 6px;
             border-radius: 4px;
             cursor: pointer;
             text-align: center;
@@ -711,7 +711,7 @@
         .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
         .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
 
-        /* --- SINTONIA FINA MOBILE PORTRAIT (Mantendo a perfeição do celular) --- */
+        /* --- SINTONIA FINA MOBILE PORTRAIT --- */
         @media (max-width: 900px) and (orientation: portrait) {
             #game-wrapper {
                 flex-direction: column !important;
@@ -769,7 +769,7 @@
 </head>
 <body class="theme-claro pieces-blue-pink">
 
-    <button id="restore-btn" onclick="togglePanel()">⚙️ RESTAURAR MENU</button>
+    <button id="restore-btn" onclick="togglePanel()">⚙️ MENU</button>
 
     <!-- MODAL DE CONFIGURAÇÕES -->
     <div id="settings-modal">
@@ -850,7 +850,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>Xadrez</h1>
-            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.35</p>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.36</p>
         </div>
         
         <div class="menu-dashboard">
@@ -931,7 +931,7 @@
                 </div>
                 <div class="chat-input-row">
                     <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
-                    <button class="action-btn" style="flex: 0 0 42px; padding: 4px; font-size: 8.5px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
+                    <button class="action-btn" style="flex: 0 0 38px; padding: 3px; font-size: 8px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
                 </div>
                 <div class="taunt-scroll-container" id="tauntScrollContainer">
                     <button class="taunt-btn" onclick="sendStandUpJoke()">🎤 Stand up</button>
@@ -991,7 +991,7 @@
         addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
     };
 
-    addLog("Sistema Xadrez v3.8.35 inicializado com sucesso.", "INIT");
+    addLog("Sistema Xadrez v3.8.36 inicializado com sucesso.", "INIT");
 
     let candiesWhite = 1;
     let candiesBlack = 1;
@@ -1104,7 +1104,7 @@
 
     function sendLogByEmail() {
         let text = encodeURIComponent(systemLogs.join('\n'));
-        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.35&body=${text}`;
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.36&body=${text}`;
         addLog("Solicitação de envio de log por e-mail disparada.", "UI");
     }
 
