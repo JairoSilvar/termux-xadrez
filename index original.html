@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xadrez - v3.8.38</title>
+    <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+        
+        /* --- TEMA CLARO (Padrão Inicial) --- */
+        :root {
+            --bg-main: #f8fafc;
+            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #cbd5e1 100%);
+            --panel-bg: rgba(255, 255, 255, 0.98);
+            --panel-border: #cbd5e1;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --board-border: #0284c7;
+            --light-square: #f1f5f9;
+            --dark-square: #64748b;
+            --chat-bg: #f1f5f9;
+            --chat-input-bg: #ffffff;
+            --chat-msg-bg: #e2e8f0;
+            --btn-bg: #e2e8f0;
+            --btn-hover: #cbd5e1;
+            --modal-bg: #ffffff; /* Menos transparente, fundo sólido */
+            --modal-border: #0284c7;
+            --modal-text: #0f172a;
+            --trail-color: rgba(2, 132, 199, 0.95);
+            --hint-dot-color: #0284c7;
+            --candy-w-bg: #0284c7;
+            --candy-b-bg: #e11d48;
+            --neon-glow-btn: 0 0 10px rgba(2, 132, 199, 0.3);
+            --turn-active-color: #16a34a;
+        }
+
+        /* --- TEMA PARIS (Barbie Clean & Chic) --- */
+        body.theme-paris, body.room-paris {
+            --bg-main: #fff0f5;
+            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fbcfe8 100%);
+            --panel-bg: rgba(255, 240, 245, 0.98);
+            --panel-border: #f472b6;
+            --text-main: #831843;
+            --text-muted: #db2777;
+            --board-border: #ec4899;
+            --light-square: #fdf2f8;
+            --dark-square: #f472b6;
+            --chat-bg: #ffe4e6;
+            --chat-input-bg: #ffffff;
+            --chat-msg-bg: #fbcfe8;
+            --btn-bg: #f472b6;
+            --btn-hover: #ec4899;
+            --modal-bg: #fff1f2;
+            --modal-border: #db2777;
+            --modal-text: #831843;
+            --trail-color: rgba(219, 39, 119, 0.95);
+            --hint-dot-color: #db2777;
+            --candy-w-bg: #ec4899;
+            --candy-b-bg: #831843;
+        }
+
+        /* --- TEMA OURO (Claro) --- */
+        body.theme-ouro {
+            --bg-main: #fefce8;
+            --bg-gradient: radial-gradient(circle at center, #ffffff 0%, #fef08a 100%);
+            --panel-bg: rgba(255, 255, 255, 0.98);
+            --panel-border: #eab308;
+            --text-main: #713f12;
+            --text-muted: #854d0e;
+            --board-border: #ca8a04;
+            --light-square: #fef9c3;
+            --dark-square: #ca8a04;
+            --chat-bg: #fefce8;
+            --chat-input-bg: #ffffff;
+            --chat-msg-bg: #fef08a;
+            --btn-bg: #fef08a;
+            --btn-hover: #fde047;
+            --modal-bg: #fffdeb;
+            --modal-border: #ca8a04;
+            --modal-text: #713f12;
+            --trail-color: rgba(194, 65, 12, 0.95);
+            --hint-dot-color: #9a3412;
+            --candy-w-bg: #ca8a04;
+            --candy-b-bg: #854d0e;
+            --neon-glow-btn: 0 0 10px rgba(234, 179, 8, 0.4);
+        }
+
+        /* --- TEMA NOVA YORK (Escuro Minimalista) --- */
+        body.theme-novayork, body.room-novayork {
+            --bg-main: #0f172a;
+            --bg-gradient: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            --panel-bg: rgba(30, 41, 59, 0.98);
+            --panel-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --board-border: #38bdf8;
+            --light-square: #cbd5e1;
+            --dark-square: #475569;
+            --chat-bg: rgba(15, 23, 42, 0.6);
+            --chat-input-bg: #0f172a;
+            --chat-msg-bg: #1e293b;
+            --btn-bg: #334155;
+            --btn-hover: #475569;
+            --modal-bg: #1e293b;
+            --modal-border: #38bdf8;
+            --modal-text: #f8fafc;
+            --trail-color: rgba(56, 189, 248, 0.95);
+            --hint-dot-color: #38bdf8;
+            --candy-w-bg: #38bdf8;
+            --candy-b-bg: #f43f5e;
+            --neon-glow-btn: 0 0 14px rgba(56, 189, 248, 0.6);
+        }
+
+        /* --- TEMA TÓQUIO (Cyberpunk Neon) --- */
+        body.theme-toquio, body.room-toquio {
+            --bg-main: #050508;
+            --bg-gradient: radial-gradient(circle at center, #120a2a 0%, #050508 100%);
+            --panel-bg: rgba(18, 14, 38, 0.98);
+            --panel-border: #f43f5e;
+            --text-main: #00f0ff;
+            --text-muted: #a855f7;
+            --board-border: #00f0ff;
+            --light-square: #2a1b4e;
+            --dark-square: #120a2a;
+            --chat-bg: rgba(11, 7, 26, 0.6);
+            --chat-input-bg: #0b071a;
+            --chat-msg-bg: #1a103c;
+            --btn-bg: #2d1b4e;
+            --btn-hover: #3b2363;
+            --modal-bg: #120e26;
+            --modal-border: #00f0ff;
+            --modal-text: #00f0ff;
+            --trail-color: rgba(0, 240, 255, 0.95);
+            --hint-dot-color: #00f0ff;
+            --candy-w-bg: #00f0ff;
+            --candy-b-bg: #f43f5e;
+            --neon-glow-btn: 0 0 15px rgba(0, 240, 255, 0.7);
+        }
+
+        /* --- TEMA LONDRES (Floresta Mística) --- */
+        body.theme-londres, body.room-londres {
+            --bg-main: #062314;
+            --bg-gradient: radial-gradient(circle at center, #0c3b22 0%, #062314 100%);
+            --panel-bg: rgba(12, 59, 34, 0.98);
+            --panel-border: #22c55e;
+            --text-main: #d1fae5;
+            --text-muted: #6ee7b7;
+            --board-border: #10b981;
+            --light-square: #166534;
+            --dark-square: #064e3b;
+            --chat-bg: rgba(5, 35, 20, 0.6);
+            --chat-input-bg: #052314;
+            --chat-msg-bg: #0f4c28;
+            --btn-bg: #14532d;
+            --btn-hover: #166534;
+            --modal-bg: #0c3b22;
+            --modal-border: #22c55e;
+            --modal-text: #d1fae5;
+            --trail-color: rgba(74, 222, 128, 0.95);
+            --hint-dot-color: #4ade80;
+            --candy-w-bg: #22c55e;
+            --candy-b-bg: #10b981;
+            --neon-glow-btn: 0 0 14px rgba(34, 197, 94, 0.6);
+        }
+
+        /* --- PEÇAS NEON --- */
+        body.pieces-blue-pink .piece.white-piece { filter: drop-shadow(0 0 5px #00f0ff) brightness(1.2); }
+        body.pieces-blue-pink .piece.black-piece { filter: drop-shadow(0 0 5px #ff007f) brightness(1.1); }
+        body.pieces-green-cyan .piece.white-piece { filter: drop-shadow(0 0 5px #22c55e) brightness(1.2); }
+        body.pieces-green-cyan .piece.black-piece { filter: drop-shadow(0 0 5px #06b6d4) brightness(1.1); }
+        body.pieces-gold-purple .piece.white-piece { filter: drop-shadow(0 0 5px #eab308) brightness(1.2); }
+        body.pieces-gold-purple .piece.black-piece { filter: drop-shadow(0 0 5px #a855f7) brightness(1.1); }
+        body.pieces-silver-fire .piece.white-piece { filter: drop-shadow(0 0 5px #ffffff) brightness(1.2); }
+        body.pieces-silver-fire .piece.black-piece { filter: drop-shadow(0 0 5px #f97316) brightness(1.1); }
+        body.pieces-neon-lime .piece.white-piece { filter: drop-shadow(0 0 5px #a3e635) brightness(1.2); }
+        body.pieces-neon-lime .piece.black-piece { filter: drop-shadow(0 0 5px #ec4899) brightness(1.1); }
+        body.pieces-ruby-indigo .piece.white-piece { filter: drop-shadow(0 0 5px #e11d48) brightness(1.2); }
+        body.pieces-ruby-indigo .piece.black-piece { filter: drop-shadow(0 0 5px #6366f1) brightness(1.1); }
+
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        #game-wrapper {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .board-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--panel-bg);
+            border: 2px solid var(--board-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            padding: 2px;
+            position: relative;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+        }
+
+        #chessboard {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 100%;
+            height: 100%;
+            border: 1.5px solid var(--panel-border);
+            border-radius: 4px;
+            overflow: hidden;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .square {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .light { background-color: var(--light-square); }
+        .dark { background-color: var(--dark-square); }
+        
+        .square.selected { background-color: rgba(56, 189, 248, 0.4) !important; }
+        .square.last-move:not(.selected) { box-shadow: inset 0 0 10px var(--trail-color); }
+
+        .square.highlight::after {
+            content: '';
+            position: absolute;
+            width: 25%;
+            height: 25%;
+            background-color: var(--hint-dot-color);
+            border-radius: 50%;
+        }
+        .square.capture-highlight::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 2px solid #f43f5e;
+            border-radius: 50%;
+        }
+
+        .piece {
+            width: 84%;
+            height: 84%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            pointer-events: none;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .side-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: var(--panel-bg);
+            border: 2px solid var(--panel-border);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            padding: 6px;
+            flex-shrink: 0;
+            z-index: 500;
+            backdrop-filter: blur(10px);
+            gap: 4px;
+        }
+        .side-section.minimized {
+            height: 0px !important;
+            width: 0px !important;
+            padding: 0px !important;
+            border: none !important;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #restore-btn {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(2, 132, 199, 0.45);
+            padding: 8px 24px;
+            border-radius: 24px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            display: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #restore-btn:hover { box-shadow: 0 0 20px var(--board-border); transform: translateX(-50%) scale(1.05); }
+
+        @media (min-width: 901px) {
+            #game-wrapper {
+                flex-direction: row !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 12px !important;
+                padding: 4px !important;
+                height: 100vh !important;
+                width: 100vw !important;
+            }
+            .board-section {
+                height: 98vh !important;
+                max-height: 98vh !important;
+                width: 98vh !important;
+                max-width: 98vh !important;
+                aspect-ratio: 1/1 !important;
+            }
+            .side-section {
+                width: 315px !important;
+                height: 98vh !important;
+                max-height: 98vh !important;
+                flex: unset !important;
+            }
+            .chat-box {
+                flex: 1 !important;
+                max-height: none !important;
+            }
+            #restore-btn { top: 15px; bottom: auto; left: auto; right: 15px; transform: none; padding: 8px 16px; border-radius: 8px; font-size: 11px; }
+            #restore-btn:hover { transform: scale(1.05); }
+        }
+
+        .brand-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 6px;
+            padding: 4px 6px;
+            background: var(--chat-bg);
+            gap: 2px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .brand-title > span { overflow: hidden; text-overflow: ellipsis; max-width: 95px; }
+
+        .header-actions { display: flex; gap: 2px; align-items: center; flex-wrap: nowrap; }
+        .action-btn {
+            background: var(--btn-bg);
+            color: var(--text-main);
+            border: 1px solid var(--panel-border);
+            padding: 3px 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 8px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .action-btn:hover {
+            background: var(--btn-hover);
+            box-shadow: var(--neon-glow-btn);
+            border-color: var(--board-border);
+            transform: translateY(-1px);
+        }
+
+        .candy-fight-bar-container {
+            background: var(--chat-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 4px 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+        .candy-bar-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8.5px;
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+        .candy-bar-track {
+            position: relative;
+            width: 100%;
+            height: 4px;
+            background: rgba(0,0,0,0.15);
+            border-radius: 2px;
+            overflow: hidden;
+            display: flex;
+            border: 1px solid var(--panel-border);
+        }
+        .candy-fill-white { height: 100%; background: var(--candy-w-bg); width: 50%; }
+        .candy-fill-black { height: 100%; background: var(--candy-b-bg); width: 50%; }
+        .candy-icons-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .player-card {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: var(--chat-bg);
+            border: 1px solid var(--panel-border);
+            padding: 5px 6px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .player-card.active-turn {
+            border: 2px solid var(--turn-active-color);
+            background: rgba(34, 197, 94, 0.08);
+            box-shadow: 0 0 8px var(--turn-active-color);
+        }
+        .player-info { display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; font-weight: bold; }
+        .turn-badge {
+            font-size: 7.5px;
+            background: var(--turn-active-color);
+            color: #fff;
+            padding: 2px 4px;
+            border-radius: 3px;
+            display: none;
+            font-weight: 800;
+        }
+
+        .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 10px; align-items: center; }
+        .captured-icon { width: 11px; height: 11px; background-size: contain; background-repeat: no-repeat; }
+        .captured-icon.white-cap { filter: brightness(1.2); }
+        .captured-icon.black-cap { filter: brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0px;
+            gap: 4px;
+            overflow: hidden;
+        }
+        .chat-box {
+            flex: 1;
+            background: var(--chat-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 5px;
+            overflow-y: auto;
+            font-size: 9.5px;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-height: 50px;
+        }
+        .chat-msg { background: var(--chat-msg-bg); padding: 3px 5px; border-radius: 4px; border-left: 3px solid #f43f5e; line-height: 1.2; }
+        .chat-msg span { color: #f43f5e; font-weight: bold; }
+        .chat-msg.ai span { color: var(--board-border); }
+        .chat-msg.ai { border-left: 3px solid var(--board-border); }
+        
+        .chat-msg.alert-neon {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid var(--turn-active-color);
+            border-left: 4px solid var(--turn-active-color);
+            font-weight: bold;
+        }
+        
+        .chat-input-row { display: flex; gap: 3px; flex-shrink: 0; }
+        .chat-input {
+            flex: 1;
+            background: var(--chat-input-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+            padding: 5px 6px;
+            border-radius: 5px;
+            font-size: 9.5px;
+            outline: none;
+        }
+        .chat-input:focus { border-color: var(--board-border); box-shadow: var(--neon-glow-btn); }
+        
+        .taunt-scroll-container {
+            display: flex;
+            gap: 3px;
+            overflow-x: auto;
+            flex-shrink: 0;
+            padding: 2px 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--board-border) var(--chat-bg);
+            cursor: default;
+            user-select: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .taunt-scroll-container::-webkit-scrollbar { height: 3px; }
+        .taunt-scroll-container::-webkit-scrollbar-track { background: var(--chat-bg); border-radius: 3px; }
+        .taunt-scroll-container::-webkit-scrollbar-thumb { background: var(--board-border); border-radius: 3px; }
+
+        .taunt-btn {
+            background: var(--chat-input-bg);
+            color: var(--board-border);
+            border: 1px solid var(--panel-border);
+            font-size: 8.5px;
+            padding: 4px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .taunt-btn:hover { background: var(--btn-hover); box-shadow: var(--neon-glow-btn); border-color: var(--board-border); }
+
+        #victory-screen, #settings-modal, #log-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5); /* Fundo externo escurecido para contraste */
+            backdrop-filter: blur(3px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 10px;
+        }
+        
+        /* Modais sólidos com fundo opaco baseado no tema */
+        .victory-card, .settings-content, .log-content {
+            background: var(--modal-bg);
+            border: 2px solid var(--modal-border);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            max-width: 400px;
+            width: 92%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            color: var(--modal-text);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .settings-tabs { display: flex; gap: 4px; margin-bottom: 8px; }
+        .tab-btn {
+            flex: 1;
+            padding: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            background: var(--btn-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+        .tab-btn.active { background: var(--modal-border); color: #fff; box-shadow: var(--neon-glow-btn); }
+        .tab-content { display: none; }
+        .tab-content.active { display: grid; gap: 6px; }
+
+        .log-textarea {
+            width: 100%;
+            height: 200px;
+            background: #0f172a;
+            color: #38bdf8;
+            border: 1px solid var(--panel-border);
+            font-family: monospace;
+            font-size: 9px;
+            padding: 6px;
+            border-radius: 6px;
+            margin-top: 6px;
+            resize: none;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+
+        #menu-screen {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 16px;
+            z-index: 4000;
+            overflow-y: auto;
+        }
+        .hero-box { margin-bottom: 12px; }
+        .hero-box h1 {
+            font-size: 34px;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+        .hero-box p { font-size: 10.5px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+
+        .menu-dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 440px;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 12px;
+            border-radius: 18px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            backdrop-filter: blur(16px);
+        }
+
+        .menu-section-card {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+            background: var(--chat-bg);
+            border: 1px solid var(--panel-border);
+            padding: 8px;
+            border-radius: 10px;
+        }
+        .menu-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-top: 2px; }
+        
+        .menu-grid-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 2px;
+            border-radius: 7px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            color: #fff;
+            font-weight: bold;
+            font-size: 9.5px;
+            gap: 2px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .menu-grid-btn span { font-size: 7px; opacity: 0.95; font-weight: 600; text-transform: uppercase; }
+        .menu-grid-btn:hover { transform: translateY(-2px); box-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
+
+        .menu-dual-row { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; width: 100%; }
+
+        .menu-main-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            color: #fff;
+            font-weight: 800;
+            font-size: 10.5px;
+            gap: 5px;
+            width: 100%;
+            background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #1d4ed8 100%);
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .menu-main-btn:hover { transform: translateY(-2px); box-shadow: 0 0 15px rgba(2, 132, 199, 0.6); }
+
+        .menu-ai-battle-btn {
+            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #c026d3 100%);
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.35);
+        }
+        .menu-ai-battle-btn:hover { box-shadow: 0 0 15px rgba(147, 51, 234, 0.6); }
+
+        .room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
+        .room-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            color: #fff;
+            font-weight: bold;
+            font-size: 10px;
+            gap: 3px;
+            transition: all 0.2s ease;
+        }
+        .room-btn:hover { transform: translateY(-2px); box-shadow: 0 0 12px rgba(0,0,0,0.2); }
+        .room-status { font-size: 7.5px; padding: 2px 5px; border-radius: 4px; background: rgba(0,0,0,0.5); text-transform: uppercase; font-weight: 700; }
+
+        @media (max-width: 900px) and (orientation: portrait) {
+            #game-wrapper {
+                flex-direction: column !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
+                padding: 2px !important;
+                gap: 2px !important;
+                height: 100vh !important;
+                width: 100vw !important;
+                overflow: hidden !important;
+            }
+            .board-section {
+                width: calc(100vw - 4px) !important;
+                height: calc(100vw - 4px) !important;
+                max-width: 56vh !important;
+                max-height: 56vh !important;
+                padding: 2px !important;
+                flex-shrink: 0 !important;
+            }
+            .side-section {
+                width: calc(100vw - 4px) !important;
+                height: calc(100vh - 56vh - 4px) !important;
+                max-height: calc(100vh - 56vh - 4px) !important;
+                border-radius: 6px !important;
+                padding: 4px 6px !important;
+                flex-shrink: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                overflow: hidden !important;
+                gap: 3px !important;
+            }
+            .side-section.minimized {
+                height: 0px !important;
+                width: 0px !important;
+                padding: 0px !important;
+                border: none !important;
+                opacity: 0;
+                pointer-events: none;
+            }
+            body.menu-hidden #game-wrapper {
+                justify-content: center !important;
+                padding: 2px !important;
+            }
+            body.menu-hidden .board-section {
+                width: calc(100vw - 4px) !important;
+                height: calc(100vw - 4px) !important;
+                max-width: 97vh !important;
+                max-height: 97vh !important;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.2/peerjs.min.js"></script>
+</head>
+<body class="theme-claro pieces-blue-pink">
+
+    <button id="restore-btn" onclick="togglePanel()">⚙️ MENU</button>
+
+    <div id="settings-modal">
+        <div class="settings-content">
+            <div style="font-size: 12px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span>⚙️ Configurações & Temas</span>
+                <button class="action-btn" onclick="closeSettingsModal()">✕ Fechar</button>
+            </div>
+            
+            <div class="settings-tabs">
+                <button class="tab-btn active" onclick="switchSettingsTab(event, 'tab-board')">🎨 Tabuleiro</button>
+                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-pieces')">✨ Peças Neon</button>
+                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-sfx')">🔊 Áudio & FX</button>
+            </div>
+
+            <div id="tab-board" class="tab-content active" style="grid-template-columns: 1fr 1fr;">
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('claro')">☀️ Claro (Padrão)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('paris')">🌸 Paris (Rosa Barbie)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('ouro')">👑 Ouro (Real)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('novayork')">🌙 Nova York (Escuro)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('toquio')">⚡ Tóquio (Cyber)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('londres')">🌲 Londres (Floresta)</button>
+            </div>
+
+            <div id="tab-pieces" class="tab-content" style="grid-template-columns: 1fr;">
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-blue-pink')">🔵 Azul Elétrico vs 🔴 Rosa Choque</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-green-cyan')">🟢 Verde Esmeralda vs 🔵 Ciano</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-gold-purple')">🟡 Dourado Real vs 🟣 Roxo Profundo</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-silver-fire')">⚪ Prata Metálico vs 🟠 Laranja Fogo</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-neon-lime')">🍏 Lima Neon vs 🌺 Pink Choque</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-ruby-indigo')">❤️ Rubi Intenso vs 🫐 Índigo Espacial</button>
+            </div>
+
+            <div id="tab-sfx" class="tab-content" style="grid-template-columns: 1fr; gap: 6px; text-align: left; padding: 4px;">
+                <label style="font-size: 9.5px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; background: var(--chat-bg); padding: 5px; border-radius: 6px; border: 1px solid var(--panel-border);">
+                    <span>🔊 Sons de Captura e Lance (SFX)</span>
+                    <input type="checkbox" id="sfxToggle" checked onchange="toggleSFX(this)" style="cursor: pointer;">
+                </label>
+                <label style="font-size: 9.5px; font-weight: bold; display: flex; align-items: center; justify-content: space-between; background: var(--chat-bg); padding: 5px; border-radius: 6px; border: 1px solid var(--panel-border);">
+                    <span>✨ Animação de Rastro (Trail)</span>
+                    <input type="checkbox" id="trailToggle" checked onchange="toggleTrail(this)" style="cursor: pointer;">
+                </label>
+            </div>
+
+            <button class="action-btn" onclick="closeSettingsModal()" style="margin-top: 8px; padding: 7px; font-size: 9.5px; width: 100%; background: var(--modal-border); color: #fff;">APLICAR</button>
+        </div>
+    </div>
+
+    <div id="log-modal">
+        <div class="log-content">
+            <div style="font-size: 12px; font-weight: bold; color: var(--modal-border); display: flex; justify-content: space-between; align-items: center;">
+                <span>📜 Telemetria & Diagnóstico Profundo</span>
+                <button class="action-btn" onclick="closeLogModal()">✕ Fechar</button>
+            </div>
+            <p style="font-size: 8.5px; color: var(--text-muted); margin-top: 4px; text-align: left;">
+                Relatório de engenharia avançada (Memória JS, FEN, Erros e Performance Bot vs Bot).
+            </p>
+            <textarea id="logTextarea" class="log-textarea" readonly></textarea>
+            <div style="display: flex; gap: 6px; margin-top: 8px;">
+                <button class="action-btn" style="flex: 1; padding: 7px; font-size: 9px; background: #0284c7; color: #fff;" onclick="copyLogContent()">📋 Copiar Relatório</button>
+                <button class="action-btn" style="flex: 1; padding: 7px; font-size: 9px; background: #16a34a; color: #fff;" onclick="sendLogByEmail()">📧 Enviar por E-mail</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="victory-screen">
+        <div class="victory-card">
+            <div style="font-size: 30px; margin-bottom: 4px;" id="victoryCandyIcon">🍫</div>
+            <div class="victory-title" id="victoryHeaderTitle" style="font-weight: bold; margin-bottom: 4px; font-size: 13px;">FIM DE JOGO!</div>
+            <div id="victory-subtitle" class="victory-desc" style="font-size: 10px; margin-bottom: 10px; line-height: 1.4;">Partida encerrada.</div>
+            <button class="action-btn" onclick="closeVictoryScreen()" style="padding: 8px; font-size: 10px; width: 100%; background: var(--modal-border); color: #fff; font-weight: bold;">Ok</button>
+        </div>
+    </div>
+
+    <div id="menu-screen">
+        <div class="hero-box">
+            <h1>Xadrez</h1>
+            <p>Estratégia P2P em Tempo Real • Criado por Jairo Silva - v3.8.38</p>
+        </div>
+        
+        <div class="menu-dashboard">
+            <div class="menu-section-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: bold;">
+                    <span>🤖 Desafiar a Máquina (Oráculo)</span>
+                    <span style="color: var(--board-border); font-size: 8px;">Selecione a Dificuldade</span>
+                </div>
+                <div class="menu-grid-5">
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #15803d, #16a34a);" onclick="selectAndStartPvE(1)">🌱 1<span>Iniciante</span></button>
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #0e7490, #0284c7);" onclick="selectAndStartPvE(2)">⚔️ 2<span>Casual</span></button>
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #1d4ed8, #4f46e5);" onclick="selectAndStartPvE(3)">🛡️ 3<span>Médio</span></button>
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #7c3aed, #9333ea);" onclick="selectAndStartPvE(4)">⚡ 4<span>Avançado</span></button>
+                    <button class="menu-grid-btn" style="background: linear-gradient(135deg, #c026d3, #db2777);" onclick="selectAndStartPvE(5)">👑 5<span>Mestre</span></button>
+                </div>
+            </div>
+
+            <div class="menu-dual-row">
+                <button class="menu-main-btn" onclick="startGame('pvp')">👥 <span>2 Jogadores</span></button>
+                <button class="menu-main-btn menu-ai-battle-btn" onclick="startBotVsBot()">🤖 <span>Bot vs Bot (Mestre)</span></button>
+            </div>
+            
+            <div style="font-size: 9.5px; font-weight: bold; color: var(--board-border); margin-top: 1px; text-transform: uppercase; text-align: left;">🌐 Salas Globais (LAN P2P Multiplayer):</div>
+            
+            <div class="room-grid">
+                <button class="room-btn" style="background: linear-gradient(135deg, #f472b6, #db2777);" onclick="joinCityRoom('paris')">🌸 Paris (Rosa) <span id="status-paris" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #4c1d95, #3b0764);" onclick="joinCityRoom('toquio')">⚡ Tóquio (Cyber) <span id="status-toquio" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #334155, #0f172a);" onclick="joinCityRoom('novayork')">🌙 N. York (Escuro) <span id="status-novayork" class="room-status">Verif...</span></button>
+                <button class="room-btn" style="background: linear-gradient(135deg, #059669, #022c22);" onclick="joinCityRoom('londres')">🌲 Londres (Floresta) <span id="status-londres" class="room-status">Verif...</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-wrapper">
+        <div class="board-section" id="boardSection">
+            <div id="chessboard"></div>
+        </div>
+
+        <div class="side-section" id="sidePanel">
+            <div class="brand-title" id="brandTitleBox">
+                <span id="room-status-title">Xadrez</span>
+                <div class="header-actions">
+                    <button class="action-btn" onclick="safeResetGame()" title="Novo">♻️ Novo</button>
+                    <button class="action-btn" onclick="openSettingsModal()" title="Temas">🎨 Temas</button>
+                    <button class="action-btn" onclick="openLogModal()" title="Logs">📜 Log</button>
+                    <button class="action-btn" onclick="safeLeaveRoom()" title="Sair">🚪 Sair</button>
+                    <button class="action-btn" onclick="togglePanel()" title="Ocultar">◀</button>
+                </div>
+            </div>
+
+            <div class="candy-fight-bar-container">
+                <div class="candy-bar-header">
+                    <span>🍫 Aposta de Bombons</span>
+                    <span id="candy-ratio-text">1 vs 1</span>
+                </div>
+                <div class="candy-bar-track">
+                    <div class="candy-fill-white" id="candyFillWhite"></div>
+                    <div class="candy-fill-black" id="candyFillBlack"></div>
+                </div>
+                <div class="candy-icons-row">
+                    <span id="label-candy-w">Brancas: 1</span>
+                    <span id="label-candy-b">Pretas: 1</span>
+                </div>
+            </div>
+
+            <div class="player-card" id="card-black">
+                <div class="player-info">
+                    <span style="color:#f43f5e;" id="player2-label">Oponente</span>
+                    <span id="turn-badge-black" class="turn-badge">Sua Vez</span>
+                </div>
+                <div id="captured-by-black" class="captured-area"></div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-box" id="chat-box">
+                    <div class="chat-msg ai"><span>Jairo Silva:</span> Tabuleiro pronto. Boa sorte!</div>
+                </div>
+                <div class="chat-input-row">
+                    <input type="text" id="chat-input" class="chat-input" placeholder="Digite sua mensagem..." onkeypress="handleChatPress(event)">
+                    <button class="action-btn" style="flex: 0 0 38px; padding: 3px; font-size: 8px; background: var(--board-border); color: #ffffff; font-weight: bold;" onclick="sendCustomMessage()">ENVIAR</button>
+                </div>
+                <div class="taunt-scroll-container" id="tauntScrollContainer">
+                    <button class="taunt-btn" onclick="sendStandUpJoke()">🎤 Stand up</button>
+                    <button class="taunt-btn" onclick="sendTaunt('O destino do rei foi selado!')">⚡ Profético</button>
+                    <button class="taunt-btn" onclick="sendTaunt('Minha torre vai te buscar!')">🏰 Estratégia</button>
+                    <button class="taunt-btn" onclick="sendTaunt('O relógio está conspirando contra ti...')">⏳ Tensão</button>
+                    <button class="taunt-btn" onclick="sendTaunt('Xeque à vista, prepare a defesa!')">🎯 Alerta</button>
+                    <button class="taunt-btn" onclick="sendTaunt('Geometria pura no tabuleiro!')">📐 Mestre</button>
+                    <button class="taunt-btn" onclick="sendTaunt('Xeque-mate moral aplicado!')">👑 Supremo</button>
+                    <button class="taunt-btn" onclick="sendTaunt('Essa cidade é pequena demais pra nós!')">🏙️ Batalha</button>
+                </div>
+            </div>
+
+            <div class="player-card" id="card-white">
+                <div class="player-info">
+                    <span style="color:#0284c7;" id="player1-label">Você</span>
+                    <span id="turn-badge-white" class="turn-badge">Sua Vez</span>
+                </div>
+                <div id="captured-by-white" class="captured-area"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let chess = new Chess();
+    let selectedSquare = null;
+    let possibleMoves = [];
+    let gameMode = 'pve';
+    let currentCityKey = null;
+    let aiDifficulty = 1;
+    let currentTheme = 'claro';
+    let soundEnabled = true;
+    let trailEnabled = true;
+    let botVsBotInterval = null;
+    
+    let peer = null;
+    let conn = null;
+    let playerColor = 'w';
+    let isSpectator = false;
+    let lastPathCoords = [];
+    let trailTimeout = null;
+    let heartbeatInterval = null;
+    
+    let systemLogs = [];
+    function addLog(msg, level = 'INFO') {
+        let time = new Date().toISOString();
+        let memoryUsage = performance && performance.memory ? ` | JS Heap: ${(performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2)} MB` : '';
+        let logMsg = `[${time}] [${level}] [FEN: ${chess.fen()}]${memoryUsage} -> ${msg}`;
+        systemLogs.push(logMsg);
+        if (systemLogs.length > 500) systemLogs.shift();
+        let textarea = document.getElementById("logTextarea");
+        if (textarea) textarea.value = systemLogs.join('\n');
+    }
+
+    window.onerror = function(message, source, lineno, colno, error) {
+        addLog(`EXCEÇÃO CAPTURADA: ${message} em ${source}:${lineno}:${colno} | Stack: ${error ? error.stack : 'N/A'}`, 'FATAL');
+    };
+
+    addLog("Sistema Xadrez v3.8.38 inicializado com sucesso.", "INIT");
+
+    let candiesWhite = 1;
+    let candiesBlack = 1;
+    localStorage.setItem('termux_candies_w', '1');
+    localStorage.setItem('termux_candies_b', '1');
+    updateFightBarDisplay();
+
+    const scroller = document.getElementById('tauntScrollContainer');
+    if (scroller) {
+        scroller.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                scroller.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+    }
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSFX(type = 'move') {
+        if (!soundEnabled) return;
+        try {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if (type === 'move') {
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'capture') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+            }
+        } catch(e) {}
+    }
+
+    const pieceNames = {
+        'p': 'Peão', 'r': 'Torre', 'n': 'Cavalo', 'b': 'Bispo', 'q': 'Dama', 'k': 'Rei',
+        'P': 'Peão', 'R': 'Torre', 'N': 'Cavalo', 'B': 'Bispo', 'Q': 'Dama', 'K': 'Rei'
+    };
+
+    const pieceSvgs = {
+        'P': 'https://upload.wikimedia.org/wikipedia/commons/4/45/Chess_plt45.svg',
+        'R': 'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
+        'N': 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
+        'B': 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
+        'Q': 'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
+        'K': 'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
+        'p': 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg',
+        'r': 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Chess_rdt45.svg',
+        'n': 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Chess_ndt45.svg',
+        'b': 'https://upload.wikimedia.org/wikipedia/commons/9/98/Chess_bdt45.svg',
+        'q': 'https://upload.wikimedia.org/wikipedia/commons/4/47/Chess_qdt45.svg',
+        'k': 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Chess_kdt45.svg'
+    };
+
+    const cityDetails = {
+        'paris': { name: 'Paris 🌸', roomClass: 'room-paris', pieceColor: 'pieces-blue-pink' },
+        'toquio': { name: 'Tóquio ⚡', roomClass: 'room-toquio', pieceColor: 'pieces-blue-pink' },
+        'novayork': { name: 'N. York 🌙', roomClass: 'room-novayork', pieceColor: 'pieces-silver-fire' },
+        'londres': { name: 'Londres 🌲', roomClass: 'room-londres', pieceColor: 'pieces-green-cyan' }
+    };
+
+    const diverseStandUpList = [
+        "Por que os programadores odeiam a natureza? Porque tem muitos bugs e zero documentação.",
+        "No xadrez moderno, o peão sonha em virar rainha, mas acaba pagando boleto no fim do mês.",
+        "Se a vida te der limões, faça uma limonada gourmet e venda por 30 reais na praça.",
+        "O passado, o presente e o futuro entram num bar... Era uma tensão gramatical terrível.",
+        "Por que o cavalo do xadrez só anda em L? Porque em linha reta ele toma multa de radar.",
+        "Dizem que o dinheiro não traz felicidade. Me dê o seu que eu provo cientificamente que traz!",
+        "Eu não sou desorganizado, o meu caos é esteticamente descentralizado.",
+        "Por que o rei não corre do perigo? Porque a rainha não deixa ele sair sem avisar.",
+        "Se o trabalho fosse algo maravilhoso, o patrão faria tudo sozinho e não dividiria com ninguém.",
+        "O sentido da vida é 42, mas o Wi-Fi caiu antes de carregar a resposta.",
+        "Minha conta bancária está parecendo filme de terror: só tem suspense e drama financeiro.",
+        "Por que o bispo anda na diagonal? Para desviar dos impostos e das fofocas do clero.",
+        "A paciência é uma virtude, mas no xadrez relâmpago ela costuma virar infarto.",
+        "Dizem que a esperança é a última que morre. No meu caso, ela foi capturada no lance 12.",
+        "Por que o peixe vive no fundo do mar? Para fugir dos boletos da superfície.",
+        "Errar é humano, mas culpar a IA por perder no xadrez é pura autodefesa."
+    ];
+    let currentJokeIndex = 0;
+
+    function openLogModal() {
+        document.getElementById("logTextarea").value = systemLogs.join('\n');
+        document.getElementById("log-modal").style.display = "flex";
+        addLog("Modal de telemetria aberto pelo usuário.", "UI");
+    }
+    function closeLogModal() { document.getElementById("log-modal").style.display = "none"; }
+
+    function copyLogContent() {
+        let text = systemLogs.join('\n');
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Relatório de telemetria completo copiado para a área de transferência!");
+            addLog("Relatório copiado para a área de transferência.", "UI");
+        }).catch(() => {
+            alert("Copie o texto manualmente da caixa de log.");
+        });
+    }
+
+    function sendLogByEmail() {
+        let text = encodeURIComponent(systemLogs.join('\n'));
+        window.location.href = `mailto:silvar.jairo@gmail.com?subject=Relatorio%20Diagnostico%20Xadrez%20v3.8.38&body=${text}`;
+        addLog("Solicitação de envio de log por e-mail disparada.", "UI");
+    }
+
+    function switchSettingsTab(evt, tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+
+    function toggleSFX(el) { soundEnabled = el.checked; addLog(`Efeitos sonoros: ${soundEnabled ? 'Ativados' : 'Desativados'}`, "CONFIG"); }
+    function toggleTrail(el) { trailEnabled = el.checked; addLog(`Animação de rastro: ${trailEnabled ? 'Ativada' : 'Desativada'}`, "CONFIG"); }
+
+    function updateFightBarDisplay() {
+        const total = candiesWhite + candiesBlack;
+        let pctW = total === 0 ? 50 : Math.round((candiesWhite / total) * 100);
+        let pctB = 100 - pctW;
+
+        const fillW = document.getElementById('candyFillWhite');
+        const fillB = document.getElementById('candyFillBlack');
+        const ratioTxt = document.getElementById('candy-ratio-text');
+        const lblW = document.getElementById('label-candy-w');
+        const lblB = document.getElementById('label-candy-b');
+
+        if(fillW) fillW.style.width = `${pctW}%`;
+        if(fillB) fillB.style.width = `${pctB}%`;
+        if(ratioTxt) ratioTxt.innerText = `${candiesWhite} vs ${candiesBlack}`;
+        if(lblW) lblW.innerText = `Brancas: ${candiesWhite}`;
+        if(lblB) lblB.innerText = `Pretas: ${candiesBlack}`;
+    }
+
+    function setTheme(themeName) {
+        currentTheme = themeName;
+        document.body.classList.remove('theme-claro', 'theme-paris', 'theme-ouro', 'theme-novayork', 'theme-toquio', 'theme-londres', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
+        document.body.classList.add(`theme-${themeName}`);
+        currentCityKey = null;
+        addLog(`Tema alterado para: ${themeName}`, "CONFIG");
+    }
+
+    function setPieceColors(colorScheme) {
+        document.body.classList.remove('pieces-blue-pink', 'pieces-green-cyan', 'pieces-gold-purple', 'pieces-silver-fire', 'pieces-neon-lime', 'pieces-ruby-indigo');
+        document.body.classList.add(colorScheme);
+        addLog(`Esquema de cores das peças alterado para: ${colorScheme}`, "CONFIG");
+    }
+
+    function openSettingsModal() { document.getElementById("settings-modal").style.display = "flex"; addLog("Modal de configurações aberto.", "UI"); }
+    function closeSettingsModal() { document.getElementById("settings-modal").style.display = "none"; }
+
+    function selectAndStartPvE(level) {
+        aiDifficulty = level;
+        if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
+        addLog(`Iniciando jogo contra Oráculo Nível ${level}`, "GAME");
+        startGame('pve');
+    }
+
+    function startBotVsBot() {
+        if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
+        aiDifficulty = 5;
+        addLog("Modo Bot vs Bot (Mestre) iniciado para teste de carga e diagnóstico.", "BENCHMARK");
+        startGame('bot-vs-bot');
+
+        botVsBotInterval = setInterval(() => {
+            if (chess.game_over()) {
+                clearInterval(botVsBotInterval);
+                botVsBotInterval = null;
+                handleGameOverEvents("Fim de Jogo por Regras Oficiais (Mate ou Empate)");
+                return;
+            }
+            try {
+                let startTime = performance.now();
+                makeAIMove();
+                let duration = performance.now() - startTime;
+                addLog(`Bot vs Bot jogada executada. Tempo de processamento: ${duration.toFixed(2)}ms`, "BENCHMARK");
+            } catch(e) {
+                addLog(`Erro crítico no loop Bot vs Bot: ${e.message}`, "FATAL");
+                clearInterval(botVsBotInterval);
+            }
+        }, 700);
+    }
+
+    function applyCityVisualTheme(cityKey) {
+        currentCityKey = cityKey;
+        const roomTitle = document.getElementById("room-status-title");
+        document.body.classList.remove('theme-claro', 'theme-paris', 'theme-ouro', 'theme-novayork', 'theme-toquio', 'theme-londres', 'room-paris', 'room-toquio', 'room-novayork', 'room-londres');
+
+        if (cityKey && cityDetails[cityKey]) {
+            let details = cityDetails[cityKey];
+            document.body.classList.add(details.roomClass);
+            setPieceColors(details.pieceColor);
+            roomTitle.innerText = `${details.name}`;
+            addLog(`Sala aplicada: ${cityKey} com peças ${details.pieceColor}`, "ROOM");
+        } else {
+            document.body.classList.add(`theme-${currentTheme}`);
+            roomTitle.innerText = "Xadrez";
+        }
+    }
+
+    function addChatMessage(sender, text, isAI = false, isAlert = false) {
+        const box = document.getElementById("chat-box");
+        if(!box) return;
+
+        const msg = document.createElement("div");
+        msg.className = `chat-msg ${isAI ? 'ai' : ''} ${isAlert ? 'alert-neon' : ''}`;
+        msg.innerHTML = `<span>${sender}:</span> ${text}`;
+        box.appendChild(msg);
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function showCaptureInChat(move) {
+        if (!move.captured) return;
+        let attCol = move.color;
+        let attKey = attCol === 'w' ? move.piece.toUpperCase() : move.piece;
+        let capCol = attCol === 'w' ? 'b' : 'w';
+        let capKey = capCol === 'w' ? move.captured.toUpperCase() : move.captured;
+
+        let attName = pieceNames[attKey] || 'Peça';
+        let capName = pieceNames[capKey] || 'Peça';
+        let square = move.to;
+
+        let attCss = attCol === 'w' ? 'white-cap' : 'black-cap';
+        let capCss = capCol === 'w' ? 'white-cap' : 'black-cap';
+
+        let chatText = `<div style="display:flex; align-items:center; gap:3px; font-weight:bold;">
+            <div class="captured-icon ${attCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[attKey]}');"></div> ${attName} capturou 
+            <div class="captured-icon ${capCss}" style="display:inline-block; vertical-align:middle; background-image: url('${pieceSvgs[capKey]}');"></div> ${capName}
+        </div>
+        <div style="font-size: 7.5px; opacity: 0.85; margin-top: 1px;">Captura na casa: ${square.toUpperCase()}</div>`;
+        
+        addChatMessage("Árbitro", chatText, true, false);
+        addLog(`Captura efetuada: ${attName} (${attCol}) levou ${capName} em ${square}`, "MOVE");
+    }
+
+    function sendStandUpJoke() {
+        let text = diverseStandUpList[currentJokeIndex];
+        currentJokeIndex = (currentJokeIndex + 1) % diverseStandUpList.length;
+        let jokeHtml = `🎤 <b>MOMENTO CÔMICO:</b><br>"${text}"`;
+        addChatMessage("Stand up", jokeHtml, true, false);
+        if (conn && conn.open) { 
+            try { conn.send({ type: 'chat', sender: 'Stand up', text: jokeHtml, isAI: true, isAlert: false }); } catch(e){} 
+        }
+    }
+
+    function handleGameOverEvents(reason, winnerColor = null) {
+        if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
+
+        let winnerText = "Empate / Fim de Jogo";
+        if (winnerColor === 'w') winnerText = "Vitória das Peças Brancas!";
+        else if (winnerColor === 'b') winnerText = "Vitória das Peças Pretas!";
+
+        let detailedExplanation = `🏁 <b>FIM DE PARTIDA:</b> ${reason}<br><b>Resultado:</b> ${winnerText}`;
+        addChatMessage("Árbitro", detailedExplanation, true, false);
+
+        let savedW = parseInt(localStorage.getItem('termux_candies_w') || '1');
+        let savedB = parseInt(localStorage.getItem('termux_candies_b') || '1');
+
+        if (winnerColor === 'w') {
+            savedW += 1;
+            if (savedB > 0) savedB -= 1;
+            document.getElementById("victoryCandyIcon").innerText = "🍫🏆 Brancas ganharam 1 bombom!";
+        } else if (winnerColor === 'b') {
+            savedB += 1;
+            if (savedW > 0) savedW -= 1;
+            document.getElementById("victoryCandyIcon").innerText = "🍫🏆 Pretas ganharam 1 bombom!";
+        } else {
+            document.getElementById("victoryCandyIcon").innerText = "🤝 Empate Técnico!";
+        }
+
+        localStorage.setItem('termux_candies_w', savedW);
+        localStorage.setItem('termux_candies_b', savedB);
+        candiesWhite = savedW;
+        candiesBlack = savedB;
+        updateFightBarDisplay();
+
+        addLog(`Fim de jogo processado: ${reason} | Vencedor: ${winnerColor || 'Nenhum'}`, "ENDGAME");
+        document.getElementById("victory-subtitle").innerHTML = `${reason}<br><b>${winnerText}</b>`;
+        document.getElementById("victory-screen").style.display = "flex";
+    }
+
+    function closeVictoryScreen() {
+        document.getElementById("victory-screen").style.display = "none";
+        addLog("Modal de vitória fechado. Usuário permaneceu no tabuleiro para análise e logs.", "UI");
+    }
+
+    function togglePanel() {
+        const panel = document.getElementById("sidePanel");
+        const restoreBtn = document.getElementById("restore-btn");
+        panel.classList.toggle("minimized");
+        
+        if (panel.classList.contains("minimized")) {
+            document.body.classList.add("menu-hidden");
+            restoreBtn.style.display = "block";
+            addLog("Painel de menu ocultado. Tabuleiro maximizado em tela cheia.", "UI");
+        } else {
+            document.body.classList.remove("menu-hidden");
+            restoreBtn.style.display = "none";
+            addLog("Painel de menu restaurado.", "UI");
+        }
+    }
+
+    function safeLeaveRoom() {
+        if (confirm("Deseja sair da partida e retornar ao menu?")) {
+            if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
+            addLog("Saindo da partida. Retornando ao menu principal.", "SYSTEM");
+            localStorage.setItem('termux_candies_w', '1');
+            localStorage.setItem('termux_candies_b', '1');
+            if (heartbeatInterval) clearInterval(heartbeatInterval);
+            if (conn) { try { conn.close(); } catch(e){} }
+            if (peer) { try { peer.destroy(); } catch(e){} }
+            window.location.reload();
+        }
+    }
+
+    function safeResetGame() {
+        if (gameMode === 'bot-vs-bot') {
+            addLog("Reiniciando nova partida no modo Bot vs Bot a pedido do usuário.", "GAME");
+            resetGame();
+            startBotVsBot();
+            return;
+        }
+
+        if (confirm("Reiniciar o tabuleiro?")) {
+            if (botVsBotInterval) { clearInterval(botVsBotInterval); botVsBotInterval = null; }
+            addLog("Solicitado reinício do tabuleiro.", "SYSTEM");
+            if (conn && conn.open) { try { conn.send({ type: 'reset-board' }); } catch(e){} }
+            resetGame();
+        }
+    }
+
+    function setupHeartbeat() {
+        if (heartbeatInterval) clearInterval(heartbeatInterval);
+        heartbeatInterval = setInterval(() => {
+            if (conn && conn.open) {
+                try { 
+                    conn.send({ type: 'ping', fen: chess.fen() }); 
+                } catch(e) {
+                    addLog(`Erro no heartbeat: ${e.message}`, "WARN");
+                }
+            }
+        }, 3000);
+    }
+
+    function startGame(mode) {
+        gameMode = mode;
+        playerColor = 'w';
+        isSpectator = false;
+        lastPathCoords = [];
+        applyCityVisualTheme(null);
+        if (mode !== 'bot-vs-bot') setPieceColors('pieces-blue-pink');
+        
+        candiesWhite = parseInt(localStorage.getItem('termux_candies_w') || '1');
+        candiesBlack = parseInt(localStorage.getItem('termux_candies_b') || '1');
+        updateFightBarDisplay();
+
+        document.getElementById("player1-label").innerText = mode === 'pvp' ? "Jogador 1 (Brancas)" : (mode === 'bot-vs-bot' ? "Bot Mestre (Brancas)" : "Você (Brancas)");
+        document.getElementById("player2-label").innerText = mode === 'pvp' ? "Jogador 2 (Pretas)" : (mode === 'bot-vs-bot' ? "Bot Mestre (Pretas)" : (mode === 'pve' ? `IA Mestre (${aiDifficulty})` : "Oponente"));
+        
+        closeMenuTransition();
+        chess.reset();
+        selectedSquare = null;
+        possibleMoves = [];
+        updateTurnIndicators();
+        updateCapturedDisplay();
+        renderBoard();
+        addLog(`Jogo iniciado no modo: ${mode}`, "GAME");
+    }
+
+    function closeMenuTransition() {
+        const menu = document.getElementById("menu-screen");
+        menu.style.opacity = "0";
+        setTimeout(() => { menu.style.display = "none"; }, 300);
+    }
+
+    async function checkRoomAvailability(cityKey) {
+        return new Promise((resolve) => {
+            let testPeer = new Peer();
+            let roomId = "termux-cities-v3016-" + cityKey;
+            testPeer.on('error', () => { testPeer.destroy(); resolve('disponivel'); });
+            let connTest = testPeer.connect(roomId, { reliable: false });
+            let resolved = false;
+
+            connTest.on('open', () => {
+                resolved = true;
+                try { connTest.send({ type: 'check-slot' }); } catch(e){}
+            });
+            connTest.on('data', (data) => {
+                if (data.type === 'slot-response') { testPeer.destroy(); resolve('lotada'); }
+            });
+            setTimeout(() => {
+                if (!resolved) { resolved = true; testPeer.destroy(); resolve('disponivel'); }
+            }, 500);
+        });
+    }
+
+    async function updateRoomStatuses() {
+        const cities = ['paris', 'toquio', 'novayork', 'londres'];
+        for (let c of cities) {
+            const statusEl = document.getElementById(`status-${c}`);
+            if (statusEl) {
+                let status = await checkRoomAvailability(c);
+                statusEl.innerText = status === 'disponivel' ? '🟢 Livre' : '🔴 Cheia';
+                statusEl.style.background = status === 'disponivel' ? '#15803d' : '#b91c1c';
+            }
+        }
+    }
+    window.addEventListener('load', () => { setTimeout(updateRoomStatuses, 400); });
+
+    function joinCityRoom(cityName) {
+        let roomId = "termux-cities-v3016-" + cityName;
+        addLog(`Tentando conectar à sala P2P: ${cityName}`, "NET");
+        if (peer) { try { peer.destroy(); } catch(e){} }
+        peer = new Peer();
+
+        peer.on('open', (id) => {
+            addLog(`PeerJS local aberto com ID: ${id}`, "NET");
+            let connAttempt = peer.connect(roomId, { reliable: true });
+            let established = false;
+
+            connAttempt.on('open', () => {
+                established = true;
+                conn = connAttempt;
+                setupClientListeners(cityName);
+                try { conn.send({ type: 'check-slot', city: cityName }); } catch(e){}
+            });
+
+            setTimeout(() => {
+                if (!established) {
+                    addLog(`Sala ${cityName} sem host ativo. Assumindo como Host...`, "NET");
+                    try { peer.destroy(); } catch(e){}
+                    peer = new Peer(roomId);
+                    peer.on('open', () => {
+                        playerColor = 'w';
+                        isSpectator = false;
+                        applyCityVisualTheme(cityName);
+                        document.getElementById("player1-label").innerText = "Você (Host - Brancas)";
+                        closeMenuTransition();
+                        setupHostServer(cityName);
+                        setupHeartbeat();
+                        startGameSetup();
+                        addLog(`Host criado com sucesso na sala: ${cityName}`, "NET");
+                    });
+                }
+            }, 1000);
+        });
+    }
+
+    function setupHostServer(cityName) {
+        let guestConn = null;
+        peer.on('connection', (c) => {
+            addLog(`Nova conexão de convidado recebida.`, "NET");
+            c.on('data', (data) => {
+                if (data.type === 'check-slot') {
+                    if (!guestConn) {
+                        guestConn = c;
+                        conn = c;
+                        setupHostListeners(cityName);
+                        setupHeartbeat();
+                        try { c.send({ type: 'slot-response', status: 'accepted', fen: chess.fen(), city: cityName }); } catch(e){}
+                        document.getElementById("player2-label").innerText = "Oponente (Pretas)";
+                        addChatMessage("Sistema", "Oponente entrou na sala!", false, false);
+                        addLog("Oponente conectado como Pretas.", "NET");
+                    } else {
+                        try { c.send({ type: 'slot-response', status: 'full' }); } catch(e){}
+                    }
+                }
+            });
+        });
+    }
+
+    function setupHostListeners(cityName) {
+        conn.on('data', (data) => {
+            if (data.type === 'ping' && data.fen) {
+                if (data.fen !== chess.fen() && chess.history().length === 0) {
+                    chess.load(data.fen);
+                    renderBoard();
+                }
+            } else if (data.type === 'reset-board') {
+                resetGame();
+            } else if (data.type === 'move') {
+                try {
+                    const result = chess.move(data.move);
+                    if (result) {
+                        addLog(`Lance recebido do oponente: ${data.move.from}->${data.move.to}`, "NET");
+                        triggerMoveTrail(data.move.from, data.move.to);
+                        updateTurnIndicators();
+                        updateCapturedDisplay();
+                        renderBoard();
+                        if (result.captured) { showCaptureInChat(result); playSFX('capture'); } else { playSFX('move'); }
+                        checkGameStateEvents(result, false);
+                    }
+                } catch(err) { addLog(`Erro ao aplicar lance recebido: ${err.message}`, "ERROR"); }
+            } else if (data.type === 'chat') {
+                addChatMessage(data.sender || "Oponente", data.text, data.isAI || false, data.isAlert || false);
+            }
+        });
+        conn.on('close', () => { addLog("Conexão P2P encerrada pelo oponente.", "NET"); });
+    }
+
+    function setupClientListeners(cityName) {
+        conn.on('data', (data) => {
+            if (data.type === 'slot-response') {
+                applyCityVisualTheme(data.city || cityName);
+                setupHeartbeat();
+                if (data.fen) chess.load(data.fen);
+                if (data.status === 'full') {
+                    playerColor = null;
+                    isSpectator = true;
+                    closeMenuTransition();
+                    startGameSetup();
+                    addChatMessage("Sistema", "Modo Espectador.", true);
+                    addLog("Conectado como Espectador.", "NET");
+                } else {
+                    playerColor = 'b';
+                    isSpectator = false;
+                    closeMenuTransition();
+                    startGameSetup();
+                    addChatMessage("Sistema", "Conectado com sucesso na sala!", false, false);
+                    addLog("Conectado como Jogador 2 (Pretas).", "NET");
+                }
+            } else if (data.type === 'reset-board') {
+                resetGame();
+            } else if (data.type === 'move') {
+                try {
+                    const result = chess.move(data.move);
+                    if (result) {
+                        addLog(`Lance recebido do Host: ${data.move.from}->${data.move.to}`, "NET");
+                        triggerMoveTrail(data.move.from, data.move.to);
+                        updateTurnIndicators();
+                        updateCapturedDisplay();
+                        renderBoard();
+                        if (result.captured) { showCaptureInChat(result); playSFX('capture'); } else { playSFX('move'); }
+                        checkGameStateEvents(result, false);
+                    }
+                } catch(err) { addLog(`Erro ao aplicar lance: ${err.message}`, "ERROR"); }
+            } else if (data.type === 'chat') {
+                addChatMessage(data.sender || "Oponente", data.text, data.isAI || false, data.isAlert || false);
+            }
+        });
+    }
+
+    function startGameSetup() {
+        gameMode = 'network';
+        chess.reset();
+        selectedSquare = null;
+        possibleMoves = [];
+        lastPathCoords = [];
+        updateFightBarDisplay();
+        updateTurnIndicators();
+        updateCapturedDisplay();
+        renderBoard();
+    }
+
+    function resetGame() {
+        chess.reset();
+        selectedSquare = null;
+        possibleMoves = [];
+        lastPathCoords = [];
+        updateFightBarDisplay();
+        updateTurnIndicators();
+        updateCapturedDisplay();
+        renderBoard();
+        addLog("Tabuleiro reiniciado.", "SYSTEM");
+    }
+
+    function triggerMoveTrail(from, to) {
+        if (!trailEnabled) return;
+        lastPathCoords = [from, to];
+        if (trailTimeout) clearTimeout(trailTimeout);
+        renderBoard();
+        trailTimeout = setTimeout(() => { lastPathCoords = []; renderBoard(); }, 1200);
+    }
+
+    function updateTurnIndicators() {
+        const turn = chess.turn();
+        const cardWhite = document.getElementById("card-white");
+        const cardBlack = document.getElementById("card-black");
+        const badgeWhite = document.getElementById("turn-badge-white");
+        const badgeBlack = document.getElementById("turn-badge-black");
+
+        cardWhite.classList.remove('active-turn');
+        cardBlack.classList.remove('active-turn');
+        badgeWhite.style.display = "none";
+        badgeBlack.style.display = "none";
+
+        if (gameMode === 'pvp' || gameMode === 'bot-vs-bot') {
+            if (turn === 'w') {
+                cardWhite.classList.add('active-turn');
+                badgeWhite.style.display = "inline-block";
+                badgeWhite.innerText = gameMode === 'bot-vs-bot' ? "Processando..." : "Sua Vez";
+            } else {
+                cardBlack.classList.add('active-turn');
+                badgeBlack.style.display = "inline-block";
+                badgeBlack.innerText = gameMode === 'bot-vs-bot' ? "Processando..." : "Sua Vez";
+            }
+        } else if (gameMode === 'network') {
+            if (turn === 'w') {
+                if (playerColor === 'w') {
+                    cardWhite.classList.add('active-turn');
+                    badgeWhite.style.display = "inline-block";
+                    badgeWhite.innerText = "Sua Vez";
+                } else {
+                    badgeWhite.style.display = "inline-block";
+                    badgeWhite.innerText = "Aguardando jogada...";
+                }
+            } else {
+                if (playerColor === 'b') {
+                    cardBlack.classList.add('active-turn');
+                    badgeBlack.style.display = "inline-block";
+                    badgeBlack.innerText = "Sua Vez";
+                } else {
+                    badgeBlack.style.display = "inline-block";
+                    badgeBlack.innerText = "Aguardando jogada...";
+                }
+            }
+        } else {
+            if (turn === 'w') {
+                cardWhite.classList.add('active-turn');
+                badgeWhite.style.display = "inline-block";
+                badgeWhite.innerText = "Sua Vez";
+            } else {
+                badgeBlack.style.display = "inline-block";
+                badgeBlack.innerText = "Aguardando jogada...";
+            }
+        }
+    }
+
+    function updateCapturedDisplay() {
+        const history = chess.history({ verbose: true });
+        let wCaps = [];
+        let bCaps = [];
+
+        history.forEach(m => {
+            if (m.captured) {
+                if (m.color === 'w') wCaps.push(m.captured);
+                else bCaps.push(m.captured.toUpperCase());
+            }
+        });
+
+        document.getElementById("captured-by-white").innerHTML = wCaps.map(p => `<div class="captured-icon white-cap" style="background-image: url('${pieceSvgs[p]}');"></div>`).join('');
+        document.getElementById("captured-by-black").innerHTML = bCaps.map(p => `<div class="captured-icon black-cap" style="background-image: url('${pieceSvgs[p]}');"></div>`).join('');
+    }
+
+    function sendTaunt(text) {
+        addChatMessage("Você", text);
+        if (conn && conn.open) { try { conn.send({ type: 'chat', sender: playerColor === 'w' ? 'Brancas' : 'Pretas', text: text, isAI: false }); } catch(e){} }
+    }
+
+    function sendCustomMessage() {
+        const input = document.getElementById("chat-input");
+        if (!input || !input.value.trim()) return;
+        let text = input.value;
+        addChatMessage("Você", text);
+        if (conn && conn.open) { try { conn.send({ type: 'chat', sender: playerColor === 'w' ? 'Brancas' : 'Pretas', text: text, isAI: false }); } catch(e){} }
+        input.value = "";
+    }
+
+    function handleChatPress(e) { if (e.key === 'Enter') sendCustomMessage(); }
+
+    function checkGameStateEvents(move, broadcast = true) {
+        if (!chess.in_check()) {
+            const box = document.getElementById("chat-box");
+            if (box) {
+                box.querySelectorAll('.alert-neon').forEach(el => el.classList.remove('alert-neon'));
+            }
+        }
+
+        if (chess.in_checkmate()) {
+            let loserColor = chess.turn();
+            let winnerColor = loserColor === 'w' ? 'b' : 'w';
+            handleGameOverEvents(`Xeque-mate aplicado! O rei das ${loserColor === 'w' ? 'Brancas' : 'Pretas'} foi capturado ou imobilizado.`, winnerColor);
+            return true;
+        } else if (chess.in_draw() || chess.in_stalemate() || chess.insufficient_material()) {
+            let reasonText = "Empate Técnico Declarado";
+            if (chess.in_stalemate()) {
+                reasonText = "Empate por Afogamento (Stalemate - Sem lances legais disponíveis)";
+            } else if (chess.insufficient_material()) {
+                reasonText = "Empate Técnico por Insuficiência Material Pura (Ex: Apenas Reis restantes)";
+            }
+            handleGameOverEvents(reasonText, null);
+            return true;
+        } else if (chess.in_check()) {
+            let alertText = "⚡ <b>ATENÇÃO: REI EM XEQUE!</b> Defenda-se imediatamente!";
+            addChatMessage("Árbitro", alertText, true, true);
+            if (broadcast && conn && conn.open && gameMode === 'network') {
+                try { conn.send({ type: 'chat', sender: 'Árbitro', text: alertText, isAI: true, isAlert: true }); } catch(e){}
+            }
+        }
+        return false;
+    }
+
+    function renderBoard() {
+        const boardEl = document.getElementById("chessboard");
+        if(!boardEl) return;
+        
+        const fragment = document.createDocumentFragment();
+        const board = chess.board();
+
+        for (let r = 0; r < 8; r++) {
+            for (let c = 0; c < 8; c++) {
+                const squareEl = document.createElement("div");
+                const isLight = (r + c) % 2 === 0;
+                squareEl.className = `square ${isLight ? 'light' : 'dark'}`;
+                
+                const squareCoord = String.fromCharCode(97 + c) + (8 - r);
+                
+                if (lastPathCoords.includes(squareCoord)) {
+                    squareEl.classList.add('last-move');
+                }
+
+                if (selectedSquare === squareCoord) squareEl.classList.add('selected');
+                if (possibleMoves.includes(squareCoord)) {
+                    squareEl.classList.add(chess.get(squareCoord) ? 'capture-highlight' : 'highlight');
+                }
+
+                const piece = board[r][c];
+                if (piece) {
+                    const pieceKey = piece.color === 'w' ? piece.type.toUpperCase() : piece.type;
+                    const pieceEl = document.createElement("div");
+                    pieceEl.className = `piece ${piece.color === 'w' ? 'white-piece' : 'black-piece'}`;
+                    pieceEl.style.backgroundImage = `url('${pieceSvgs[pieceKey]}')`;
+                    squareEl.appendChild(pieceEl);
+                }
+
+                squareEl.addEventListener('click', () => {
+                    handleSquareClick(squareCoord);
+                });
+                fragment.appendChild(squareEl);
+            }
+        }
+        boardEl.innerHTML = "";
+        boardEl.appendChild(fragment);
+    }
+
+    function handleSquareClick(square) {
+        if (isSpectator || gameMode === 'bot-vs-bot') return;
+        if (gameMode === 'network' && chess.turn() !== playerColor) return;
+
+        if (selectedSquare === null) {
+            const piece = chess.get(square);
+            if (piece && (gameMode === 'pvp' || gameMode === 'network' || piece.color === chess.turn())) {
+                selectedSquare = square;
+                try { possibleMoves = chess.moves({ square: square, verbose: true }).map(m => m.to); } catch (e) { possibleMoves = []; }
+                renderBoard();
+            }
+        } else {
+            try {
+                const move = chess.move({ from: selectedSquare, to: square, promotion: 'q' });
+                selectedSquare = null;
+                possibleMoves = [];
+
+                if (move) {
+                    addLog(`Lance executado pelo jogador: ${move.from}->${move.to}`, "MOVE");
+                    triggerMoveTrail(move.from, move.to);
+                    updateTurnIndicators();
+                    updateCapturedDisplay();
+                    renderBoard();
+                    if (move.captured) { showCaptureInChat(move); playSFX('capture'); } else { playSFX('move'); }
+                    
+                    if (checkGameStateEvents(move, true)) return;
+
+                    if (conn && conn.open) {
+                        try { conn.send({ type: 'move', move: { from: move.from, to: move.to, promotion: move.promotion } }); } catch(e){}
+                    }
+
+                    if (!chess.game_over() && gameMode === 'pve' && chess.turn() === 'b') {
+                        setTimeout(() => { 
+                            makeAIMove(); 
+                        }, 80);
+                    }
+                } else {
+                    const piece = chess.get(square);
+                    if (piece && (gameMode === 'pvp' || gameMode === 'network' || piece.color === chess.turn())) {
+                        selectedSquare = square;
+                        possibleMoves = chess.moves({ square: square, verbose: true }).map(m => m.to);
+                        renderBoard();
+                    } else {
+                        selectedSquare = null;
+                        possibleMoves = [];
+                        renderBoard();
+                    }
+                }
+            } catch (err) {
+                addLog(`Exceção ao mover: ${err.message}`, "ERROR");
+                selectedSquare = null;
+                possibleMoves = [];
+                renderBoard();
+            }
+        }
+    }
+
+    function makeAIMove() {
+        const moves = chess.moves({ verbose: true });
+        if (moves.length === 0) return;
+        let selectedMove = moves[Math.floor(Math.random() * moves.length)];
+        
+        if (aiDifficulty >= 3) {
+            let captures = moves.filter(m => m.captured);
+            if (captures.length > 0) selectedMove = captures[0];
+        }
+
+        const testMove = chess.move(selectedMove);
+        if (testMove) {
+            addLog(`IA Nível ${aiDifficulty} moveu: ${testMove.from}->${testMove.to}`, "AI");
+            triggerMoveTrail(testMove.from, testMove.to);
+            if (testMove.captured) { showCaptureInChat(testMove); playSFX('capture'); } else { playSFX('move'); }
+        }
+        updateTurnIndicators();
+        updateCapturedDisplay();
+        renderBoard();
+        checkGameStateEvents(testMove, false);
+    }
+</script>
+</body>
+</html>
