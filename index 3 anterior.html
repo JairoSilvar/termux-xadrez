@@ -26,8 +26,7 @@
             --modal-bg: #ffffff;
             --modal-border: #0284c7;
             --modal-text: #0f172a;
-            --trail-color: rgba(56, 189, 248, 0.85);
-            --trail-glow: 0 0 10px rgba(56, 189, 248, 0.9);
+            --trail-color: rgba(34, 197, 94, 0.75);
             --hint-dot-color: #22c55e;
             --candy-w-bg: #0284c7;
             --candy-b-bg: #e11d48;
@@ -70,10 +69,7 @@
         .square.selected { background-color: rgba(163, 230, 53, 0.45) !important; box-shadow: inset 0 0 0 2px #a3e635; }
         .square.drag-over-target { background-color: rgba(56, 189, 248, 0.35) !important; box-shadow: inset 0 0 0 3px rgba(56, 189, 248, 0.8); }
         
-        .square.last-move:not(.selected) { 
-            background-color: rgba(56, 189, 248, 0.25) !important; 
-            box-shadow: inset 0 0 8px rgba(56, 189, 248, 0.8), 0 0 8px rgba(56, 189, 248, 0.5) !important; 
-        }
+        .square.last-move:not(.selected) { background-color: rgba(163, 230, 53, 0.22) !important; box-shadow: inset 0 0 6px rgba(163, 230, 53, 0.5) !important; }
         
         @keyframes checkPulse { 0%, 100% { box-shadow: inset 0 0 0 3px rgba(239, 68, 68, 0.85); } 50% { box-shadow: inset 0 0 0 3px rgba(239, 68, 68, 0.35); } }
         .square.king-in-check { animation: checkPulse 1.1s ease-in-out infinite; background-color: rgba(239, 68, 68, 0.12) !important; }
@@ -147,10 +143,6 @@
             .chat-box { flex: 1 !important; max-height: none !important; min-height: 120px !important; }
             #restore-btn { top: 15px; bottom: auto; left: auto; right: 15px; transform: none; padding: 8px 16px; border-radius: 8px; font-size: 11px; }
             body.menu-hidden .board-section { width: clamp(420px, 99vh, 99vh) !important; height: clamp(420px, 99vh, 99vh) !important; }
-            
-            .brand-title { padding: 8px 10px !important; font-size: 11px !important; }
-            .icon-btn { width: 32px !important; height: 32px !important; font-size: 13px !important; }
-            .header-actions { gap: 5px !important; }
         }
 
         .brand-title { font-size: 10px; font-weight: bold; color: var(--text-main); border-bottom: 1px solid var(--panel-border); display: flex; justify-content: space-between; align-items: center; border-radius: 5px; padding: 4px 6px; background: var(--chat-bg); gap: 4px; white-space: nowrap; flex-shrink: 0; }
@@ -361,7 +353,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>♟️ Xadrez Pro</h1>
-            <p>Estratégia P2P em Tempo Real - v5.11.11</p>
+            <p>Estratégia P2P em Tempo Real - v5.11.8</p>
         </div>
         <div class="menu-dashboard">
             <div class="menu-radio-section">
@@ -399,7 +391,7 @@
 
             <div class="menu-section-card">
                 <div style="display: flex; justify-content: space-between; align-items: center; font-size: 9.5px; font-weight: bold;">
-                    <span>🤖 Desafiar a Máquina (Oráculo Aprimorado)</span>
+                    <span>🤖 Desafiar a Máquina (Oráculo)</span>
                     <span style="color: var(--board-border); font-size: 8px;">Dificuldade</span>
                 </div>
                 <div class="menu-grid-5">
@@ -569,7 +561,6 @@
     let heartbeatInterval = null;
     let aiRequestId = 0;
 
-    // MOTOR DO ORÁCULO APRIMORADO (v5.11.11 - Heurísticas de Finais, King Safety e Penalidade por Repetição)
     const aiWorkerScript = `
         importScripts('https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js');
         const PIECE_VALUES = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 20000 };
@@ -581,31 +572,21 @@
         const PST_K_MID = [-30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -20,-30,-30,-40,-40,-30,-30,-20, -10,-20,-20,-20,-20,-20,-20,-10, 20,20,0,0,0,0,20,20, 20,30,10,0,0,10,30,20];
         const PST_K_END = [-50,-40,-30,-20,-20,-30,-40,-50, -30,-20,-10,0,0,-10,-20,-30, -30,-10,20,30,30,20,-10,-30, -30,-10,30,40,40,30,-10,-30, -30,-10,30,40,40,30,-10,-30, -30,-10,20,30,30,20,-10,-30, -30,-30,0,0,0,0,-30,-30, -50,-30,-30,-30,-30,-30,-30,-50];
 
-        function isEndgamePosition(board) {
-            let nonPawnPiecesCount = 0;
-            for (let r = 0; r < 8; r++) {
-                for (let c = 0; c < 8; c++) {
-                    let p = board[r][c];
-                    if (p && p.type !== 'p' && p.type !== 'k') nonPawnPiecesCount++;
-                }
-            }
-            return nonPawnPiecesCount <= 6;
+        function getPieceSquareScore(piece, r, c, isEndgame) {
+            let index = r * 8 + c;
+            if (piece.color === 'b') index = (7 - r) * 8 + c;
+            let table = piece.type === 'p' ? PST_P : (piece.type === 'n' ? PST_N : (piece.type === 'b' ? PST_B : (piece.type === 'r' ? PST_R : (piece.type === 'q' ? PST_Q : (isEndgame ? PST_K_END : PST_K_MID)))));
+            return piece.color === 'w' ? table[index] : -table[index];
         }
 
         function evaluateBoard(game) {
             let score = 0, board = game.board();
-            let isEndgame = isEndgamePosition(board);
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
                     let piece = board[r][c];
                     if (!piece) continue;
                     let materialVal = piece.color === 'w' ? PIECE_VALUES[piece.type] : -PIECE_VALUES[piece.type];
-                    let pstVal = 0;
-                    let index = r * 8 + c;
-                    if (piece.color === 'b') index = (7 - r) * 8 + c;
-                    let table = piece.type === 'p' ? PST_P : (piece.type === 'n' ? PST_N : (piece.type === 'b' ? PST_B : (piece.type === 'r' ? PST_R : (piece.type === 'q' ? PST_Q : (isEndgame ? PST_K_END : PST_K_MID)))));
-                    pstVal = piece.color === 'w' ? table[index] : -table[index];
-                    score += materialVal + pstVal;
+                    score += materialVal + getPieceSquareScore(piece, r, c, false);
                 }
             }
             return game.turn() === 'w' ? score : -score;
@@ -627,9 +608,6 @@
             for (let m of moves) {
                 game.move(m);
                 let score = -negamax(game, depth - 1, -beta, -alpha, deadline);
-                if (game.in_threefold_repetition()) {
-                    score -= 300; // Penalidade forte para evitar repetição artificial em posições vantajosas
-                }
                 game.undo();
                 if (score >= beta) return beta;
                 if (score > alpha) alpha = score;
@@ -653,7 +631,6 @@
                     if (performance.now() > deadline) { timedOut = true; break; }
                     game.move(m);
                     let score = -negamax(game, d - 1, -beta, -alpha, deadline);
-                    if (game.in_threefold_repetition()) score -= 300;
                     game.undo();
                     if (score > bestScoreThisDepth + EPS) {
                         bestScoreThisDepth = score;
@@ -681,7 +658,7 @@
     const aiWorker = new Worker(URL.createObjectURL(aiWorkerBlob));
 
     // ============================================
-    // RÁDIO - Otimizado v5.11.8 (Salamanca em 4º lugar)
+    // RÁDIO - Otimizado v5.11.8
     // ============================================
     const RADIO_CHANNELS = {
         atlantida_poa: {
@@ -1653,33 +1630,14 @@
     function getPathSquares(from, to) {
         const fromFile = from.charCodeAt(0) - 97, fromRank = parseInt(from[1], 10) - 1;
         const toFile = to.charCodeAt(0) - 97, toRank = parseInt(to[1], 10) - 1;
-        const dFile = toFile - fromFile, dRank = toRank - fromRank; 
-        const path = [from];
+        const dFile = toFile - fromFile, dRank = toRank - fromRank; const path = [from];
         const isStraightOrDiagonal = dFile === 0 || dRank === 0 || Math.abs(dFile) === Math.abs(dRank);
-        const isKnight = (Math.abs(dFile) === 2 && Math.abs(dRank) === 1) || (Math.abs(dFile) === 1 && Math.abs(dRank) === 2);
-
         if (isStraightOrDiagonal && (dFile !== 0 || dRank !== 0)) {
-            const stepFile = dFile === 0 ? 0 : dFile / Math.abs(dFile); 
-            const stepRank = dRank === 0 ? 0 : dRank / Math.abs(dRank);
+            const stepFile = dFile === 0 ? 0 : dFile / Math.abs(dFile); const stepRank = dRank === 0 ? 0 : dRank / Math.abs(dRank);
             let f = fromFile + stepFile, r = fromRank + stepRank;
-            while (f !== toFile || r !== toRank) { 
-                path.push(String.fromCharCode(97 + f) + (r + 1)); 
-                f += stepFile; 
-                r += stepRank; 
-            }
-        } else if (isKnight) {
-            const stepFile = dFile === 0 ? 0 : dFile / Math.abs(dFile); 
-            const stepRank = dRank === 0 ? 0 : dRank / Math.abs(dRank);
-            if (Math.abs(dFile) === 2) {
-                path.push(String.fromCharCode(97 + fromFile + stepFile) + (fromRank + 1));
-                path.push(String.fromCharCode(97 + fromFile + 2 * stepFile) + (fromRank + 1));
-            } else {
-                path.push(String.fromCharCode(97 + fromFile) + (fromRank + 1 + stepRank));
-                path.push(String.fromCharCode(97 + fromFile) + (fromRank + 1 + 2 * stepRank));
-            }
+            while (f !== toFile || r !== toRank) { path.push(String.fromCharCode(97 + f) + (r + 1)); f += stepFile; r += stepRank; }
         }
-        path.push(to); 
-        return path;
+        path.push(to); return path;
     }
 
     function triggerMoveTrail(from, to) {
@@ -1963,7 +1921,7 @@
             selectedMove = captures.length > 0 ? captures[Math.floor(Math.random() * captures.length)] : moves[Math.floor(Math.random() * moves.length)];
             applyAIMove(selectedMove, onDone);
         } else {
-            const depthBudget = { 3: [3, 120], 4: [4, 220], 5: [4, 350] }[aiDifficulty] || [3, 120];
+            const depthBudget = { 3: [2, 90], 4: [3, 140], 5: [3, 200] }[aiDifficulty] || [2, 90];
             const currentReqId = ++aiRequestId;
             
             document.getElementById('turn-badge-local').innerText = "Pensando...";

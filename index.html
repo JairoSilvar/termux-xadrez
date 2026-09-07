@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Xadrez Pro - v5.11.11</title>
+    <title>Xadrez Pro - v5.11.12</title>
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
@@ -361,7 +361,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>♟️ Xadrez Pro</h1>
-            <p>Estratégia P2P em Tempo Real - v5.11.11</p>
+            <p>Estratégia P2P em Tempo Real - v5.11.12</p>
         </div>
         <div class="menu-dashboard">
             <div class="menu-radio-section">
@@ -568,8 +568,9 @@
     let clockInterval = null;
     let heartbeatInterval = null;
     let aiRequestId = 0;
+    let pendingAICallback = null;
 
-    // MOTOR DO ORÁCULO APRIMORADO (v5.11.11 - Heurísticas de Finais, King Safety e Penalidade por Repetição)
+    // MOTOR DO ORÁCULO APRIMORADO (v5.11.12 - Corrigido race condition com pendingAICallback e requestId robusto)
     const aiWorkerScript = `
         importScripts('https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js');
         const PIECE_VALUES = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 20000 };
@@ -628,7 +629,7 @@
                 game.move(m);
                 let score = -negamax(game, depth - 1, -beta, -alpha, deadline);
                 if (game.in_threefold_repetition()) {
-                    score -= 300; // Penalidade forte para evitar repetição artificial em posições vantajosas
+                    score -= 300;
                 }
                 game.undo();
                 if (score >= beta) return beta;
@@ -680,8 +681,18 @@
     const aiWorkerBlob = new Blob([aiWorkerScript], { type: 'application/javascript' });
     const aiWorker = new Worker(URL.createObjectURL(aiWorkerBlob));
 
+    // Atribuição segura e persistente do onmessage do Worker para evitar race conditions
+    aiWorker.onmessage = function(e) {
+        const { bestMove, requestId } = e.data;
+        if (requestId === aiRequestId && pendingAICallback) {
+            const cb = pendingAICallback;
+            pendingAICallback = null;
+            cb(bestMove);
+        }
+    };
+
     // ============================================
-    // RÁDIO - Otimizado v5.11.8 (Salamanca em 4º lugar)
+    // RÁDIO - Otimizado v5.11.12
     // ============================================
     const RADIO_CHANNELS = {
         atlantida_poa: {
@@ -831,7 +842,7 @@
         addLog(`Unhandled Promise Rejection: ${event.reason}`, "ERROR");
     });
 
-    addLog(`Xadrez Pro v5.11.11 inicializado com sucesso.`, "INIT");
+    addLog(`Xadrez Pro v5.11.12 inicializado com sucesso.`, "INIT");
 
     let candiesWhite = parseInt(localStorage.getItem('chess_candies_w') || '0', 10);
     let candiesBlack = parseInt(localStorage.getItem('chess_candies_b') || '0', 10);
@@ -1171,7 +1182,11 @@
         updateTurnIndicators(); updateCapturedDisplay(); renderBoard();
         addChatMessage("Sistema", "Lance desfeito.", true);
         addLog(`Lance desfeito pelo usuário (total de lances revertidos: ${movesToUndo}).`, "MOVE");
-        if (conn && conn.open && gameMode === 'network') { try { conn.send({ type: 'undo', count: movesToUndo }); } catch(e) {} }
+        if (conn && conn.open && gameMode === 'network') { 
+            try { 
+                conn.send({ type: 'undo', count: movesToUndo, fen: chess.fen() }); 
+            } catch(e) {} 
+        }
     }
 
     function toggleBoardFlip() { 
@@ -1971,13 +1986,11 @@
             document.getElementById('turn-badge-local').style.display = 'inline-block';
             document.getElementById('turn-badge-opponent').style.display = 'inline-block';
 
-            aiWorker.postMessage({ fen: chess.fen(), depthBudget, requestId: currentReqId });
-
-            aiWorker.onmessage = function(e) {
-                const { bestMove, requestId } = e.data;
-                if (requestId !== aiRequestId) return;
+            pendingAICallback = (bestMove) => {
                 applyAIMove(bestMove || moves[0], onDone);
             };
+
+            aiWorker.postMessage({ fen: chess.fen(), depthBudget, requestId: currentReqId });
         }
     }
 
@@ -2014,7 +2027,7 @@
     async function checkRoomAvailability(cityKey) {
         return new Promise((resolve) => {
             let testPeer = new Peer();
-            let roomId = "xadrezpro-cities-v511-" + cityKey;
+            let roomId = "xadrezpro-cities-v512-" + cityKey;
             testPeer.on('error', () => { testPeer.destroy(); resolve('disponivel'); });
             let connTest = testPeer.connect(roomId, { reliable: false });
             let resolved = false;
@@ -2038,7 +2051,7 @@
     window.addEventListener('load', () => { setTimeout(updateRoomStatuses, 300); });
 
     function joinCityRoom(cityName) {
-        let roomId = "xadrezpro-cities-v511-" + cityName;
+        let roomId = "xadrezpro-cities-v512-" + cityName;
         if (peer) { try { peer.destroy(); } catch(e) {} }
         
         peer = new Peer(roomId);
@@ -2125,8 +2138,12 @@
 
         if (data.type === 'reset-board') { resetGame(true); return; }
         if (data.type === 'undo') {
-            const count = data.count || 1;
-            for (let i = 0; i < count; i++) chess.undo();
+            if (data.fen) {
+                chess.load(data.fen);
+            } else {
+                const count = data.count || 1;
+                for (let i = 0; i < count; i++) chess.undo();
+            }
             selectedSquare = null; possibleMoves = []; lastPathCoords = [];
             updateTurnIndicators(); updateCapturedDisplay(); renderBoard();
             addChatMessage("Sistema", "O oponente desfez o último lance.", true);
