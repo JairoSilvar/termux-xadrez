@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Xadrez Pro - v9.1</title>
+    <title>Xadrez Pro - v9.0</title>
     <meta name="theme-color" content="#0284c7">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,40 +50,6 @@
         body.theme-toquio, body.room-toquio { --bg-main: #050508; --bg-gradient: radial-gradient(circle at center, #120a2a 0%, #050508 100%); --panel-bg: rgba(18, 14, 38, 0.98); --panel-border: #f43f5e; --text-main: #00f0ff; --text-muted: #a855f7; --board-border: #00f0ff; --light-square: #2a1b4e; --dark-square: #120a2a; --chat-bg: rgba(11, 7, 26, 0.6); --chat-input-bg: #0b071a; --chat-msg-bg: #1a103c; --btn-bg: #2d1b4e; --btn-hover: #3b2363; --modal-bg: #120e26; --modal-border: #00f0ff; --modal-text: #00f0ff; --hint-dot-color: #a3e635; --candy-w-bg: #00f0ff; --candy-b-bg: #f43f5e; --neon-glow-btn: 0 0 8px rgba(163, 230, 53, 0.4); }
         body.theme-londres, body.room-londres { --bg-main: #062314; --bg-gradient: radial-gradient(circle at center, #0c3b22 0%, #062314 100%); --panel-bg: rgba(12, 59, 34, 0.98); --panel-border: #22c55e; --text-main: #d1fae5; --text-muted: #6ee7b7; --board-border: #10b981; --light-square: #166534; --dark-square: #064e3b; --chat-bg: rgba(5, 35, 20, 0.6); --chat-input-bg: #052314; --chat-msg-bg: #0f4c28; --btn-bg: #14532d; --btn-hover: #166534; --modal-bg: #0c3b22; --modal-border: #22c55e; --modal-text: #d1fae5; --hint-dot-color: #a3e635; --candy-w-bg: #22c55e; --candy-b-bg: #10b981; --neon-glow-btn: 0 0 8px rgba(163, 230, 53, 0.4); }
         body.theme-grandmaster { --bg-main: #1a1025; --bg-gradient: radial-gradient(circle at center, #2d1b4e 0%, #0f0a1a 100%); --panel-bg: rgba(30, 20, 50, 0.98); --panel-border: #eab308; --text-main: #fef3c7; --text-muted: #fbbf24; --board-border: #f59e0b; --light-square: #3b2760; --dark-square: #1e1035; --chat-bg: rgba(15, 10, 30, 0.7); --chat-input-bg: #120a22; --chat-msg-bg: #2a1848; --btn-bg: #3b2760; --btn-hover: #4c1d95; --modal-bg: #1e1035; --modal-border: #eab308; --modal-text: #fef3c7; --hint-dot-color: #fbbf24; --candy-w-bg: #eab308; --candy-b-bg: #a855f7; --neon-glow-btn: 0 0 12px rgba(234, 179, 8, 0.5); --turn-active-color: #eab308; }
-
-        /* === v9.1 Tabuleiros desbloqueáveis (skins) === */
-        body.board-wood {
-            --light-square: #e8c992;
-            --dark-square: #b58863;
-            --board-border: #8b5a2b;
-        }
-        body.board-marble {
-            --light-square: #e8eef5;
-            --dark-square: #5c6b7a;
-            --board-border: #94a3b8;
-        }
-        body.board-emerald {
-            --light-square: #d1fae5;
-            --dark-square: #047857;
-            --board-border: #10b981;
-        }
-        body.board-royal {
-            --light-square: #fef3c7;
-            --dark-square: #7c3aed;
-            --board-border: #eab308;
-        }
-        .unlock-card {
-            display: flex; flex-direction: column; gap: 4px;
-            padding: 8px; border-radius: 10px;
-            border: 1px solid var(--panel-border);
-            background: var(--chat-bg);
-            text-align: left;
-        }
-        .unlock-card.locked { opacity: 0.55; }
-        .unlock-card .u-title { font-size: 11px; font-weight: 800; color: var(--text-main); }
-        .unlock-card .u-req { font-size: 9px; color: var(--text-muted); }
-        .unlock-card .u-actions { display: flex; gap: 4px; flex-wrap: wrap; }
-        .unlock-card .u-actions .action-btn { flex: 1; min-width: 70px; padding: 6px; font-size: 9px; }
 
         /* Cores de peças via CSS variables (combinam com estilos) */
         body.pieces-blue-pink { --pw: drop-shadow(0 0 8px #38bdf8) brightness(1.25); --pb: drop-shadow(0 0 8px #ec4899) brightness(1.20); }
@@ -1190,7 +1156,6 @@
             <div class="settings-tabs">
                 <button class="tab-btn active" onclick="switchSettingsTab(event, 'tab-board')">🏁 Tabuleiro</button>
                 <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-pieces')">🧩 Peças</button>
-                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-unlocks')">🏆 Conquistas</button>
                 <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-sfx')">🔊 Áudio & FX</button>
                 <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-radio')">📻 Rádio</button>
             </div>
@@ -1223,13 +1188,6 @@
                     <span>🔊 Anunciar cada lance</span>
                     <input type="checkbox" id="voiceMovesToggle" onchange="toggleVoiceMoves(this)">
                 </label>
-            </div>
-            <div id="tab-unlocks" class="tab-content" style="grid-template-columns: 1fr; max-height: 280px; overflow-y: auto; gap: 8px; text-align: left; padding: 4px;">
-                <div style="font-size: 10px; font-weight: 800; color: var(--board-border);">🏆 Progresso e recompensas</div>
-                <div style="font-size: 9px; color: var(--text-muted); line-height: 1.35;">Seu Elo libera tabuleiros, conjuntos de peças, temas e o <b>Certificado de Grande Campeão</b>. Nada é removido — só se adiciona.</div>
-                <div id="unlocksGallery" style="display:flex; flex-direction:column; gap:8px;"></div>
-                <button type="button" class="action-btn" id="btnDownloadCertificate" style="padding:10px; font-size:11px; width:100%; background:linear-gradient(135deg,#7c3aed,#eab308); color:#fff; font-weight:800; display:none;" onclick="downloadChampionCertificate()">📜 Baixar Certificado de Grande Campeão</button>
-                <div id="unlocksCertHint" style="font-size:8px; color:var(--text-muted); text-align:center;"></div>
             </div>
             <div id="tab-pieces" class="tab-content" style="grid-template-columns: 1fr; max-height: 260px; overflow-y: auto;">
                 <div style="font-size: 9px; font-weight: bold; color: var(--text-muted); margin-bottom: 4px;">🎨 Cores das Peças</div>
@@ -1360,7 +1318,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>♟️ Xadrez Pro</h1>
-            <p>Estratégia P2P · IA offline · v9.1</p>
+            <p>Estratégia P2P · IA offline · v9.0</p>
         </div>
         <div class="menu-dashboard">
             <!-- ===== COLUNA ESQUERDA (perfil + secundários) ===== -->
@@ -1760,198 +1718,6 @@
     let playerElo = parseInt(localStorage.getItem('xadrezpro_elo') || '1200', 10);
     const ELO_GM_UNLOCK = 1500;
     const AI_ELO = { 1: 600, 2: 900, 3: 1200, 4: 1700, 5: 2000 };
-
-    /** Catálogo de conquistas v9.1 — desbloqueio por Elo (só adiciona opções) */
-    const UNLOCK_CATALOG = [
-        { id: 'board_wood', elo: 800, type: 'board', apply: 'board-wood', icon: '🪵', title: 'Tabuleiro Madeira', desc: 'Casas em tons de carvalho clássico.' },
-        { id: 'pieces_sunset', elo: 900, type: 'pieces', apply: 'pieces-sunset', icon: '🌅', title: 'Peças Pôr do Sol', desc: 'Laranja vs magenta vibrante.' },
-        { id: 'board_marble', elo: 1000, type: 'board', apply: 'board-marble', icon: '🪨', title: 'Tabuleiro Mármore', desc: 'Visual frio e elegante.' },
-        { id: 'pieces_toxic', elo: 1100, type: 'pieces', apply: 'pieces-toxic', icon: '☣️', title: 'Peças Tóxicas', desc: 'Verde ácido vs roxo neon.' },
-        { id: 'board_emerald', elo: 1200, type: 'board', apply: 'board-emerald', icon: 'Emerald', title: 'Tabuleiro Esmeralda', desc: 'Verde profundo de torneio.' },
-        { id: 'pieces_cyber', elo: 1300, type: 'pieces', apply: 'pieces-cyberpunk', icon: '🏙️', title: 'Peças Cyberpunk', desc: 'Ciano vs amarelo futurista.' },
-        { id: 'theme_gm', elo: 1500, type: 'theme', apply: 'grandmaster', icon: '👑', title: 'Tema Grandmaster', desc: 'UI dourada + estilo neon.' },
-        { id: 'board_royal', elo: 1500, type: 'board', apply: 'board-royal', icon: '👑', title: 'Tabuleiro Real', desc: 'Dourado e violeta de campeão.' },
-        { id: 'cert_champion', elo: 1500, type: 'cert', apply: null, icon: '📜', title: 'Certificado Grande Campeão', desc: 'Baixe seu diploma personalizado.' },
-        { id: 'pieces_gold', elo: 1600, type: 'pieces', apply: 'pieces-gold-purple', icon: '🟡', title: 'Peças Ouro Real', desc: 'Dourado vs roxo profundo.' }
-    ];
-    // Corrigir ícone esmeralda (texto acidental)
-    UNLOCK_CATALOG.forEach(function(u) { if (u.id === 'board_emerald') u.icon = '💚'; });
-
-    let seenUnlockIds = [];
-    try { seenUnlockIds = JSON.parse(localStorage.getItem('xadrezpro_seen_unlocks') || '[]'); } catch (e) { seenUnlockIds = []; }
-
-    function isUnlockOwned(item) {
-        return playerElo >= (item.elo || 9999);
-    }
-
-    function setBoardSkin(skinClass) {
-        Array.from(document.body.classList).forEach(function(c) {
-            if (c.startsWith('board-') && c !== 'board-section') document.body.classList.remove(c);
-        });
-        if (skinClass) document.body.classList.add(skinClass);
-        try { localStorage.setItem('xadrezpro_board_skin', skinClass || ''); } catch (e) {}
-        addLog('Tabuleiro skin: ' + (skinClass || 'padrão'), 'UI');
-    }
-
-    function tryApplyUnlock(itemId) {
-        const item = UNLOCK_CATALOG.find(function(x) { return x.id === itemId; });
-        if (!item) return;
-        if (!isUnlockOwned(item)) {
-            alert('Ainda bloqueado.\nSeu Elo: ' + playerElo + '\nNecessário: ' + item.elo + '+');
-            return;
-        }
-        if (item.type === 'board') setBoardSkin(item.apply);
-        else if (item.type === 'pieces') setPieceColors(item.apply);
-        else if (item.type === 'theme') {
-            setTheme(item.apply);
-            if (item.apply === 'grandmaster') {
-                setPieceStyle('style-neon');
-                setPieceColors('pieces-gold-purple');
-            }
-        } else if (item.type === 'cert') {
-            downloadChampionCertificate();
-        }
-        refreshUnlocksUI();
-    }
-
-    function refreshUnlocksUI() {
-        const gallery = document.getElementById('unlocksGallery');
-        if (gallery) {
-            gallery.innerHTML = UNLOCK_CATALOG.map(function(item) {
-                const owned = isUnlockOwned(item);
-                const lockLabel = owned ? '✅ Desbloqueado' : ('🔒 Elo ' + item.elo + '+');
-                const btnLabel = item.type === 'cert' ? '📜 Baixar' : 'Aplicar';
-                const btn = owned
-                    ? '<button type="button" class="action-btn" onclick="tryApplyUnlock(\'' + item.id + '\')">' + btnLabel + '</button>'
-                    : '<button type="button" class="action-btn" disabled style="opacity:0.5">Bloqueado</button>';
-                return '<div class="unlock-card' + (owned ? '' : ' locked') + '">' +
-                    '<div class="u-title">' + item.icon + ' ' + item.title + '</div>' +
-                    '<div class="u-req">' + lockLabel + ' · ' + item.desc + '</div>' +
-                    '<div class="u-actions">' + btn + '</div></div>';
-            }).join('');
-        }
-        const certBtn = document.getElementById('btnDownloadCertificate');
-        const certHint = document.getElementById('unlocksCertHint');
-        const certOk = playerElo >= ELO_GM_UNLOCK;
-        if (certBtn) certBtn.style.display = certOk ? 'block' : 'none';
-        if (certHint) {
-            certHint.textContent = certOk
-                ? 'Parabéns! Você pode baixar o certificado personalizado.'
-                : ('Certificado disponível com Elo ' + ELO_GM_UNLOCK + '+ (faltam ' + Math.max(0, ELO_GM_UNLOCK - playerElo) + ')');
-        }
-        // GM theme button (já existia)
-        const btn = document.getElementById('btnThemeGrandmaster');
-        if (btn) {
-            if (playerElo >= ELO_GM_UNLOCK) {
-                btn.style.opacity = '1';
-                btn.innerText = '👑 Grandmaster';
-                btn.title = 'Tema exclusivo desbloqueado';
-            } else {
-                btn.style.opacity = '0.5';
-                btn.innerText = '👑 Grandmaster (bloqueado)';
-                btn.title = 'Desbloqueie com Elo ≥ ' + ELO_GM_UNLOCK;
-            }
-        }
-    }
-
-    function announceNewUnlocks(prevElo, nextElo) {
-        const newly = UNLOCK_CATALOG.filter(function(item) {
-            return prevElo < item.elo && nextElo >= item.elo && seenUnlockIds.indexOf(item.id) < 0;
-        });
-        newly.forEach(function(item) {
-            seenUnlockIds.push(item.id);
-            addChatMessage('Conquista', item.icon + ' Desbloqueou: ' + item.title + '!', true);
-            addLog('Unlock: ' + item.id, 'ELO');
-        });
-        if (newly.length) {
-            try { localStorage.setItem('xadrezpro_seen_unlocks', JSON.stringify(seenUnlockIds)); } catch (e) {}
-            try { refreshUnlocksUI(); } catch (e) {}
-        }
-    }
-
-    function downloadChampionCertificate() {
-        if (playerElo < ELO_GM_UNLOCK) {
-            alert('Certificado bloqueado. Elo necessário: ' + ELO_GM_UNLOCK + '+');
-            return;
-        }
-        const name = (playerName && playerName.trim()) ? playerName.trim() : 'Grande Campeão';
-        const w = 1200, h = 850;
-        const canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        // fundo
-        const grd = ctx.createLinearGradient(0, 0, w, h);
-        grd.addColorStop(0, '#1a1025');
-        grd.addColorStop(0.5, '#2d1b4e');
-        grd.addColorStop(1, '#0f172a');
-        ctx.fillStyle = grd;
-        ctx.fillRect(0, 0, w, h);
-        // borda dourada
-        ctx.strokeStyle = '#eab308';
-        ctx.lineWidth = 12;
-        ctx.strokeRect(36, 36, w - 72, h - 72);
-        ctx.strokeStyle = '#fbbf24';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(52, 52, w - 104, h - 104);
-        // título
-        ctx.fillStyle = '#fef3c7';
-        ctx.font = 'bold 42px Georgia, serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('CERTIFICADO DE GRANDE CAMPEÃO', w / 2, 140);
-        ctx.font = '22px Georgia, serif';
-        ctx.fillStyle = '#fbbf24';
-        ctx.fillText('Xadrez Pro', w / 2, 185);
-        ctx.fillStyle = '#e2e8f0';
-        ctx.font = '20px system-ui, sans-serif';
-        ctx.fillText('Este documento reconhece que', w / 2, 280);
-        ctx.fillStyle = '#fef3c7';
-        ctx.font = 'bold 48px Georgia, serif';
-        ctx.fillText(name, w / 2, 360);
-        ctx.fillStyle = '#cbd5e1';
-        ctx.font = '20px system-ui, sans-serif';
-        ctx.fillText('atingiu o nível de excelência no Xadrez Pro', w / 2, 420);
-        ctx.fillStyle = '#eab308';
-        ctx.font = 'bold 28px system-ui, sans-serif';
-        ctx.fillText('Elo ' + playerElo + '  ·  Título Grandmaster', w / 2, 480);
-        const when = new Date();
-        const dateStr = when.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '18px system-ui, sans-serif';
-        ctx.fillText('Emitido em ' + dateStr, w / 2, 560);
-        ctx.fillText('Válido como conquistas cosméticas e progressão local do app', w / 2, 595);
-        ctx.fillStyle = '#fbbf24';
-        ctx.font = '16px Georgia, serif';
-        ctx.fillText('♟️  Estratégia · P2P · IA offline  ·  v9.1  ♟️', w / 2, 700);
-        ctx.fillStyle = '#64748b';
-        ctx.font = '14px system-ui, sans-serif';
-        ctx.fillText('Documento gerado no dispositivo do jogador — Xadrez Pro', w / 2, 760);
-
-        canvas.toBlob(function(blob) {
-            if (!blob) {
-                alert('Não foi possível gerar o certificado neste navegador.');
-                return;
-            }
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'XadrezPro_Certificado_' + name.replace(/[^\w\-]+/g, '_').slice(0, 40) + '.png';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(function() {
-                URL.revokeObjectURL(url);
-                a.remove();
-            }, 1500);
-            addChatMessage('Sistema', '📜 Certificado baixado! (imagem PNG — imprima ou salve como PDF no compartilhar do sistema)', true);
-            addLog('Certificado gerado para ' + name + ' Elo ' + playerElo, 'UI');
-        }, 'image/png');
-    }
-
-    // Restaura skin de tabuleiro
-    try {
-        const savedBoard = localStorage.getItem('xadrezpro_board_skin');
-        if (savedBoard) setBoardSkin(savedBoard);
-    } catch (e) {}
     let playerAvatar = localStorage.getItem('xadrezpro_avatar') || '♟️';
     let opponentAvatar = '♟️';
     let voiceMovesEnabled = localStorage.getItem('xadrezpro_voice_moves') === '1';
@@ -3040,7 +2806,6 @@
         playerElo = Math.max(100, Math.min(3000, playerElo + delta));
         try { localStorage.setItem('xadrezpro_elo', String(playerElo)); } catch(e) {}
         refreshEloUI();
-        try { announceNewUnlocks(prev, playerElo); refreshUnlocksUI(); } catch (e) {}
         addLog(`Elo: ${prev} → ${playerElo} (${delta >= 0 ? '+' : ''}${delta}) vs rating ${opponentRating}`, 'ELO');
         return delta;
     }
@@ -3051,14 +2816,25 @@
         const hint = document.getElementById('eloUnlockHint');
         if (hint) {
             if (playerElo >= ELO_GM_UNLOCK) {
-                hint.textContent = '👑 Grandmaster + Certificado!';
+                hint.textContent = '👑 Grandmaster desbloqueado!';
                 hint.style.color = '#eab308';
             } else {
                 hint.textContent = `👑 GM em ${ELO_GM_UNLOCK} (faltam ${ELO_GM_UNLOCK - playerElo})`;
                 hint.style.color = '';
             }
         }
-        try { refreshUnlocksUI(); } catch (e) {}
+        const btn = document.getElementById('btnThemeGrandmaster');
+        if (btn) {
+            if (playerElo >= ELO_GM_UNLOCK) {
+                btn.style.opacity = '1';
+                btn.innerText = '👑 Grandmaster';
+                btn.title = 'Tema exclusivo desbloqueado';
+            } else {
+                btn.style.opacity = '0.5';
+                btn.innerText = '👑 Grandmaster (bloqueado)';
+                btn.title = 'Desbloqueie com Elo ≥ ' + ELO_GM_UNLOCK;
+            }
+        }
     }
 
     function trySetGrandmasterTheme() {
@@ -3336,10 +3112,7 @@
         else document.body.classList.add('style-classic');
     } catch(e) { document.body.classList.add('style-classic'); }
 
-    function openSettingsModal() {
-        document.getElementById("settings-modal").style.display = "flex";
-        try { refreshUnlocksUI(); refreshEloUI(); } catch (e) {}
-    }
+    function openSettingsModal() { document.getElementById("settings-modal").style.display = "flex"; }
     function closeSettingsModal() { document.getElementById("settings-modal").style.display = "none"; }
 
     function applyPlayerSeating() {
@@ -6131,8 +5904,7 @@
     }
 
 
-    addLog('Xadrez Pro v9.1 — conquistas, tabuleiros/peças por Elo + certificado Grande Campeão.', 'INIT');
-    try { refreshUnlocksUI(); } catch (e) {}
+    addLog('Xadrez Pro v9.0 — voz P2P em chunks + IA níveis 1–3 recalibrados.', 'INIT');
     logSessionSnapshot('boot');
     if (typeof shuffleStandUpDeck === 'function') shuffleStandUpDeck();
     if (typeof bindVoiceButton === 'function') bindVoiceButton();
