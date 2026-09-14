@@ -1692,10 +1692,6 @@
     let playerColor = 'w';
     let isSpectator = false;
     let lastPathCoords = [];
-    /** Conexões de espectadores (host mantém abertas e retransmite lances/chat) */
-    let spectatorConns = [];
-    /** true enquanto este peer é o host da sala-cidade */
-    let isRoomHost = false;
 
     let boardFlipped = false;
     let flyingToSquare = null;
@@ -2599,8 +2595,8 @@
 
     function sendReaction(emoji) {
         showFloatingReaction(emoji, true);
-        if (gameMode === 'network') {
-            networkBroadcast({ type: 'reaction', emoji: emoji, name: playerName || 'Jogador' });
+        if (conn && conn.open && gameMode === 'network') {
+            try { conn.send({ type: 'reaction', emoji: emoji, name: playerName || 'Jogador' }); } catch(e) {}
         }
     }
 
@@ -3270,14 +3266,10 @@
         lastPathCoords = [];
         wasInCheckLastMove = false;
 
-        spectatorConns.forEach((c) => { try { c.close(); } catch (e) {} });
-        spectatorConns = [];
-        isRoomHost = false;
         if (conn) { try { conn.close(); } catch(e) {} conn = null; }
         if (peer) { try { peer.destroy(); } catch(e) {} peer = null; }
         isSpectator = false;
         clearChat();
-        setTimeout(updateRoomStatuses, 600);
 
         currentCityKey = null;
         Array.from(document.body.classList).forEach(c => {
@@ -3386,17 +3378,13 @@
 
     function sendTaunt(text) { 
         addChatMessage(playerName || "Você", text); 
-        if (gameMode === 'network') {
-            networkBroadcast({ type: 'chat', sender: playerName || (playerColor === 'w' ? 'Brancas' : 'Pretas'), text: text });
-        }
+        if (conn && conn.open) { try { conn.send({ type: 'chat', sender: playerName || (playerColor === 'w' ? 'Brancas' : 'Pretas'), text: text }); } catch(e) {} } 
     }
     function sendCustomMessage() { 
         const input = document.getElementById("chat-input"); 
         if (!input.value) return; 
         addChatMessage(playerName || "Você", input.value); 
-        if (gameMode === 'network') {
-            networkBroadcast({ type: 'chat', sender: playerName || (isSpectator ? 'Espectador' : (playerColor === 'w' ? 'Brancas' : 'Pretas')), text: input.value });
-        }
+        if (conn && conn.open) { try { conn.send({ type: 'chat', sender: playerName || (playerColor === 'w' ? 'Brancas' : 'Pretas'), text: input.value }); } catch(e) {} } 
         input.value = ""; 
     }
     function handleChatPress(e) { if (e.key === 'Enter') sendCustomMessage(); }
@@ -3591,21 +3579,20 @@
 
     /** Envia áudio em pedaços pequenos — PeerJS/json costuma dropar dataUrl grande (>~16–32KB). */
     function sendVoiceChunked(id, dataUrl, duration, sender) {
-        if (gameMode !== 'network') return;
+        if (!conn || !conn.open) return;
         const payload = String(dataUrl || '');
         const total = Math.max(1, Math.ceil(payload.length / VOICE_CHUNK_CHARS));
         const mimeMatch = payload.match(/^data:([^;]+);/);
         const mime = (mimeMatch && mimeMatch[1]) || 'audio/webm';
-        const startMsg = {
-            type: 'voice-start',
-            id: id,
-            sender: sender,
-            duration: duration,
-            totalChunks: total,
-            mime: mime
-        };
         try {
-            networkBroadcast(startMsg);
+            conn.send({
+                type: 'voice-start',
+                id: id,
+                sender: sender,
+                duration: duration,
+                totalChunks: total,
+                mime: mime
+            });
         } catch (e) {
             addLog('voice-start falhou: ' + e, 'ERROR');
             return;
@@ -3613,11 +3600,11 @@
         let offset = 0;
         let idx = 0;
         const sendNext = function() {
-            if (idx >= total) return;
+            if (idx >= total || !conn || !conn.open) return;
             const slice = payload.slice(offset, offset + VOICE_CHUNK_CHARS);
             offset += VOICE_CHUNK_CHARS;
             try {
-                networkBroadcast({ type: 'voice-chunk', id: id, index: idx, data: slice });
+                conn.send({ type: 'voice-chunk', id: id, index: idx, data: slice });
             } catch (e) {
                 addLog('voice-chunk ' + idx + ' falhou: ' + e, 'ERROR');
                 return;
@@ -3625,12 +3612,13 @@
             idx++;
             if (idx >= total) {
                 try {
-                    networkBroadcast({ type: 'voice-end', id: id });
+                    conn.send({ type: 'voice-end', id: id });
                 } catch (e) {
                     addLog('voice-end falhou: ' + e, 'ERROR');
                 }
                 addLog('Voz P2P enviada em ' + total + ' chunks', 'VOICE');
             } else {
+                // Pequeno espaçamento evita saturar o data channel
                 setTimeout(sendNext, 18);
             }
         };
@@ -4670,14 +4658,16 @@
         if (voiceMovesEnabled && move.san) speak(move.san);
         addLog(`Lance efetuado: ${move.san}`, "MOVE");
         const over = checkGameStateEvents(true);
-        if (gameMode === 'network' && !isSpectator) {
-            networkBroadcast({
-                type: 'move',
-                move: { from: move.from, to: move.to, promotion: move.promotion },
-                fen: chess.fen(),
-                clockWhite: clockWhite,
-                clockBlack: clockBlack
-            });
+        if (conn && conn.open && gameMode === 'network') { 
+            try { 
+                conn.send({ 
+                    type: 'move', 
+                    move: { from: move.from, to: move.to, promotion: move.promotion }, 
+                    fen: chess.fen(),
+                    clockWhite: clockWhite,
+                    clockBlack: clockBlack
+                }); 
+            } catch(e) {} 
         }
         if (gameMode === 'pve' && !over && chess.turn() !== playerColor) {
             setTimeout(() => makeAIMove(chess.turn()), 300);
@@ -4867,43 +4857,14 @@
 
     async function checkRoomAvailability(cityKey) {
         return new Promise((resolve) => {
-            let settled = false;
-            const finish = (status) => {
-                if (settled) return;
-                settled = true;
-                try { if (connTest) connTest.close(); } catch (e) {}
-                try { if (testPeer) testPeer.destroy(); } catch (e) {}
-                resolve(status);
-            };
-            let testPeer = null;
-            let connTest = null;
-            try {
-                testPeer = new Peer();
-            } catch (e) {
-                resolve('disponivel');
-                return;
-            }
-            const roomId = "xadrezpro-cities-v73-" + cityKey;
-            testPeer.on('error', () => finish('disponivel'));
-            testPeer.on('open', () => {
-                try {
-                    connTest = testPeer.connect(roomId, { reliable: true, serialization: 'json' });
-                    connTest.on('open', () => {
-                        try { connTest.send({ type: 'probe-room', city: cityKey }); } catch (e) {}
-                    });
-                    connTest.on('data', (data) => {
-                        if (data && (data.type === 'probe-response' || data.type === 'slot-response')) {
-                            // ocupada se há host (mesmo sem segundo jogador)
-                            finish(data.occupied || data.status === 'full' || data.status === 'accepted' ? 'ocupada' : 'disponivel');
-                        }
-                    });
-                    connTest.on('error', () => finish('disponivel'));
-                } catch (e) {
-                    finish('disponivel');
-                }
-            });
-            // PeerJS costuma levar 1–3s; 400ms gerava sempre "Livre"
-            setTimeout(() => finish('disponivel'), 2800);
+            let testPeer = new Peer();
+            let roomId = "xadrezpro-cities-v73-" + cityKey;
+            testPeer.on('error', () => { testPeer.destroy(); resolve('disponivel'); });
+            let connTest = testPeer.connect(roomId, { reliable: false });
+            let resolved = false;
+            connTest.on('open', () => { resolved = true; try { connTest.send({ type: 'check-slot' }); } catch(e){} });
+            connTest.on('data', (data) => { if (data.type === 'slot-response') { testPeer.destroy(); resolve('lotada'); } });
+            setTimeout(() => { if (!resolved) { resolved = true; testPeer.destroy(); resolve('disponivel'); } }, 400);
         });
     }
 
@@ -4912,43 +4873,13 @@
         for (let c of cities) {
             const statusEl = document.getElementById(`status-${c}`);
             if (statusEl) {
-                statusEl.innerText = '…';
-                statusEl.style.background = '#64748b';
                 let status = await checkRoomAvailability(c);
-                if (status === 'disponivel') {
-                    statusEl.innerText = 'Livre';
-                    statusEl.style.background = '#15803d';
-                } else {
-                    statusEl.innerText = 'Em jogo';
-                    statusEl.style.background = '#b91c1c';
-                }
+                statusEl.innerText = status === 'disponivel' ? 'Livre' : 'Cheia';
+                statusEl.style.background = status === 'disponivel' ? '#15803d' : '#b91c1c';
             }
         }
     }
-    window.addEventListener('load', () => { setTimeout(updateRoomStatuses, 500); });
-    // Atualiza status periodicamente enquanto o menu estiver aberto
-    setInterval(() => {
-        if (gameMode === 'menu' || document.getElementById('menu-screen')?.style.display !== 'none') {
-            updateRoomStatuses();
-        }
-    }, 20000);
-
-    /** Retransmite para todos os espectadores (host) */
-    function relayToSpectators(payload) {
-        if (!spectatorConns.length) return;
-        spectatorConns = spectatorConns.filter((c) => c && c.open);
-        spectatorConns.forEach((c) => {
-            try { c.send(payload); } catch (e) {}
-        });
-    }
-
-    /** Envia para oponente + espectadores */
-    function networkBroadcast(payload) {
-        if (conn && conn.open) {
-            try { conn.send(payload); } catch (e) {}
-        }
-        relayToSpectators(payload);
-    }
+    window.addEventListener('load', () => { setTimeout(updateRoomStatuses, 300); });
 
     function joinCityRoom(cityName) {
         if (botVsBotInterval) { clearTimeout(botVsBotInterval); botVsBotInterval = null; }
@@ -5051,133 +4982,53 @@
 
     function setupHeartbeat() {
         if (heartbeatInterval) clearInterval(heartbeatInterval);
-        heartbeatInterval = setInterval(() => {
-            if (gameMode !== 'network' || isSpectator) return;
-            const payload = {
-                type: 'ping',
-                fen: chess.fen(),
-                plyCount: chess.history().length,
-                clockWhite: clockWhite,
-                clockBlack: clockBlack
-            };
-            // Host (ou qualquer lado com conexão) sincroniza oponente + espectadores
-            networkBroadcast(payload);
+        heartbeatInterval = setInterval(() => { 
+            if (conn && conn.open && gameMode === 'network') { 
+                try { 
+                    conn.send({ 
+                        type: 'ping', 
+                        fen: chess.fen(), 
+                        plyCount: chess.history().length,
+                        clockWhite: clockWhite,
+                        clockBlack: clockBlack
+                    }); 
+                } catch(e) {} 
+            } 
         }, 3000);
     }
 
     function setupHostServer(cityName) {
-        isRoomHost = true;
-        spectatorConns = [];
         let guestConn = null;
-
         peer.on('connection', (c) => {
             c.on('data', (data) => {
-                if (!data || typeof data !== 'object') return;
-
-                // Probe só consulta status — NÃO entra na partida nem reseta o tabuleiro
-                if (data.type === 'probe-room') {
-                    try {
-                        c.send({
-                            type: 'probe-response',
-                            occupied: true,
-                            hasGuest: !!guestConn,
-                            spectators: spectatorConns.length,
-                            city: cityName,
-                            plyCount: chess.history().length
-                        });
-                    } catch (e) {}
-                    return;
-                }
-
                 if (data.type === 'check-slot') {
                     if (!guestConn) {
-                        // Segundo jogador (oponente)
-                        guestConn = c;
-                        conn = c;
+                        guestConn = c; conn = c;
                         opponentName = data.guestName || 'Oponente';
                         if (data.guestAvatar) opponentAvatar = data.guestAvatar;
                         setupHostListeners(cityName);
                         setupHeartbeat();
 
-                        // Não reseta se já houver lances (partida em andamento após reconexão)
-                        if (chess.history().length === 0) {
-                            chess.reset();
-                            selectedSquare = null;
-                            possibleMoves = [];
-                            lastPathCoords = [];
-                            wasInCheckLastMove = false;
-                        }
+                        chess.reset();
+                        selectedSquare = null;
+                        possibleMoves = [];
+                        lastPathCoords = [];
+                        wasInCheckLastMove = false;
 
-                        try {
-                            c.send({
-                                type: 'slot-response',
-                                status: 'accepted',
-                                fen: chess.fen(),
-                                city: cityName,
-                                timeControl: timeControlSeconds,
-                                candiesW: candiesWhite,
-                                candiesB: candiesBlack,
+                        try { 
+                            c.send({ 
+                                type: 'slot-response', status: 'accepted', fen: chess.fen(), city: cityName, 
+                                timeControl: timeControlSeconds, candiesW: candiesWhite, candiesB: candiesBlack, 
                                 plyCount: chess.history().length,
-                                hostName: playerName || 'Host',
-                                hostAvatar: playerAvatar
-                            });
-                        } catch (e) {}
+                                hostName: playerName || 'Host', hostAvatar: playerAvatar
+                            }); 
+                        } catch(e) {}
                         addChatMessage("Sistema", (opponentName || 'Oponente') + " entrou na sala!", false, false);
-                        relayToSpectators({ type: 'chat', sender: 'Sistema', text: (opponentName || 'Oponente') + ' entrou na partida.', isAI: true });
-                        c.on('close', () => {
-                            if (guestConn === c) {
-                                guestConn = null;
-                                if (conn === c) conn = null;
-                                addChatMessage("Sistema", "O oponente saiu.", true);
-                            }
-                        });
+                        c.on('close', () => { if (guestConn === c) guestConn = null; });
                     } else {
-                        // Terceiro+ → espectador: mantém conexão e retransmite o jogo
-                        if (!spectatorConns.includes(c)) spectatorConns.push(c);
-                        try {
-                            c.send({
-                                type: 'slot-response',
-                                status: 'full',
-                                fen: chess.fen(),
-                                city: cityName,
-                                timeControl: timeControlSeconds,
-                                candiesW: candiesWhite,
-                                candiesB: candiesBlack,
-                                plyCount: chess.history().length,
-                                hostName: playerName || 'Host',
-                                hostAvatar: playerAvatar,
-                                guestName: opponentName || 'Oponente',
-                                guestAvatar: opponentAvatar,
-                                clockWhite: clockWhite,
-                                clockBlack: clockBlack,
-                                spectator: true
-                            });
-                        } catch (e) {}
-                        addChatMessage("Sistema", (data.guestName || 'Alguém') + " entrou como espectador.", true);
-                        c.on('data', (specData) => {
-                            // Espectador só pode enviar chat (leitura/acompanhamento)
-                            if (specData && specData.type === 'chat') {
-                                handleIncomingConnData(specData);
-                                // retransmite para oponente e outros espectadores
-                                if (conn && conn.open) {
-                                    try { conn.send(specData); } catch (e) {}
-                                }
-                                spectatorConns.forEach((sc) => {
-                                    if (sc !== c && sc.open) {
-                                        try { sc.send(specData); } catch (e) {}
-                                    }
-                                });
-                            }
-                        });
-                        c.on('close', () => {
-                            spectatorConns = spectatorConns.filter((x) => x !== c && x.open);
-                            addLog('Espectador desconectou. Restam: ' + spectatorConns.length, 'P2P_INFO');
-                        });
-                        addLog('Espectador aceito. Total: ' + spectatorConns.length, 'P2P_INFO');
+                        try { c.send({ type: 'slot-response', status: 'full', fen: chess.fen(), city: cityName, timeControl: timeControlSeconds }); } catch(e) {}
                     }
-                    return;
                 }
-                // Demais mensagens do oponente são tratadas em setupHostListeners (após aceite)
             });
         });
     }
@@ -5350,15 +5201,7 @@
     }
 
     function setupHostListeners(cityName) {
-        // Host: processa dados do oponente e retransmite para espectadores
-        conn.on('data', (data) => {
-            if (!data || typeof data !== 'object') return;
-            if (data.type === 'probe-room' || data.type === 'check-slot') return;
-            handleIncomingConnData(data);
-            if (data.type && data.type !== 'ping') {
-                relayToSpectators(data);
-            }
-        });
+        conn.on('data', handleIncomingConnData);
         conn.on('close', () => { addChatMessage("Sistema", "O oponente saiu.", true); });
     }
 
@@ -5374,14 +5217,11 @@
                 lastPathCoords = [];
                 wasInCheckLastMove = false;
 
-                // Espectador e oponente: ambos precisam do FEN atual da partida
-                if (data.fen) {
-                    try { chess.load(data.fen); lastSyncedFen = data.fen; } catch (e) {}
+                if (data.status !== 'full' && data.fen) {
+                    try { chess.load(data.fen); } catch(e) {}
                 }
 
                 timeControlSeconds = typeof data.timeControl === 'number' ? data.timeControl : 0;
-                if (typeof data.clockWhite === 'number') clockWhite = data.clockWhite;
-                if (typeof data.clockBlack === 'number') clockBlack = data.clockBlack;
 
                 if (data.candiesW !== undefined) {
                     candiesWhite = data.candiesW; candiesBlack = data.candiesB;
@@ -5391,26 +5231,13 @@
 
                 if (data.hostName) opponentName = data.hostName;
                 if (data.hostAvatar) opponentAvatar = data.hostAvatar;
-                if (data.status === 'full' || data.spectator) {
-                    playerColor = null;
-                    isSpectator = true;
-                    closeMenuTransition();
-                    startGameSetup();
-                    // startGameSetup limpa o chat — mensagens depois
-                    const titleEl = document.getElementById('room-status-title');
-                    if (titleEl) {
-                        const base = (cityDetails[data.city || cityName] && cityDetails[data.city || cityName].name) || 'Sala';
-                        titleEl.innerText = base + ' · 👁 Espectador';
-                    }
-                    addChatMessage("Sistema", "Modo espectador: acompanhe lances e chat (sem jogar).", true);
-                    addChatMessage("Sistema", "Partida: " + (data.hostName || 'Host') + " vs " + (data.guestName || opponentName || 'Oponente'), true);
-                    updateClockDisplay();
-                    renderBoard();
+                if (data.status === 'full') {
+                    playerColor = null; isSpectator = true;
+                    closeMenuTransition(); startGameSetup();
+                    addChatMessage("Sistema", "Modo Espectador.", true);
                 } else {
-                    playerColor = 'b';
-                    isSpectator = false;
-                    closeMenuTransition();
-                    startGameSetup();
+                    playerColor = 'b'; isSpectator = false;
+                    closeMenuTransition(); startGameSetup();
                     addChatMessage("Sistema", "Conectado com " + (opponentName || 'host') + "!", false, false);
                 }
                 return;
