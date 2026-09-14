@@ -1696,9 +1696,6 @@
     let spectatorConns = [];
     /** true enquanto este peer é o host da sala-cidade */
     let isRoomHost = false;
-    /** Nomes exibidos no modo espectador */
-    let spectatorWhiteName = '';
-    let spectatorBlackName = '';
 
     let boardFlipped = false;
     let flyingToSquare = null;
@@ -2601,10 +2598,6 @@
     }, true);
 
     function sendReaction(emoji) {
-        if (isSpectator) {
-            addChatMessage('Sistema', 'Espectadores só assistem — não enviam reações.', true);
-            return;
-        }
         showFloatingReaction(emoji, true);
         if (gameMode === 'network') {
             networkBroadcast({ type: 'reaction', emoji: emoji, name: playerName || 'Jogador' });
@@ -3129,14 +3122,10 @@
         }
 
         if (gameMode === 'network' && isSpectator) {
-            // Vista padrão: Brancas embaixo (local), Pretas em cima (opp)
             localCard.style.order = '5';
             oppCard.style.order = '3';
-            const wName = (typeof spectatorWhiteName !== 'undefined' && spectatorWhiteName) ? spectatorWhiteName : (opponentName || 'Brancas');
-            const bName = (typeof spectatorBlackName !== 'undefined' && spectatorBlackName) ? spectatorBlackName : 'Pretas';
-            // Host é branco; oponente (guest) é preto
-            document.getElementById('player-local-label').innerText = wName + ' (Brancas)';
-            document.getElementById('player-opp-label').innerText = bName + ' (Pretas)';
+            document.getElementById('player-local-label').innerText = "Brancas (Espectador)";
+            document.getElementById('player-opp-label').innerText = "Pretas (Espectador)";
             return;
         }
 
@@ -3287,9 +3276,6 @@
         if (conn) { try { conn.close(); } catch(e) {} conn = null; }
         if (peer) { try { peer.destroy(); } catch(e) {} peer = null; }
         isSpectator = false;
-        spectatorWhiteName = '';
-        spectatorBlackName = '';
-        updateSpectatorChrome();
         clearChat();
         setTimeout(updateRoomStatuses, 600);
 
@@ -3321,7 +3307,7 @@
         if (botVsBotInterval) { clearTimeout(botVsBotInterval); botVsBotInterval = null; }
         aiRequestId++;
         pendingAICallback = null;
-        if (gameMode === 'network') networkBroadcast({ type: 'reset-board' });
+        if (conn && conn.open) { try { conn.send({ type: 'reset-board' }); } catch(e) {} }
         resetGame(true);
         if (gameMode === 'pve' && playerColor === 'b') {
             setTimeout(() => makeAIMove('w'), 400);
@@ -3338,8 +3324,8 @@
         updateTurnIndicators(); updateCapturedDisplay(); renderBoard();
         addChatMessage("Sistema", "Lance desfeito.", true);
         addLog(`Lance desfeito pelo usuário.`, "MOVE");
-        if (gameMode === 'network') {
-            networkBroadcast({ type: 'undo', count: movesToUndo, fen: chess.fen() });
+        if (conn && conn.open && gameMode === 'network') { 
+            try { conn.send({ type: 'undo', count: movesToUndo, fen: chess.fen() }); } catch(e) {} 
         }
     }
 
@@ -3398,28 +3384,18 @@
         box.scrollTop = box.scrollHeight;
     }
 
-    function sendTaunt(text) {
-        if (isSpectator) {
-            addChatMessage('Sistema', 'Espectadores só assistem — chat e frases desativados.', true);
-            return;
-        }
+    function sendTaunt(text) { 
         addChatMessage(playerName || "Você", text); 
         if (gameMode === 'network') {
             networkBroadcast({ type: 'chat', sender: playerName || (playerColor === 'w' ? 'Brancas' : 'Pretas'), text: text });
         }
     }
-    function sendCustomMessage() {
-        if (isSpectator) {
-            addChatMessage('Sistema', 'Espectadores só assistem — não enviam mensagens.', true);
-            const input = document.getElementById("chat-input");
-            if (input) input.value = "";
-            return;
-        }
+    function sendCustomMessage() { 
         const input = document.getElementById("chat-input"); 
         if (!input.value) return; 
         addChatMessage(playerName || "Você", input.value); 
         if (gameMode === 'network') {
-            networkBroadcast({ type: 'chat', sender: playerName || (playerColor === 'w' ? 'Brancas' : 'Pretas'), text: input.value });
+            networkBroadcast({ type: 'chat', sender: playerName || (isSpectator ? 'Espectador' : (playerColor === 'w' ? 'Brancas' : 'Pretas')), text: input.value });
         }
         input.value = ""; 
     }
@@ -3480,10 +3456,6 @@
     }
 
     async function startVoiceRecording() {
-        if (isSpectator) {
-            addChatMessage('Sistema', 'Espectadores só assistem — microfone desativado.', true);
-            return;
-        }
         if (voiceRecorder && voiceRecorder.state === 'recording') return;
         if (voicePending) {
             addChatMessage('Sistema', 'Envie ou apague a prévia de áudio antes de gravar outra.', true);
@@ -3599,11 +3571,6 @@
     }
 
     function confirmSendVoice() {
-        if (isSpectator) {
-            hideVoicePreview();
-            addChatMessage('Sistema', 'Espectadores só assistem — não enviam áudio.', true);
-            return;
-        }
         if (!voicePending) return;
         const pending = voicePending;
         hideVoicePreview();
@@ -3790,10 +3757,6 @@
     }
 
     function sendStandUpJoke() {
-        if (isSpectator) {
-            addChatMessage('Sistema', 'Espectadores só assistem — stand-up desativado.', true);
-            return;
-        }
         if (!diverseStandUpList.length) return;
         if (currentJokeIndex >= diverseStandUpList.length) shuffleStandUpDeck();
         const line = diverseStandUpList[currentJokeIndex];
@@ -3803,8 +3766,8 @@
         if (recentStandUpLines.length > 24) recentStandUpLines.shift();
         const jokeHtml = '🎤 <b>MOMENTO CÔMICO:</b><br>"' + line + '"';
         addChatMessage('Stand up', jokeHtml, true, false, true);
-        if (gameMode === 'network') {
-            networkBroadcast({ type: 'chat', sender: 'Stand up', text: jokeHtml, isAI: true });
+        if (conn && conn.open) {
+            try { conn.send({ type: 'chat', sender: 'Stand up', text: jokeHtml, isAI: true }); } catch (e) {}
         }
         addLog('Stand-up: ' + line.slice(0, 80), 'UI');
     }
@@ -3930,11 +3893,10 @@
     }
 
     function requestRematch() {
-        if (gameMode !== 'network' || isSpectator) return;
-        if (!conn || !conn.open) return;
+        if (gameMode !== 'network' || !conn || !conn.open) return;
         rematchPending = true;
         try {
-            networkBroadcast({ type: 'rematch-request', name: playerName || 'Jogador' });
+            conn.send({ type: 'rematch-request', name: playerName || 'Jogador' });
             addChatMessage('Sistema', 'Revanche solicitada. Aguardando oponente...', true);
             const btn = document.getElementById('btnRematch');
             if (btn) { btn.disabled = true; btn.innerText = '⏳ Aguardando...'; }
@@ -3989,17 +3951,14 @@
         const ok = await customConfirm(`Confirma desistência das ${resigningColor === 'w' ? 'Brancas' : 'Pretas'}?`, "Confirmar Desistência");
         if (!ok) return;
         const winnerColor = resigningColor === 'w' ? 'b' : 'w';
-        if (gameMode === 'network') networkBroadcast({ type: 'resign', color: resigningColor });
+        if (conn && conn.open) { try { conn.send({ type: 'resign', color: resigningColor }); } catch(e) {} }
         handleGameOverEvents(`${resigningColor === 'w' ? 'Brancas' : 'Pretas'} desistiram da partida.`, winnerColor);
     }
 
     async function offerDraw() {
         if (isSpectator || gameMode === 'bot-vs-bot' || chess.game_over()) return;
         if (gameMode === 'network') {
-            if (gameMode === 'network') {
-                networkBroadcast({ type: 'draw-offer' });
-                addChatMessage("Sistema", "Você ofereceu empate ao oponente.", true);
-            }
+            if (conn && conn.open) { try { conn.send({ type: 'draw-offer' }); } catch(e) {} addChatMessage("Sistema", "Você ofereceu empate ao oponente.", true); }
             return;
         }
         const ok = await customConfirm("Propor empate?", "Empate");
@@ -5250,15 +5209,6 @@
 
         if (data.type === 'reset-board') { 
             aiRequestId++; pendingAICallback = null;
-            if (isSpectator) {
-                chess.reset();
-                selectedSquare = null; possibleMoves = []; lastPathCoords = []; wasInCheckLastMove = false;
-                lastSyncedFen = chess.fen();
-                resetClocks();
-                updateTurnIndicators(); updateCapturedDisplay(); renderBoard(); updateClockDisplay();
-                addChatMessage('Sistema', 'Tabuleiro reiniciado pelos jogadores.', true);
-                return;
-            }
             resetGame(true); 
             return; 
         }
@@ -5336,10 +5286,6 @@
             return; 
         }
         if (data.type === 'draw-offer') {
-            if (isSpectator) {
-                addChatMessage("Sistema", "Proposta de empate entre os jogadores.", true);
-                return;
-            }
             customConfirm("O oponente ofereceu empate. Aceitar?", "Proposta de Empate").then(accept => {
                 if (conn && conn.open) { try { conn.send({ type: accept ? 'draw-accept' : 'draw-decline' }); } catch(e) {} }
                 if (accept) handleGameOverEvents("Empate acordado.", null);
@@ -5353,10 +5299,6 @@
             return;
         }
         if (data.type === 'rematch-request') {
-            if (isSpectator) {
-                addChatMessage("Sistema", (data.name || 'Jogador') + " pediu revanche.", true);
-                return;
-            }
             if (data.name) opponentName = data.name;
             customConfirm((opponentName || 'Oponente') + ' solicitou revanche. Aceitar? (cores serão invertidas)', 'Revanche').then(accept => {
                 if (conn && conn.open) {
@@ -5368,15 +5310,6 @@
             return;
         }
         if (data.type === 'rematch-accept') {
-            if (isSpectator) {
-                chess.reset();
-                selectedSquare = null; possibleMoves = []; lastPathCoords = []; wasInCheckLastMove = false;
-                lastSyncedFen = chess.fen();
-                resetClocks();
-                updateTurnIndicators(); updateCapturedDisplay(); renderBoard(); updateClockDisplay();
-                addChatMessage('Sistema', 'Revanche aceita — nova partida (você continua espectador).', true);
-                return;
-            }
             if (data.name) opponentName = data.name;
             addChatMessage('Sistema', (opponentName || 'Oponente') + ' aceitou a revanche!', false);
             startRematch(true);
@@ -5461,41 +5394,23 @@
                 if (data.status === 'full' || data.spectator) {
                     playerColor = null;
                     isSpectator = true;
-                    // Host = brancas, guest = pretas
-                    spectatorWhiteName = data.hostName || 'Host';
-                    spectatorBlackName = data.guestName || opponentName || 'Oponente';
-                    if (typeof data.clockWhite === 'number') clockWhite = data.clockWhite;
-                    if (typeof data.clockBlack === 'number') clockBlack = data.clockBlack;
                     closeMenuTransition();
                     startGameSetup();
-                    // Restaura relógios após startGameSetup (que não reseta no modo espectador)
-                    if (typeof data.clockWhite === 'number') clockWhite = data.clockWhite;
-                    if (typeof data.clockBlack === 'number') clockBlack = data.clockBlack;
-                    if (data.fen) {
-                        try { chess.load(data.fen); lastSyncedFen = data.fen; } catch (e) {}
-                    }
-                    updateClockDisplay();
-                    updateTurnIndicators();
-                    updateCapturedDisplay();
-                    renderBoard();
-                    applyPlayerSeating();
-                    updateSpectatorChrome();
+                    // startGameSetup limpa o chat — mensagens depois
                     const titleEl = document.getElementById('room-status-title');
                     if (titleEl) {
                         const base = (cityDetails[data.city || cityName] && cityDetails[data.city || cityName].name) || 'Sala';
                         titleEl.innerText = base + ' · 👁 Espectador';
                     }
-                    addChatMessage("Sistema", "👁 Modo espectador em tempo real — você vê lances, chat e relógios.", true);
-                    addChatMessage("Sistema", spectatorWhiteName + " (Brancas) vs " + spectatorBlackName + " (Pretas)", true);
-                    if (data.plyCount) addChatMessage("Sistema", "Partida em andamento · " + data.plyCount + " meio-lance(s).", true);
+                    addChatMessage("Sistema", "Modo espectador: acompanhe lances e chat (sem jogar).", true);
+                    addChatMessage("Sistema", "Partida: " + (data.hostName || 'Host') + " vs " + (data.guestName || opponentName || 'Oponente'), true);
+                    updateClockDisplay();
+                    renderBoard();
                 } else {
                     playerColor = 'b';
                     isSpectator = false;
-                    spectatorWhiteName = '';
-                    spectatorBlackName = '';
                     closeMenuTransition();
                     startGameSetup();
-                    updateSpectatorChrome();
                     addChatMessage("Sistema", "Conectado com " + (opponentName || 'host') + "!", false, false);
                 }
                 return;
@@ -5508,76 +5423,12 @@
     function startGameSetup() {
         forceFullBoardRebuild();
         gameMode = 'network';
-        boardFlipped = (playerColor === 'b'); // espectador (playerColor null) vê do lado das brancas
+        boardFlipped = (playerColor === 'b');
         applyPlayerSeating();
         selectedSquare = null; possibleMoves = []; lastPathCoords = []; wasInCheckLastMove = false;
         clearChat();
         updateTurnIndicators(); updateCapturedDisplay(); renderBoard();
-        if (!isSpectator) {
-            resetClocks();
-            startClock();
-        } else {
-            // Espectador: relógios vêm do host; só atualiza display e acompanha via ping/moves
-            updateClockDisplay();
-            startClock(); // acompanha contagem localmente; pings corrigem drift
-        }
-        playSFX('move');
-        updateSpectatorChrome();
-    }
-
-    /** UI extra do modo espectador (badge, só assiste — sem chat/voz/reações) */
-    function updateSpectatorChrome() {
-        const brand = document.getElementById('room-status-title');
-        let badge = document.getElementById('spectator-badge');
-        const setDisabled = function(el, on, title) {
-            if (!el) return;
-            if (on) {
-                el.style.opacity = '0.4';
-                el.style.pointerEvents = 'none';
-                if (title) el.title = title;
-                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'BUTTON') {
-                    el.disabled = true;
-                }
-            } else {
-                el.style.opacity = '';
-                el.style.pointerEvents = '';
-                el.removeAttribute('title');
-                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'BUTTON') {
-                    el.disabled = false;
-                }
-            }
-        };
-        const spectateOnlyTitle = 'Só visualização — espectadores não enviam mensagens';
-        if (isSpectator) {
-            if (!badge) {
-                badge = document.createElement('span');
-                badge.id = 'spectator-badge';
-                badge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;padding:2px 8px;border-radius:999px;background:#7c3aed;color:#fff;margin-left:6px;';
-                badge.textContent = '👁 Só assistir';
-                if (brand && brand.parentNode) brand.parentNode.insertBefore(badge, brand.nextSibling);
-                else if (brand) brand.appendChild(badge);
-            }
-            badge.style.display = 'inline-flex';
-            badge.textContent = '👁 Só assistir';
-            document.querySelectorAll('.side-action-btn.resign, .side-action-btn.draw').forEach(function(btn) {
-                setDisabled(btn, true, 'Indisponível no modo espectador');
-            });
-            setDisabled(document.getElementById('chat-input'), true, spectateOnlyTitle);
-            setDisabled(document.getElementById('btnVoiceMsg'), true, spectateOnlyTitle);
-            document.querySelectorAll('.chat-input-row .action-btn, .reaction-btn, .taunt-btn, .taunt-chip, .xp-toggle-btn.reactions-toggle, .xp-toggle-btn.taunts-toggle, .xp-toggle-btn.voice-toggle').forEach(function(btn) {
-                setDisabled(btn, true, spectateOnlyTitle);
-            });
-        } else {
-            if (badge) badge.style.display = 'none';
-            document.querySelectorAll('.side-action-btn.resign, .side-action-btn.draw').forEach(function(btn) {
-                setDisabled(btn, false);
-            });
-            setDisabled(document.getElementById('chat-input'), false);
-            setDisabled(document.getElementById('btnVoiceMsg'), false);
-            document.querySelectorAll('.chat-input-row .action-btn, .reaction-btn, .taunt-btn, .taunt-chip, .xp-toggle-btn.reactions-toggle, .xp-toggle-btn.taunts-toggle, .xp-toggle-btn.voice-toggle').forEach(function(btn) {
-                setDisabled(btn, false);
-            });
-        }
+        resetClocks(); startClock(); playSFX('move');
     }
 
     function applyCityVisualTheme(cityKey) {
