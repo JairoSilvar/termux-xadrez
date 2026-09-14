@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Xadrez Pro - v9.2</title>
+    <title>Xadrez Pro - v9.1</title>
     <meta name="theme-color" content="#0284c7">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1187,49 +1187,24 @@
                 <span>⚙️ Configurações & Temas</span>
                 <button class="close-modal-btn" onclick="closeSettingsModal()" title="Fechar">✕</button>
             </div>
-            <div class="settings-tabs" style="flex-wrap:wrap;">
-                <button class="tab-btn active" onclick="switchSettingsTab(event, 'tab-themes')">🎨 Temas</button>
-                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-board')">🏁 Tabuleiro</button>
-                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-piece-colors')">🧩 Cores peças</button>
-                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-piece-styles')">✨ Estilos</button>
+            <div class="settings-tabs">
+                <button class="tab-btn active" onclick="switchSettingsTab(event, 'tab-board')">🏁 Tabuleiro</button>
+                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-pieces')">🧩 Peças</button>
                 <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-unlocks')">🏆 Conquistas</button>
-                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-sfx')">🔊 Áudio</button>
+                <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-sfx')">🔊 Áudio & FX</button>
                 <button class="tab-btn" onclick="switchSettingsTab(event, 'tab-radio')">📻 Rádio</button>
             </div>
-            <!-- TEMAS = presets completos (UI + tabuleiro padrão do tema + peças da cidade) -->
-            <div id="tab-themes" class="tab-content active" style="grid-template-columns: 1fr 1fr;">
-                <div style="grid-column:1/-1; font-size:9px; color:var(--text-muted); line-height:1.35; margin-bottom:2px;">
-                    <b>Presets prontos.</b> Ao clicar, aplica o visual completo (interface + casas + peças), como nas salas-cidade. Depois você pode ajustar Tabuleiro, Cores e Estilos nas outras abas.
-                </div>
-                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="applyThemePreset('claro')">☀️ Claro (Padrão)</button>
-                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="applyThemePreset('menta')">🌿 Menta Suave</button>
-                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="applyThemePreset('gelo')">❄️ Azul Gelo</button>
-                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="applyThemePreset('ouro')">👑 Ouro (Real)</button>
-                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="applyThemePreset('paris')">🌸 Paris (Rosa)</button>
-                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="applyThemePreset('novayork')">🌙 Nova York</button>
-                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="applyThemePreset('toquio')">⚡ Tóquio (Cyber)</button>
-                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="applyThemePreset('londres')">🌲 Londres</button>
-                <button class="action-btn" id="btnThemeGrandmaster" style="padding: 6px; font-size: 9px; opacity: 0.5; grid-column:1/-1;" onclick="trySetGrandmasterTheme()" title="Desbloqueie com Elo ≥ 1500">👑 Grandmaster (bloqueado)</button>
-                <label style="grid-column:1/-1; font-size:9.5px; font-weight:bold; display:flex; align-items:center; justify-content:space-between; background:var(--chat-bg); padding:5px; border-radius:6px; border:1px solid var(--panel-border);">
-                    <span>♿ Padrões (daltonismo)</span>
-                    <input type="checkbox" id="a11yPatternsToggle" onchange="toggleA11yPatterns(this)">
-                </label>
-                <label style="grid-column:1/-1; font-size:9.5px; font-weight:bold; display:flex; align-items:center; justify-content:space-between; background:var(--chat-bg); padding:5px; border-radius:6px; border:1px solid var(--panel-border);">
-                    <span>🔊 Anunciar cada lance</span>
-                    <input type="checkbox" id="voiceMovesToggle" onchange="toggleVoiceMoves(this)">
-                </label>
-            </div>
-            <!-- TABULEIRO = só casas (independente do tema de UI) -->
-            <div id="tab-board" class="tab-content" style="grid-template-columns: 1fr 1fr;">
-                <div style="grid-column:1/-1; font-size:9px; color:var(--text-muted); line-height:1.35;">
-                    Só as <b>cores das casas</b>. Não muda a interface nem as peças. Temas de cidade usam o tabuleiro padrão do preset; aqui você sobrescreve.
-                </div>
-                <button class="action-btn" style="padding:6px; font-size:9px;" onclick="setBoardSkin('')">♟️ Padrão do tema</button>
-                <button class="action-btn" style="padding:6px; font-size:9px;" onclick="setBoardSkin('board-wood')">🪵 Madeira</button>
-                <button class="action-btn" style="padding:6px; font-size:9px;" onclick="setBoardSkin('board-marble')">🪨 Mármore</button>
-                <button class="action-btn" style="padding:6px; font-size:9px;" onclick="setBoardSkin('board-emerald')">💚 Esmeralda</button>
-                <button class="action-btn" style="padding:6px; font-size:9px;" onclick="setBoardSkin('board-royal')">👑 Real</button>
-                <div style="grid-column:1/-1; margin-top:4px; font-size:9px; font-weight:bold; color:var(--text-muted);">🎨 Cores manuais</div>
+            <div id="tab-board" class="tab-content active" style="grid-template-columns: 1fr 1fr;">
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('claro')">☀️ Claro (Padrão)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('menta')">🌿 Menta Suave</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('gelo')">❄️ Azul Gelo</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('paris')">🌸 Paris (Rosa Barbie)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('ouro')">👑 Ouro (Real)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('novayork')">🌙 Nova York (Escuro)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('toquio')">⚡ Tóquio (Cyber)</button>
+                <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setTheme('londres')">🌲 Londres (Floresta)</button>
+                <button class="action-btn" id="btnThemeGrandmaster" style="padding: 6px; font-size: 9px; opacity: 0.5;" onclick="trySetGrandmasterTheme()" title="Desbloqueie com Elo ≥ 1500">👑 Grandmaster (bloqueado)</button>
+                <div style="grid-column: 1 / -1; margin-top: 6px; font-size: 9px; font-weight: bold; color: var(--text-muted);">🎨 Cores personalizadas</div>
                 <label style="font-size:8px; display:flex; flex-direction:column; gap:2px;">Clara
                     <input type="color" id="customLightSq" value="#f1f5f9" onchange="applyCustomBoardColors()">
                 </label>
@@ -1239,7 +1214,15 @@
                 <label style="font-size:8px; display:flex; flex-direction:column; gap:2px;">Borda
                     <input type="color" id="customBorder" value="#0284c7" onchange="applyCustomBoardColors()">
                 </label>
-                <button class="action-btn" style="padding:5px; font-size:8px;" onclick="resetCustomBoardColors()">Reset cores manuais</button>
+                <button class="action-btn" style="padding:5px; font-size:8px;" onclick="resetCustomBoardColors()">Reset cores</button>
+                <label style="grid-column:1/-1; font-size:9.5px; font-weight:bold; display:flex; align-items:center; justify-content:space-between; background:var(--chat-bg); padding:5px; border-radius:6px; border:1px solid var(--panel-border);">
+                    <span>♿ Padrões (daltonismo)</span>
+                    <input type="checkbox" id="a11yPatternsToggle" onchange="toggleA11yPatterns(this)">
+                </label>
+                <label style="grid-column:1/-1; font-size:9.5px; font-weight:bold; display:flex; align-items:center; justify-content:space-between; background:var(--chat-bg); padding:5px; border-radius:6px; border:1px solid var(--panel-border);">
+                    <span>🔊 Anunciar cada lance</span>
+                    <input type="checkbox" id="voiceMovesToggle" onchange="toggleVoiceMoves(this)">
+                </label>
             </div>
             <div id="tab-unlocks" class="tab-content" style="grid-template-columns: 1fr; max-height: 280px; overflow-y: auto; gap: 8px; text-align: left; padding: 4px;">
                 <div style="font-size: 10px; font-weight: 800; color: var(--board-border);">🏆 Progresso e recompensas</div>
@@ -1248,9 +1231,8 @@
                 <button type="button" class="action-btn" id="btnDownloadCertificate" style="padding:10px; font-size:11px; width:100%; background:linear-gradient(135deg,#7c3aed,#eab308); color:#fff; font-weight:800; display:none;" onclick="downloadChampionCertificate()">📜 Baixar Certificado de Grande Campeão</button>
                 <div id="unlocksCertHint" style="font-size:8px; color:var(--text-muted); text-align:center;"></div>
             </div>
-            <!-- CORES DAS PEÇAS (só glow/cores) -->
-            <div id="tab-piece-colors" class="tab-content" style="grid-template-columns: 1fr; max-height: 280px; overflow-y: auto;">
-                <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px;">Só a <b>cor/brilho</b> das peças. Independente do tema e do estilo.</div>
+            <div id="tab-pieces" class="tab-content" style="grid-template-columns: 1fr; max-height: 260px; overflow-y: auto;">
+                <div style="font-size: 9px; font-weight: bold; color: var(--text-muted); margin-bottom: 4px;">🎨 Cores das Peças</div>
                 <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-blue-pink')">🔵 Azul Elétrico vs 🔴 Rosa Choque</button>
                 <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-green-cyan')">🟢 Verde Esmeralda vs 🔵 Ciano</button>
                 <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-gold-purple')">🟡 Dourado Real vs 🟣 Roxo Profundo</button>
@@ -1261,10 +1243,8 @@
                 <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-toxic')">☣️ Tóxico (Verde Ácido vs Roxo)</button>
                 <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-monochrome')">☯️ Monocromático (Branco vs Preto)</button>
                 <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceColors('pieces-cyberpunk')">🏙️ Cyberpunk (Ciano vs Amarelo)</button>
-            </div>
-            <!-- ESTILOS DAS PEÇAS (só forma/filtro) -->
-            <div id="tab-piece-styles" class="tab-content" style="grid-template-columns: 1fr; max-height: 280px; overflow-y: auto;">
-                <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px;">Só o <b>estilo visual</b> (escala, neon, 3D…). Independente da cor das peças.</div>
+                
+                <div style="font-size: 9px; font-weight: bold; color: var(--text-muted); margin: 10px 0 4px;">♟️ Estilo das Peças</div>
                 <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceStyle('style-classic')">♟️ Clássico (Padrão)</button>
                 <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceStyle('style-minimal')">⬜ Minimalista</button>
                 <button class="action-btn" style="padding: 6px; font-size: 9px;" onclick="setPieceStyle('style-neon')">💜 Neon Forte</button>
@@ -1380,7 +1360,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>♟️ Xadrez Pro</h1>
-            <p>Estratégia P2P · IA offline · v9.2</p>
+            <p>Estratégia P2P · IA offline · v9.1</p>
         </div>
         <div class="menu-dashboard">
             <!-- ===== COLUNA ESQUERDA (perfil + secundários) ===== -->
@@ -1804,63 +1784,13 @@
         return playerElo >= (item.elo || 9999);
     }
 
-    function clearBoardCssOverrides() {
-        // Remove overrides manuais para o tema/skin poder pintar as casas de novo
-        try {
-            document.documentElement.style.removeProperty('--light-square');
-            document.documentElement.style.removeProperty('--dark-square');
-            document.documentElement.style.removeProperty('--board-border');
-        } catch (e) {}
-    }
-
-    function clearBoardSkinClasses() {
-        Array.from(document.body.classList).forEach(function(c) {
-            if (c.indexOf('board-') === 0 && c !== 'board-section') document.body.classList.remove(c);
-        });
-    }
-
     function setBoardSkin(skinClass) {
-        // Só casas do tabuleiro — não mexe em tema de UI nem peças
-        clearBoardSkinClasses();
-        clearBoardCssOverrides();
-        try { localStorage.removeItem('xadrezpro_custom_board'); } catch (e) {}
-        if (skinClass) {
-            document.body.classList.add(skinClass);
-            try { localStorage.setItem('xadrezpro_board_skin', skinClass); } catch (e) {}
-        } else {
-            try { localStorage.removeItem('xadrezpro_board_skin'); } catch (e) {}
-        }
-        addLog('Tabuleiro: ' + (skinClass || 'padrão do tema ativo'), 'UI');
-    }
-
-    /** Presets completos (como entrar na sala-cidade). Depois o jogador pode personalizar por aba. */
-    const THEME_PRESETS = {
-        claro:    { theme: 'claro',    pieces: 'pieces-blue-pink',   style: 'style-classic' },
-        menta:    { theme: 'menta',    pieces: 'pieces-green-cyan',  style: 'style-classic' },
-        gelo:     { theme: 'gelo',     pieces: 'pieces-blue-pink',   style: 'style-soft3d' },
-        ouro:     { theme: 'ouro',     pieces: 'pieces-gold-purple', style: 'style-classic' },
-        paris:    { theme: 'paris',    pieces: 'pieces-blue-pink',   style: 'style-classic' },
-        novayork: { theme: 'novayork', pieces: 'pieces-silver-fire', style: 'style-soft3d' },
-        toquio:   { theme: 'toquio',   pieces: 'pieces-cyberpunk',   style: 'style-neon' },
-        londres:  { theme: 'londres',  pieces: 'pieces-green-cyan',  style: 'style-classic' },
-        grandmaster: { theme: 'grandmaster', pieces: 'pieces-gold-purple', style: 'style-neon' }
-    };
-
-    function applyThemePreset(presetKey) {
-        const p = THEME_PRESETS[presetKey] || THEME_PRESETS.claro;
-        // 1) limpa skins/cores manuais do tabuleiro para o tema pintar as casas
-        clearBoardSkinClasses();
-        clearBoardCssOverrides();
-        try {
-            localStorage.removeItem('xadrezpro_board_skin');
-            localStorage.removeItem('xadrezpro_custom_board');
-        } catch (e) {}
-        // 2) UI theme
-        setTheme(p.theme);
-        // 3) peças padrão do preset (salas-cidade usam o mesmo mapeamento)
-        if (p.pieces) setPieceColors(p.pieces);
-        if (p.style) setPieceStyle(p.style);
-        addLog('Preset completo aplicado: ' + presetKey, 'UI');
+        Array.from(document.body.classList).forEach(function(c) {
+            if (c.startsWith('board-') && c !== 'board-section') document.body.classList.remove(c);
+        });
+        if (skinClass) document.body.classList.add(skinClass);
+        try { localStorage.setItem('xadrezpro_board_skin', skinClass || ''); } catch (e) {}
+        addLog('Tabuleiro skin: ' + (skinClass || 'padrão'), 'UI');
     }
 
     function tryApplyUnlock(itemId) {
@@ -1873,7 +1803,11 @@
         if (item.type === 'board') setBoardSkin(item.apply);
         else if (item.type === 'pieces') setPieceColors(item.apply);
         else if (item.type === 'theme') {
-            applyThemePreset(item.apply === 'grandmaster' ? 'grandmaster' : item.apply);
+            setTheme(item.apply);
+            if (item.apply === 'grandmaster') {
+                setPieceStyle('style-neon');
+                setPieceColors('pieces-gold-purple');
+            }
         } else if (item.type === 'cert') {
             downloadChampionCertificate();
         }
@@ -2959,9 +2893,6 @@
     }
 
     function applyCustomBoardColors() {
-        // Cores manuais têm prioridade: remove skin de tabuleiro
-        clearBoardSkinClasses();
-        try { localStorage.removeItem('xadrezpro_board_skin'); } catch (e) {}
         const l = document.getElementById('customLightSq');
         const d = document.getElementById('customDarkSq');
         const b = document.getElementById('customBorder');
@@ -2973,13 +2904,15 @@
                 light: l ? l.value : '', dark: d ? d.value : '', border: b ? b.value : ''
             }));
         } catch(e) {}
-        addLog('Cores manuais do tabuleiro aplicadas', 'UI');
+        addLog('Cores do tabuleiro personalizadas', 'UI');
     }
 
     function resetCustomBoardColors() {
-        clearBoardCssOverrides();
+        document.documentElement.style.removeProperty('--light-square');
+        document.documentElement.style.removeProperty('--dark-square');
+        document.documentElement.style.removeProperty('--board-border');
         try { localStorage.removeItem('xadrezpro_custom_board'); } catch(e) {}
-        addLog('Cores manuais removidas — volta ao tema ou skin ativa', 'UI');
+        addLog('Cores do tabuleiro resetadas', 'UI');
     }
 
     function loadCustomBoardColors() {
@@ -3130,10 +3063,12 @@
 
     function trySetGrandmasterTheme() {
         if (playerElo >= ELO_GM_UNLOCK) {
-            applyThemePreset('grandmaster');
-            addLog('Preset Grandmaster ativado', 'UI');
+            setTheme('grandmaster');
+            setPieceStyle('style-neon');
+            setPieceColors('pieces-gold-purple');
+            addLog('Tema Grandmaster ativado', 'UI');
         } else {
-            alert('Tema Grandmaster bloqueado.\nSeu Elo: ' + playerElo + '\nNecessário: ' + ELO_GM_UNLOCK + '+');
+            alert(`Tema Grandmaster bloqueado.\nSeu Elo: ${playerElo}\nNecessário: ${ELO_GM_UNLOCK}+`);
         }
     }
 
@@ -3356,7 +3291,6 @@
     }
 
     function setTheme(themeName) {
-        // Apenas a camada de interface (theme-*). Não remove board skin nem peças.
         if (!themeName || typeof themeName !== 'string') return;
         const prev = currentTheme;
         currentTheme = themeName;
@@ -3369,23 +3303,20 @@
             }
         });
 
-        document.body.classList.add('theme-' + themeName);
+        document.body.classList.add(`theme-${themeName}`);
         const titleEl = document.getElementById("room-status-title");
-        if (titleEl && !isSpectator) titleEl.innerText = "Xadrez Pro";
-        try { localStorage.setItem('xadrezpro_theme', themeName); } catch (e) {}
-        addLog('Tema UI: ' + prev + ' → ' + themeName, 'UI');
+        if (titleEl) titleEl.innerText = "Xadrez Pro";
+        addLog(`Tema visual alterado: ${prev} → ${themeName}`, "UI");
     }
 
     function setPieceColors(colorScheme) {
-        // Só cores das peças — independente de tema e estilo
         if (!colorScheme || typeof colorScheme !== 'string') return;
         const classes = Array.from(document.body.classList);
         classes.forEach(c => {
             if (c.startsWith('pieces-')) document.body.classList.remove(c);
         });
         document.body.classList.add(colorScheme);
-        try { localStorage.setItem('xadrezpro_piece_colors', colorScheme); } catch (e) {}
-        addLog('Cores das peças: ' + colorScheme, 'UI');
+        addLog(`Esquema de peças alterado para: ${colorScheme}`, "UI");
     }
 
     function setPieceStyle(styleName) {
@@ -5877,28 +5808,12 @@
     }
 
     function applyCityVisualTheme(cityKey) {
-        // Entrar na sala = preset completo da cidade (igual às salas online)
         if (cityKey && cityDetails[cityKey]) {
             currentCityKey = cityKey;
-            const map = {
-                paris: 'paris',
-                toquio: 'toquio',
-                novayork: 'novayork',
-                londres: 'londres'
-            };
-            const presetKey = map[cityKey] || cityKey;
-            // limpa skins manuais e aplica padrão da cidade
-            clearBoardSkinClasses();
-            clearBoardCssOverrides();
-            try {
-                localStorage.removeItem('xadrezpro_board_skin');
-                localStorage.removeItem('xadrezpro_custom_board');
-            } catch (e) {}
             Array.from(document.body.classList).forEach(c => {
                 if (c.startsWith('theme-') || c.startsWith('room-')) document.body.classList.remove(c);
             });
             document.body.classList.add(cityDetails[cityKey].roomClass);
-            currentTheme = presetKey;
             setPieceColors(cityDetails[cityKey].pieceColor);
             const titleEl = document.getElementById("room-status-title");
             if (titleEl) titleEl.innerText = cityDetails[cityKey].name;
@@ -6216,7 +6131,7 @@
     }
 
 
-    addLog('Xadrez Pro v9.2 — configs independentes: tema · tabuleiro · cores · estilos.', 'INIT');
+    addLog('Xadrez Pro v9.1 — conquistas, tabuleiros/peças por Elo + certificado Grande Campeão.', 'INIT');
     try { refreshUnlocksUI(); } catch (e) {}
     logSessionSnapshot('boot');
     if (typeof shuffleStandUpDeck === 'function') shuffleStandUpDeck();
