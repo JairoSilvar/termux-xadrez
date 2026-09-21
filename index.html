@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Xadrez Pro v14.0.0 FINAL — consolidacao de todos os recursos da linha 12.x.
+<!-- Xadrez Pro v14.0.1 FINAL — consolidacao de todos os recursos da linha 12.x.
      Preserva: IA/Worker, PvE/PvP, P2P/salas/espectadores/chat/voz/reacoes, Sandbox,
      Centro de Treino, Tutorial, FEN, Bot-vs-Bot, GOD, temas, skins, historico/PGN,
      relogios, radio e compatibilidade responsiva. -->
@@ -7,16 +7,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Xadrez Pro - v14.0.0 · Tutorial Unificado</title>
+    <title>Xadrez Pro - v14.0.1 · Tutorial Unificado</title>
     <meta name="theme-color" content="#0284c7">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Xadrez Pro">
-    <meta name="description" content="Xadrez Pro v14.0.0 — xadrez P2P, IA offline e rádio em tempo real">
+    <meta name="description" content="Xadrez Pro v14.0.1 — xadrez P2P, IA offline e rádio em tempo real">
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
-    <link rel="manifest" id="pwa-manifest-link">
+    <link rel="manifest" href="./manifest.json" id="pwa-manifest-link">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
         :root {
@@ -1738,7 +1738,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>♟️ Xadrez Pro</h1>
-            <p>Estratégia P2P · IA offline · v14.0.0</p>
+            <p>Estratégia P2P · IA offline · v14.0.1</p>
         </div>
         <div class="menu-dashboard">
             <!-- ===== COLUNA ESQUERDA (perfil + secundários) ===== -->
@@ -2244,7 +2244,8 @@ body.god-stealth .god-assist-to::after {
 
     let selectedSquare = null;
     let possibleMoves = [];
-    const APP_VERSION = '14.0.0';
+    const APP_VERSION = '14.0.1';
+    const BUILD_ID = 'xp-14.0.1-20260921';
         let gameMode = 'menu';
     let aiDifficulty = 5;
     let soundEnabled = true;
@@ -3822,7 +3823,7 @@ body.god-stealth .god-assist-to::after {
         }
     }
 
-    // v14.0.0 — diagnóstico centralizado. Não altera regras de jogo; apenas expõe estado seguro para testes.
+    // v14.0.1 — diagnóstico centralizado. Não altera regras de jogo; apenas expõe estado seguro para testes.
     window.xpRuntimeHealth = function(){
         try {
             return {
@@ -7037,7 +7038,7 @@ body.god-stealth .god-assist-to::after {
         if (onDone) onDone();
     }
 
-    // v14.0.0 — status das salas: falha/timeout do broker NÃO significa sala indisponível.
+    // v14.0.1 — status das salas: falha/timeout do broker NÃO significa sala indisponível.
     // Mantemos o último estado conhecido e usamos "Verificando" durante uma checagem.
     const roomStatusCache = {
         paris: 'disponivel',
@@ -7674,7 +7675,7 @@ body.god-stealth .god-assist-to::after {
         }
     }
 
-    // v14.0.0 — abandono/desconexao P2P robustos.
+    // v14.0.1 — abandono/desconexao P2P robustos.
     let networkMatchActive = false;
     let networkDisconnectTimer = null;
     let networkAbandonmentHandled = false;
@@ -7994,53 +7995,51 @@ body.god-stealth .god-assist-to::after {
     updateCapturedDisplay();
     renderBoard();
 
-    // === PWA: manifest dinâmico + service worker ===
-    let deferredInstallPrompt = null;
+    // === PWA v14.0.1: manifest estático + Service Worker versionado ===
+    // O manifest fica em /manifest.json para evitar start_url/scope inválidos de Blob URLs.
+    // O SW usa BUILD_ID próprio e navegação network-first para impedir HTML antigo persistente.
+    window.xpBuildInfo = { appVersion: APP_VERSION, buildId: BUILD_ID, swExpected: 'xp-sw-14.0.1-20260921' };
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(function(reg) {
+                addLog('Service Worker registrado: ' + (reg.scope || '') + ' | build=' + BUILD_ID, 'PWA');
+                try { reg.update(); } catch(e) {}
+                reg.addEventListener('updatefound', function() {
+                    var w = reg.installing;
+                    if (!w) return;
+                    w.addEventListener('statechange', function() {
+                        if (w.state === 'installed' && navigator.serviceWorker.controller) {
+                            addLog('Nova versão do Service Worker instalada; será usada sem interromper a partida atual.', 'PWA');
+                        }
+                    });
+                });
+            }).catch(function(err) {
+                addLog('Falha ao registrar Service Worker: ' + String(err && err.message || err), 'PWA');
+            });
+        });
+        navigator.serviceWorker.addEventListener('message', function(ev) {
+            if (ev.data && ev.data.type === 'XP_SW_BUILD') {
+                window.xpBuildInfo.swActual = ev.data.buildId || '?';
+                if (window.xpBuildInfo.swActual !== window.xpBuildInfo.swExpected) {
+                    addLog('DIVERGÊNCIA DE BUILD: página=' + BUILD_ID + ' sw=' + window.xpBuildInfo.swActual, 'PWA');
+                }
+            }
+        });
+        navigator.serviceWorker.ready.then(function(reg) {
+            var target = reg.active || reg.waiting || reg.installing;
+            if (target) try { target.postMessage({type:'XP_GET_SW_BUILD'}); } catch(e) {}
+        }).catch(function(){});
+    } else if (location.protocol === 'file:') {
+        addLog('PWA/Service Worker desativado em file://. Use o deploy Vercel para recursos online.', 'PWA');
+    }
 
     function setupPWA() {
-        const manifest = {
-            name: 'Xadrez Pro',
-            short_name: 'Xadrez Pro',
-            description: 'Xadrez P2P com IA offline, temas e rádio',
-            start_url: './index.html',
-            scope: './',
-            display: 'standalone',
-            orientation: 'any',
-            background_color: '#0f172a',
-            theme_color: '#0284c7',
-            lang: 'pt-BR',
-            icons: [
-                {
-                    src: 'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
-                    sizes: 'any',
-                    type: 'image/svg+xml',
-                    purpose: 'any maskable'
-                }
-            ]
-        };
-        try {
-            const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.getElementById('pwa-manifest-link');
-            if (link) link.setAttribute('href', url);
-        } catch (e) {
-            addLog('Manifest PWA: ' + e.message, 'WARN');
-        }
-
-        if ('serviceWorker' in navigator) {
-            // Só registra se estiver em http/https (não file://)
-            if (location.protocol === 'http:' || location.protocol === 'https:') {
-                navigator.serviceWorker.register('./sw-v73.js').then((reg) => {
-                    addLog('Service Worker registrado: ' + (reg.scope || ''), 'PWA');
-                    const st = document.getElementById('pwaStatus');
-                    if (st) { st.style.display = 'block'; st.textContent = 'PWA ativo — pode instalar / usar offline (IA e tabuleiro)'; }
-                }).catch((err) => {
-                    addLog('SW não registrado: ' + err.message, 'WARN');
-                });
-            } else {
-                const st = document.getElementById('pwaStatus');
-                if (st) { st.style.display = 'block'; st.textContent = 'Abra via HTTP (servidor local ou hospedagem) para instalar como app'; }
-            }
+        // v14.0.1: manifest e SW são arquivos estáticos versionados.
+        // O registro real ocorre no bloco PWA acima; esta função preserva apenas a UI de instalação.
+        const st = document.getElementById('pwaStatus');
+        if (st && location.protocol === 'file:') {
+            st.style.display = 'block';
+            st.textContent = 'PWA e salas online requerem a versão hospedada (HTTP/HTTPS).';
         }
 
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -8263,7 +8262,7 @@ body.god-stealth .god-assist-to::after {
         });
     }
 
-    addLog('Xadrez Pro v14.0.0 — Git/Vercel, salas sem fallback oculto, Tester funcional profundo e proteção assíncrona.', 'INIT');
+    addLog('Xadrez Pro v14.0.1 — build ' + BUILD_ID + ' — Git/Vercel, Registry/P2P, Tester e cache versionado.', 'INIT');
     try { refreshUnlocksUI(); renderMissionsUI(); refreshSettingsPreview(); } catch (e) {}
     logSessionSnapshot('boot');
     if (typeof shuffleStandUpDeck === 'function') shuffleStandUpDeck();
@@ -8299,7 +8298,7 @@ body.god-stealth .god-assist-to::after {
 
 
 
-/* v14.0.0 — revisão robusta, acesso pela engrenagem e integração segura com Sandbox. */
+/* v14.0.1 — revisão robusta, acesso pela engrenagem e integração segura com Sandbox. */
 (function(){
  var REVIEW_KEY='xadrezpro_last_review_v1307', lastReview=null, copyTimer=null;
  function loadSaved(){
@@ -8715,7 +8714,7 @@ body.god-stealth .god-assist-to::after {
 })();
 
 
-/* v14.0.0 — ponte global defensiva para controles inline do Tutorial/Treino. */
+/* v14.0.1 — ponte global defensiva para controles inline do Tutorial/Treino. */
 (function(){
   function expose(name){
     try{
@@ -8742,7 +8741,7 @@ body.god-stealth .god-assist-to::after {
 <script id="xp-review-old-button-cleanup">document.addEventListener('DOMContentLoaded',function(){try{var b=document.getElementById('xp-review-open-btn');if(b)b.remove();}catch(e){}});</script>
 
 <script>
-/* Xadrez Pro v14.0.0 — DEV/TESTER persistente ("gravador de voo"). */
+/* Xadrez Pro v14.0.1 — DEV/TESTER persistente ("gravador de voo"). */
 (function(){
   var KEY='xp_tester_runs_v1400', current=null, watchdog=null, oldOnError=window.onerror;
   function now(){return Date.now();}
@@ -8932,7 +8931,7 @@ body.god-stealth .god-assist-to::after {
   function ensure(){
     if(document.getElementById('xpTesterModal'))return;
     var m=document.createElement('div');m.id='xpTesterModal';m.style.cssText='display:none;position:fixed;inset:0;z-index:12000;background:rgba(0,0,0,.72);padding:10px;align-items:center;justify-content:center';
-    m.innerHTML='<div style="width:min(760px,96vw);max-height:92vh;overflow:auto;background:var(--modal-bg);color:var(--modal-text);border:2px solid var(--board-border);border-radius:14px;padding:12px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>🧪 DEV / TESTER v14.0.0</b><button class="action-btn" onclick="xpCloseTester()">✕</button></div><p style="font-size:10px">Teste persistente orientado a estado. Inventariado ≠ validado; recursos que exigem hardware/permissão permanecem NÃO TESTADO/REQUER INTERAÇÃO. Execução sem TEST_END é recuperada como interrompida.</p><div style="display:flex;flex-wrap:wrap;gap:6px"><button class="action-btn" onclick="xpTesterRunComplete()">▶ Teste completo</button><button class="action-btn" onclick="xpTesterRunStress(50)">♻ 50 ciclos</button><button class="action-btn" onclick="xpTesterRunStress(100)">♻ 100</button><button class="action-btn" onclick="xpTesterRunStress(500)">♻ 500</button><button class="action-btn" onclick="xpRefreshDiscoveredRooms()">🌐 Atualizar salas</button><button class="action-btn" onclick="xpTesterExport(&quot;json&quot;)">JSON</button><button class="action-btn" onclick="xpTesterExport(&quot;txt&quot;)">TXT</button></div><div id="xpTesterStatus" style="margin-top:10px;padding:8px;border:1px solid var(--panel-border);border-radius:8px;font-size:10px"></div><div style="font-size:9px;margin-top:8px;color:var(--text-muted)">P2P real requer 2 aparelhos (3 para espectador real). Pareie uma vez; etapas não executadas em hardware real permanecem NÃO TESTADO/REQUER INTERAÇÃO.</div></div>';
+    m.innerHTML='<div style="width:min(760px,96vw);max-height:92vh;overflow:auto;background:var(--modal-bg);color:var(--modal-text);border:2px solid var(--board-border);border-radius:14px;padding:12px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>🧪 DEV / TESTER v14.0.1</b><button class="action-btn" onclick="xpCloseTester()">✕</button></div><p style="font-size:10px">Teste persistente orientado a estado. Inventariado ≠ validado; recursos que exigem hardware/permissão permanecem NÃO TESTADO/REQUER INTERAÇÃO. Execução sem TEST_END é recuperada como interrompida.</p><div style="display:flex;flex-wrap:wrap;gap:6px"><button class="action-btn" onclick="xpTesterRunComplete()">▶ Teste completo</button><button class="action-btn" onclick="xpTesterRunStress(50)">♻ 50 ciclos</button><button class="action-btn" onclick="xpTesterRunStress(100)">♻ 100</button><button class="action-btn" onclick="xpTesterRunStress(500)">♻ 500</button><button class="action-btn" onclick="xpRefreshDiscoveredRooms()">🌐 Atualizar salas</button><button class="action-btn" onclick="xpTesterExport(&quot;json&quot;)">JSON</button><button class="action-btn" onclick="xpTesterExport(&quot;txt&quot;)">TXT</button></div><div id="xpTesterStatus" style="margin-top:10px;padding:8px;border:1px solid var(--panel-border);border-radius:8px;font-size:10px"></div><div style="font-size:9px;margin-top:8px;color:var(--text-muted)">P2P real requer 2 aparelhos (3 para espectador real). Pareie uma vez; etapas não executadas em hardware real permanecem NÃO TESTADO/REQUER INTERAÇÃO.</div></div>';
     document.body.appendChild(m);
   }
   window.xpTesterRefreshEntry=function(){var on=(typeof testerMode!=='undefined'&&testerMode),b=document.getElementById('xp-tester-gear-open');if(b)b.style.display=on?'block':'none';var f=document.getElementById('xpTesterFooterBtn');if(on&&!f){f=document.createElement('button');f.id='xpTesterFooterBtn';f.className='action-btn';f.innerHTML='🧪 DEV / TESTER';f.style.cssText='position:fixed;left:50%;bottom:6px;transform:translateX(-50%);z-index:9500;padding:7px 12px;font-size:9px;font-weight:900;box-shadow:0 5px 18px rgba(0,0,0,.28)';f.onclick=xpOpenTester;document.body.appendChild(f);}else if(!on&&f)f.remove();};

@@ -33,3 +33,14 @@ DEV / TESTER
 Observação
 ----------
 P2P real, microfone, autoplay de rádio e espectador físico exigem hardware/permissões reais. O Tester não deve transformar esses casos em PASS sem execução real.
+
+=== IMPORTANTE — GIT / VERCEL v14.0.1 ===
+Os arquivos abaixo devem ficar NA RAIZ do repositório configurado como Root Directory na Vercel:
+  index.html
+  manifest.json
+  sw.js
+  vercel.json
+  api/rooms.js
+
+Não publique uma pasta-pai contendo outra pasta XadrezPro_v14.x como raiz do projeto. Se /api/rooms retornar 404, confirme primeiro que api/rooms.js está na raiz efetiva do deploy.
+Depois do deploy, abra https://SEU-DOMINIO/api/rooms. O resultado esperado é JSON (200 se Redis configurado, ou 503 ROOM_REGISTRY_NOT_CONFIGURED se faltarem variáveis). 404 significa estrutura/root de deploy incorreta.
