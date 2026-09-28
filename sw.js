@@ -1,7 +1,7 @@
-/* Xadrez Pro Service Worker v17.0.0 */
-const XP_SW_BUILD = 'xp-sw-17.0.0-20260928';
+/* Xadrez Pro Service Worker v18.0.0 */
+const XP_SW_BUILD = 'xp-sw-18.0.0-20260928';
 const XP_CACHE = 'xadrez-pro-' + XP_SW_BUILD;
-const CORE = ['./', './index.html', './manifest.json', './interface-v17.css', './interface-v17.js'];
+const CORE = ['./', './index.html', './manifest.json', './interface-v18.css', './interface-v18.js'];
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(XP_CACHE).then(cache => cache.addAll(CORE).catch(() => {})).then(() => self.skipWaiting()));

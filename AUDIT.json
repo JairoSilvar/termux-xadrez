@@ -1,7 +1,7 @@
 {
-  "version": "17.0.0",
+  "version": "18.0.0",
   "date": "2026-09-28",
-  "baseline": "XadrezPro-v15.1.0 publicado em txadrez.vercel.app",
+  "baseline": "Xadrez Pro v17.0.0",
   "inlineScriptsSyntaxChecked": 3,
   "workerScriptSyntax": "OK",
   "addedScriptsSyntax": "OK",
@@ -17,21 +17,21 @@
     "Avaliação de final reduz peso posicional",
     "Fim de partida limpa o estado transitório Processando dos cards Bot vs Bot",
     "Barras de captura mostram o material capturado pelo lado correto e preservam as cores dos SVGs",
+    "Cabeçalho do PC separa contexto da sala e controles em duas linhas",
+    "Metadados de espectador ficam agrupados sem sobreposição",
+    "Indicador do espectador acompanha a cor que realmente joga",
+    "Compartilhar mostra texto no PC e permanece compacto no celular",
     "Versão, build, service worker e manifesto atualizados"
   ],
   "inheritedVisualChecks": [
-    "360x640",
-    "392x735",
-    "1024x768",
-    "1366x768",
-    "1480x829"
+    "Composição móvel responsiva da v17 preservada",
+    "Tabuleiro máximo no PC preservado"
   ],
   "limitations": [
-    "P2P real com duas versões v15.1 ainda precisa ser testado em dois aparelhos",
+    "P2P real requer dois aparelhos; espectador real requer um terceiro",
     "Desempenho AI_PERF e GOD deve ser medido em hardware real; profundidade depende do dispositivo",
     "Microfone, compartilhamento nativo, rádios e instalação PWA precisam de reteste físico",
     ":has() permanece na interface e exige navegador moderno",
-    "Bots em finais com vantagem decisiva podem perseguir o rei sem plano curto por causa da avaliação simplificada e da profundidade limitada",
     "Stress DEV/TESTER de 500 ciclos não foi executado nesta rodada"
   ]
 }
