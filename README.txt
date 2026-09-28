@@ -1,46 +1,46 @@
-XADREZ PRO v16.0.0 — INTERFACE LÍQUIDA PARA PC E CELULAR
+XADREZ PRO v17.0.0 — TABULEIRO COMPLETO E PAINEL MÓVEL COMPACTO
 Data: 28/09/2026
-Base preservada: v15.1.1
+Base preservada: v16.0.0
 
 OBJETIVO
-A versão 16 reorganiza a apresentação do jogo sem reduzir o protagonismo do tabuleiro e sem alterar as regras, o motor, o P2P ou os códigos secretos existentes.
+Garantir que as oito fileiras do tabuleiro e todo o painel essencial apareçam na área visível do celular, inclusive no Firefox com barras dinâmicas, sem reduzir a largura normal do tabuleiro e sem remover recursos.
 
-PRINCIPAIS MUDANÇAS
-- Tabuleiro continua ocupando o maior espaço possível no PC e no celular.
-- Painel lateral do PC acompanha exatamente a altura do tabuleiro.
-- Chat absorve o espaço vertical restante e deixa de criar área vazia abaixo do último card.
-- Cabeçalho possui seis controles uniformes e responsivos.
-- Placar de vitórias foi mantido como informação fina e discreta.
-- Reações usam uma superfície sólida e legível; no celular abrem em painel suspenso com botão para fechar.
-- Frases rápidas permanecem compactas no PC e viram um único botão junto à mensagem no celular.
-- Prévia de áudio abre por cima do conteúdo, sem deslocar os cards.
-- Menus Opções, Reações e Frases rápidas possuem fechamento explícito no celular.
-- Peças capturadas ficaram mais legíveis sem aumentar os cards.
-- Apenas o bot que está calculando mostra “Pensando...”.
-- Botão flutuante DEV/TESTER não cobre o tabuleiro durante a partida; o acesso permanece em Opções.
-- Compartilhamento de diagnóstico tenta anexar o TXT pelo compartilhamento nativo e mantém cópia/download como alternativa.
+MUDANÇAS DA v17
+- O jogo usa a altura real de window.visualViewport em navegadores móveis.
+- Durante a partida, a página fica presa ao topo e não possui rolagem geral.
+- O tabuleiro permanece quadrado, na largura máxima, mostrando as fileiras 8 até 1 e colunas a até h.
+- Somente chat e menus suspensos possuem rolagem própria.
+- Em partidas online, uma faixa fina mostra apenas cidade e tema.
+- Identificadores técnicos permanecem escondidos.
+- O botão Compartilhar abre o menu nativo do aparelho com link direto da sala.
+- Sem Web Share, o convite é copiado; como último recurso, aparece para cópia manual.
+- Links de convite reconhecem salas-cidade e salas criadas por jogadores.
+- Se o nome estiver vazio, o convite aguarda o jogador informar o nome antes de entrar.
+- Reagir, placar e histórico dividem a mesma faixa compacta.
+- O chat recebe o espaço restante e pode ser aberto em tela ampliada.
+- Frases rápidas continuam no botão ao lado da mensagem.
+- Os cards dos dois jogadores permanecem visíveis.
+- O PC conserva a organização aprovada na v16.
 
-CÓDIGOS MANTIDOS
-- 81=Nome: modo GOD.
-- 82=Nome: modo DEV/TESTER.
-- Nenhum código 83, 84, 85 ou 86 foi implementado.
+RECURSOS PRESERVADOS
+Motor, regras, IA em cinco níveis, Bot vs Bot, P2P, espectadores, salas-cidade, salas criadas, rádio sincronizado, áudio, reações, frases rápidas, stand-up, histórico, FEN/PGN, temas, tabuleiros, peças, diagnóstico, PWA, Gold/GOD e DEV/TESTER.
 
-ARQUIVOS DA CAMADA VISUAL
-- interface-v16.css
-- interface-v16.js
+CÓDIGOS
+- 81=Nome: GOD.
+- 82=Nome: DEV/TESTER.
+Nenhum novo código foi adicionado.
 
 VALIDAÇÃO EXECUTADA
-- Sintaxe dos scripts internos, worker, interface-v16.js e service worker.
-- IDs duplicados: nenhum.
-- Referências de versão, build, manifesto e cache conferidas.
+- Sintaxe dos três scripts internos.
+- Sintaxe do worker da IA, interface-v17.js e sw.js.
+- Chaves CSS equilibradas.
+- Nenhum ID HTML duplicado.
+- Versão, build, cache, manifesto e arquivos carregados conferidos.
 - Presença exclusiva dos códigos 81 e 82 conferida.
 
-VALIDAÇÃO NECESSÁRIA NO APARELHO
-- Conferência visual nas dimensões reais de PC e celular.
-- Microfone e prévia de áudio.
-- Compartilhamento nativo e download TXT.
-- Rádio, PWA e menus suspensos.
-- Partida P2P em dois aparelhos.
-
-INSTALAÇÃO
-Publique todo o conteúdo desta pasta na raiz do projeto Vercel. Depois da publicação, feche e reabra o aplicativo ou recarregue sem cache para ativar o service worker v16.
+TESTES FÍSICOS RECOMENDADOS
+- Firefox e Chrome no celular, com a barra do navegador aberta e recolhida.
+- PWA instalada.
+- Compartilhamento por WhatsApp, Google Mensagens e demais aplicativos disponíveis.
+- Entrada pelo link como segundo jogador e como espectador.
+- Microfone, rádio e P2P em dois aparelhos.
