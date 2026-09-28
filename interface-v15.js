@@ -9,7 +9,7 @@
   // Entrada: jogar primeiro; preferências e perfil continuam disponíveis.
   const hero=document.querySelector('.hero-box');
   hero.querySelector('p').textContent='Seu próximo lance começa aqui.';
-  hero.append(el('span','v15-version','v15.1 · Jogue, aprenda e encontre amigos'));
+  hero.append(el('span','v15-version','v15.1.1 · Jogue, aprenda e encontre amigos'));
   document.querySelector('.menu-section-label').textContent='Vamos jogar?';
   const names=[['.mode-ia','♟ Jogar contra a IA','Escolha seu nível e comece'],['.mode-pvp','♟♟ Duas pessoas','Joguem no mesmo aparelho'],['.mode-online','◎ Jogar online','Encontre ou crie uma sala'],['.mode-bots','▷ Assistir aos bots','Observe e aprenda'],['.mode-tutorial','◇ Aprender xadrez','Regras, treino e análise']];
   names.forEach(([sel,title,sub])=>{document.querySelector(sel+' .mode-title').textContent=title;document.querySelector(sel+' .mode-sub').textContent=sub;});

@@ -1,18 +1,18 @@
-XADREZ PRO v15.1.0 — CORREÇÕES DE ESTABILIDADE E DESEMPENHO
+XADREZ PRO v15.1.1 — CAPTURAS, ESTABILIDADE E DESEMPENHO
 
 COMO PUBLICAR
 1. Extraia o ZIP.
 2. Copie todo o conteúdo extraído para a raiz do repositório ligado ao txadrez na Vercel.
 3. Não crie uma pasta extra envolvendo index.html e api/.
 4. Publique pelo fluxo normal do GitHub/Vercel.
-5. Reabra o jogo e confirme “v15.1” na tela inicial.
+5. Reabra o jogo e confirme “v15.1.1” na tela inicial.
 6. Se uma versão anterior continuar aparecendo, feche e reabra o aplicativo e atualize a página para renovar o cache.
 
-ARQUIVOS ALTERADOS NA v15.1
+ARQUIVOS ALTERADOS NA v15.1.1
 - index.html: sincronização P2P, IA, GOD, reações, rádio, logs e identificação da versão.
-- interface-v15.js: identificação visual v15.1.
-- manifest.json: descrição v15.1.0.
-- sw.js: cache xp-sw-15.1.0-20260928.
+- interface-v15.js: identificação visual v15.1.1.
+- manifest.json: descrição v15.1.1.
+- sw.js: cache xp-sw-15.1.1-20260928.
 - sw-v73.js: aviso explícito de arquivo histórico desativado.
 - AUDIT.json: resultado das verificações automáticas.
 
@@ -31,6 +31,8 @@ CORREÇÕES PRINCIPAIS
 - Sugestões do GOD ficam vinculadas à posição exata e são recalculadas após desfazer um lance.
 - A jogada da IA termina antes de iniciar uma nova análise GOD.
 - Ao terminar uma partida Bot vs Bot, os cards deixam imediatamente o estado “Processando...”.
+- Cada card mostra as peças que aquele lado realmente capturou, inclusive quando o jogador começa com as Pretas.
+- Ícones capturados usam as cores originais das peças, sem halo herdado do tema do tabuleiro.
 
 INTERFACE PRESERVADA
 - Tabuleiro no maior tamanho possível no computador e no celular.
@@ -51,8 +53,8 @@ VALIDAÇÃO EXECUTADA
 - Console do navegador sem erros ou avisos durante a partida local.
 
 VALIDAÇÃO NECESSÁRIA APÓS PUBLICAR
-- Partida P2P real entre dois aparelhos v15.1, incluindo reconexão e desfazer.
-- Compatibilidade entre v15.1 e uma versão anterior.
+- Partida P2P real entre dois aparelhos v15.1.1, incluindo reconexão e desfazer.
+- Compatibilidade entre v15.1.1 e uma versão anterior.
 - Tempo da IA e do GOD em aparelhos reais de diferentes capacidades.
 - Microfone, compartilhamento nativo, instalação PWA e transmissões de rádio.
 - Teste de stress DEV/TESTER com 500 ciclos.

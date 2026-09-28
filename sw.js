@@ -1,5 +1,5 @@
-/* Xadrez Pro Service Worker v15.1.0 */
-const XP_SW_BUILD = 'xp-sw-15.1.0-20260928';
+/* Xadrez Pro Service Worker v15.1.1 */
+const XP_SW_BUILD = 'xp-sw-15.1.1-20260928';
 const XP_CACHE = 'xadrez-pro-' + XP_SW_BUILD;
 const CORE = ['./', './index.html', './manifest.json', './interface-v15.css', './interface-v15.js'];
 

@@ -1,7 +1,7 @@
 {
-  "version": "15.1.0",
+  "version": "15.1.1",
   "date": "2026-09-28",
-  "baseline": "XadrezPro-v15.0.0 SHA-256 931FF16DB3F04EBA9806D0C1F7D0EF8A85859B0D055AC524574A4A6A0D6B77C3",
+  "baseline": "XadrezPro-v15.1.0 publicado em txadrez.vercel.app",
   "inlineScriptsSyntaxChecked": 3,
   "workerScriptSyntax": "OK",
   "addedScriptsSyntax": "OK",
@@ -16,6 +16,7 @@
     "Logs incluem from→to, ply remoto e rádio coerente",
     "Avaliação de final reduz peso posicional",
     "Fim de partida limpa o estado transitório Processando dos cards Bot vs Bot",
+    "Barras de captura mostram o material capturado pelo lado correto e preservam as cores dos SVGs",
     "Versão, build, service worker e manifesto atualizados"
   ],
   "inheritedVisualChecks": [
@@ -30,6 +31,7 @@
     "Desempenho AI_PERF e GOD deve ser medido em hardware real; profundidade depende do dispositivo",
     "Microfone, compartilhamento nativo, rádios e instalação PWA precisam de reteste físico",
     ":has() permanece na interface e exige navegador moderno",
+    "Bots em finais com vantagem decisiva podem perseguir o rei sem plano curto por causa da avaliação simplificada e da profundidade limitada",
     "Stress DEV/TESTER de 500 ciclos não foi executado nesta rodada"
   ]
 }

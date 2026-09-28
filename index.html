@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Xadrez Pro v15.1.0 — correções de telemetria, desempenho e assistência GOD.
+<!-- Xadrez Pro v15.1.1 — correções de capturas, telemetria, desempenho e assistência GOD.
      Preserva: IA/Worker, PvE/PvP, P2P/salas/espectadores/chat/voz/reacoes, Sandbox,
      Centro de Treino, Tutorial, FEN, Bot-vs-Bot, GOD, temas, skins, historico/PGN,
      relogios, radio e compatibilidade responsiva. -->
@@ -7,13 +7,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Xadrez Pro - v15.1.0 · Tutorial Unificado</title>
+    <title>Xadrez Pro - v15.1.1 · Tutorial Unificado</title>
     <meta name="theme-color" content="#0284c7">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Xadrez Pro">
-    <meta name="description" content="Xadrez Pro v15.1.0 — xadrez P2P, IA offline e rádio em tempo real">
+    <meta name="description" content="Xadrez Pro v15.1.1 — xadrez P2P, IA offline e rádio em tempo real">
     <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg">
     <link rel="manifest" href="./manifest.json" id="pwa-manifest-link">
@@ -1177,9 +1177,9 @@
         .move-list-container .move-san.check { color: #dc2626; }
         .move-list-container .move-san.mate { color: #16a34a; font-weight: 900; }
         .captured-area { display: flex; gap: 2px; flex-wrap: wrap; min-height: 8px; align-items: center; }
-        .captured-icon { width: 12px; height: 12px; background-size: contain; background-repeat: no-repeat; }
-        .captured-icon.white-cap { filter: brightness(1.2); }
-        .captured-icon.black-cap { filter: brightness(1.8) saturate(2) sepia(1) hue-rotate(310deg); }
+        .captured-icon { width: 12px; height: 12px; background-size: contain; background-repeat: no-repeat; filter: none !important; }
+        .captured-icon.white-cap { filter: drop-shadow(0 0 0.5px rgba(0,0,0,0.55)) !important; }
+        .captured-icon.black-cap { filter: drop-shadow(0 0 0.5px rgba(255,255,255,0.55)) !important; }
         .chat-container { display: flex; flex-direction: column; flex: 1; min-height: 50px; gap: 5px; overflow: hidden; }
         .chat-box { flex: 1; background: var(--chat-bg); border: 1px solid var(--panel-border); border-radius: 6px; padding: 6px; overflow-y: auto; font-size: 10.5px; color: var(--text-main); display: flex; flex-direction: column; gap: 4px; min-height: 40px; }
         .chat-msg { background: var(--chat-msg-bg); padding: 4px 6px; border-radius: 4px; border-left: 3px solid #f43f5e; line-height: 1.3; }
@@ -1738,7 +1738,7 @@
     <div id="menu-screen">
         <div class="hero-box">
             <h1>♟️ Xadrez Pro</h1>
-            <p>Estratégia P2P · IA offline · v15.1.0</p>
+            <p>Estratégia P2P · IA offline · v15.1.1</p>
         </div>
         <div class="menu-dashboard">
             <!-- ===== COLUNA ESQUERDA (perfil + secundários) ===== -->
@@ -2246,8 +2246,8 @@ body.god-stealth .god-assist-to::after {
 
     let selectedSquare = null;
     let possibleMoves = [];
-    const APP_VERSION = '15.1.0';
-    const BUILD_ID = 'xp-15.1.0-20260928';
+    const APP_VERSION = '15.1.1';
+    const BUILD_ID = 'xp-15.1.1-20260928';
         let gameMode = 'menu';
     let aiDifficulty = 5;
     let soundEnabled = true;
@@ -6706,8 +6706,10 @@ body.god-stealth .god-assist-to::after {
         let wCaps = [], bCaps = [];
         history.forEach(m => { if (m.captured) m.color === 'w' ? wCaps.push(m.captured) : bCaps.push(m.captured.toUpperCase()); });
 
-        let localCaps = playerColor === 'b' ? wCaps : bCaps;
-        let oppCaps = playerColor === 'b' ? bCaps : wCaps;
+        // v15.1.1 — a barra local mostra o que o jogador local capturou.
+        // wCaps = peças pretas capturadas pelas Brancas; bCaps = peças brancas capturadas pelas Pretas.
+        let localCaps = playerColor === 'b' ? bCaps : wCaps;
+        let oppCaps = playerColor === 'b' ? wCaps : bCaps;
 
         document.getElementById("captured-by-local").innerHTML = localCaps.map(p => `<div class="captured-icon ${playerColor === 'b' ? 'white-cap' : 'black-cap'}" style="background-image:url('${pieceSvgs[p]}')"></div>`).join('');
         document.getElementById("captured-by-opponent").innerHTML = oppCaps.map(p => `<div class="captured-icon ${playerColor === 'b' ? 'black-cap' : 'white-cap'}" style="background-image:url('${pieceSvgs[p]}')"></div>`).join('');
@@ -8115,7 +8117,7 @@ body.god-stealth .god-assist-to::after {
     // === PWA v15.0.0: manifest estático + Service Worker versionado ===
     // O manifest fica em /manifest.json para evitar start_url/scope inválidos de Blob URLs.
     // O SW usa BUILD_ID próprio e navegação network-first para impedir HTML antigo persistente.
-    window.xpBuildInfo = { appVersion: APP_VERSION, buildId: BUILD_ID, swExpected: 'xp-sw-15.1.0-20260928' };
+    window.xpBuildInfo = { appVersion: APP_VERSION, buildId: BUILD_ID, swExpected: 'xp-sw-15.1.1-20260928' };
     if ('serviceWorker' in navigator && location.protocol !== 'file:') {
         window.addEventListener('load', function() {
             navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(function(reg) {
@@ -8379,7 +8381,7 @@ body.god-stealth .god-assist-to::after {
         });
     }
 
-    addLog('Xadrez Pro v15.1.0 — build ' + BUILD_ID + ' — Git/Vercel, Registry/P2P, Tester e cache versionado.', 'INIT');
+    addLog('Xadrez Pro v15.1.1 — build ' + BUILD_ID + ' — Git/Vercel, Registry/P2P, Tester e cache versionado.', 'INIT');
     try { refreshUnlocksUI(); renderMissionsUI(); refreshSettingsPreview(); } catch (e) {}
     logSessionSnapshot('boot');
     if (typeof shuffleStandUpDeck === 'function') shuffleStandUpDeck();
@@ -9051,7 +9053,7 @@ body.god-stealth .god-assist-to::after {
   function ensure(){
     if(document.getElementById('xpTesterModal'))return;
     var m=document.createElement('div');m.id='xpTesterModal';m.style.cssText='display:none;position:fixed;inset:0;z-index:12000;background:rgba(0,0,0,.72);padding:10px;align-items:center;justify-content:center';
-    m.innerHTML='<div style="width:min(760px,96vw);max-height:92vh;overflow:auto;background:var(--modal-bg);color:var(--modal-text);border:2px solid var(--board-border);border-radius:14px;padding:12px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>🧪 DEV / TESTER v15.1.0</b><button class="action-btn" onclick="xpCloseTester()">✕</button></div><p style="font-size:10px">Teste persistente orientado a estado. Inventariado ≠ validado; recursos que exigem hardware/permissão permanecem NÃO TESTADO/REQUER INTERAÇÃO. Execução sem TEST_END é recuperada como interrompida.</p><div style="display:flex;flex-wrap:wrap;gap:6px"><button class="action-btn" onclick="xpTesterRunComplete()">▶ Teste completo</button><button class="action-btn" onclick="xpTesterRunStress(50)">♻ 50 ciclos</button><button class="action-btn" onclick="xpTesterRunStress(100)">♻ 100</button><button class="action-btn" onclick="xpTesterRunStress(500)">♻ 500</button><button class="action-btn" onclick="xpRefreshDiscoveredRooms()">🌐 Atualizar salas</button><button class="action-btn" onclick="xpTesterExport(&quot;json&quot;)">JSON</button><button class="action-btn" onclick="xpTesterExport(&quot;txt&quot;)">TXT</button></div><div id="xpTesterStatus" style="margin-top:10px;padding:8px;border:1px solid var(--panel-border);border-radius:8px;font-size:10px"></div><div style="font-size:9px;margin-top:8px;color:var(--text-muted)">P2P real requer 2 aparelhos (3 para espectador real). Pareie uma vez; etapas não executadas em hardware real permanecem NÃO TESTADO/REQUER INTERAÇÃO.</div></div>';
+    m.innerHTML='<div style="width:min(760px,96vw);max-height:92vh;overflow:auto;background:var(--modal-bg);color:var(--modal-text);border:2px solid var(--board-border);border-radius:14px;padding:12px"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b>🧪 DEV / TESTER v15.1.1</b><button class="action-btn" onclick="xpCloseTester()">✕</button></div><p style="font-size:10px">Teste persistente orientado a estado. Inventariado ≠ validado; recursos que exigem hardware/permissão permanecem NÃO TESTADO/REQUER INTERAÇÃO. Execução sem TEST_END é recuperada como interrompida.</p><div style="display:flex;flex-wrap:wrap;gap:6px"><button class="action-btn" onclick="xpTesterRunComplete()">▶ Teste completo</button><button class="action-btn" onclick="xpTesterRunStress(50)">♻ 50 ciclos</button><button class="action-btn" onclick="xpTesterRunStress(100)">♻ 100</button><button class="action-btn" onclick="xpTesterRunStress(500)">♻ 500</button><button class="action-btn" onclick="xpRefreshDiscoveredRooms()">🌐 Atualizar salas</button><button class="action-btn" onclick="xpTesterExport(&quot;json&quot;)">JSON</button><button class="action-btn" onclick="xpTesterExport(&quot;txt&quot;)">TXT</button></div><div id="xpTesterStatus" style="margin-top:10px;padding:8px;border:1px solid var(--panel-border);border-radius:8px;font-size:10px"></div><div style="font-size:9px;margin-top:8px;color:var(--text-muted)">P2P real requer 2 aparelhos (3 para espectador real). Pareie uma vez; etapas não executadas em hardware real permanecem NÃO TESTADO/REQUER INTERAÇÃO.</div></div>';
     document.body.appendChild(m);
   }
   window.xpTesterRefreshEntry=function(){var on=(typeof testerMode!=='undefined'&&testerMode),b=document.getElementById('xp-tester-gear-open');if(b)b.style.display=on?'block':'none';var f=document.getElementById('xpTesterFooterBtn');if(on&&!f){f=document.createElement('button');f.id='xpTesterFooterBtn';f.className='action-btn';f.innerHTML='🧪 DEV / TESTER';f.style.cssText='position:fixed;left:50%;bottom:6px;transform:translateX(-50%);z-index:9500;padding:7px 12px;font-size:9px;font-weight:900;box-shadow:0 5px 18px rgba(0,0,0,.28)';f.onclick=xpOpenTester;document.body.appendChild(f);}else if(!on&&f)f.remove();};
