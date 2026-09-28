@@ -1,31 +1,35 @@
 {
-  "version": "14.0.0",
-  "basis": "v13.0.10",
-  "target": "Git + Vercel",
-  "staticAudit": {
-    "duplicateIds": [],
-    "oldVersionStrings": 0,
-    "localLauncherReferences": false,
-    "inlineJavaScriptSyntax": "OK (node --check)",
-    "apiJavaScriptSyntax": "OK (node --check)",
-    "idsPreservedFromV13_0_10": true,
-    "namedFunctionsPreservedFromV13_0_10": true
-  },
-  "changesVerified": [
-    "CMD/local server removed",
-    "Vercel-only room messaging",
-    "no hidden dynamic PeerID fallback",
-    "appGeneration added to AI stale-result guard",
-    "Tester stress 50/100/500",
-    "functional probes with real UI moves",
-    "PvE AI response wait",
-    "Bot-vs-Bot real move wait",
-    "global stress invariants"
+  "version": "15.1.0",
+  "date": "2026-09-28",
+  "baseline": "XadrezPro-v15.0.0 SHA-256 931FF16DB3F04EBA9806D0C1F7D0EF8A85859B0D055AC524574A4A6A0D6B77C3",
+  "inlineScriptsSyntaxChecked": 3,
+  "workerScriptSyntax": "OK",
+  "addedScriptsSyntax": "OK",
+  "duplicateIds": [],
+  "implemented": [
+    "Ping P2P transporta movimentos compactos e reconstrói chess + moveHistoryFens; fallback mantém ply remoto conhecido",
+    "IA remove geração de lances na avaliação, reduz quiescência e limita capturas",
+    "Rádio preserva canal anterior ao trocar estação",
+    "Reações P2P são coalescidas em janela de 200 ms",
+    "GOD só calcula na vez humana, recebe orçamento superior, indicador, timeout e fallback local",
+    "Undo recalcula GOD; sugestões são vinculadas ao FEN",
+    "Logs incluem from→to, ply remoto e rádio coerente",
+    "Avaliação de final reduz peso posicional",
+    "Fim de partida limpa o estado transitório Processando dos cards Bot vs Bot",
+    "Versão, build, service worker e manifesto atualizados"
   ],
-  "runtimeLimitations": [
-    "Real PeerJS multi-device requires deployed HTTPS and 2 devices",
-    "Upstash registry requires Vercel environment variables",
-    "Microphone/radio autoplay require browser permission/user gesture",
-    "Third-device spectator remains a physical-device test"
+  "inheritedVisualChecks": [
+    "360x640",
+    "392x735",
+    "1024x768",
+    "1366x768",
+    "1480x829"
+  ],
+  "limitations": [
+    "P2P real com duas versões v15.1 ainda precisa ser testado em dois aparelhos",
+    "Desempenho AI_PERF e GOD deve ser medido em hardware real; profundidade depende do dispositivo",
+    "Microfone, compartilhamento nativo, rádios e instalação PWA precisam de reteste físico",
+    ":has() permanece na interface e exige navegador moderno",
+    "Stress DEV/TESTER de 500 ciclos não foi executado nesta rodada"
   ]
 }
