@@ -1,68 +1,46 @@
-XADREZ PRO v15.1.1 — CAPTURAS, ESTABILIDADE E DESEMPENHO
+XADREZ PRO v16.0.0 — INTERFACE LÍQUIDA PARA PC E CELULAR
+Data: 28/09/2026
+Base preservada: v15.1.1
 
-COMO PUBLICAR
-1. Extraia o ZIP.
-2. Copie todo o conteúdo extraído para a raiz do repositório ligado ao txadrez na Vercel.
-3. Não crie uma pasta extra envolvendo index.html e api/.
-4. Publique pelo fluxo normal do GitHub/Vercel.
-5. Reabra o jogo e confirme “v15.1.1” na tela inicial.
-6. Se uma versão anterior continuar aparecendo, feche e reabra o aplicativo e atualize a página para renovar o cache.
+OBJETIVO
+A versão 16 reorganiza a apresentação do jogo sem reduzir o protagonismo do tabuleiro e sem alterar as regras, o motor, o P2P ou os códigos secretos existentes.
 
-ARQUIVOS ALTERADOS NA v15.1.1
-- index.html: sincronização P2P, IA, GOD, reações, rádio, logs e identificação da versão.
-- interface-v15.js: identificação visual v15.1.1.
-- manifest.json: descrição v15.1.1.
-- sw.js: cache xp-sw-15.1.1-20260928.
-- sw-v73.js: aviso explícito de arquivo histórico desativado.
-- AUDIT.json: resultado das verificações automáticas.
+PRINCIPAIS MUDANÇAS
+- Tabuleiro continua ocupando o maior espaço possível no PC e no celular.
+- Painel lateral do PC acompanha exatamente a altura do tabuleiro.
+- Chat absorve o espaço vertical restante e deixa de criar área vazia abaixo do último card.
+- Cabeçalho possui seis controles uniformes e responsivos.
+- Placar de vitórias foi mantido como informação fina e discreta.
+- Reações usam uma superfície sólida e legível; no celular abrem em painel suspenso com botão para fechar.
+- Frases rápidas permanecem compactas no PC e viram um único botão junto à mensagem no celular.
+- Prévia de áudio abre por cima do conteúdo, sem deslocar os cards.
+- Menus Opções, Reações e Frases rápidas possuem fechamento explícito no celular.
+- Peças capturadas ficaram mais legíveis sem aumentar os cards.
+- Apenas o bot que está calculando mostra “Pensando...”.
+- Botão flutuante DEV/TESTER não cobre o tabuleiro durante a partida; o acesso permanece em Opções.
+- Compartilhamento de diagnóstico tenta anexar o TXT pelo compartilhamento nativo e mantém cópia/download como alternativa.
 
-CORREÇÕES PRINCIPAIS
-- O ping P2P leva a lista compacta dos lances e reconstrói o histórico completo no aparelho remoto.
-- Compatibilidade preservada com aparelhos antigos: quando a lista não existe, o jogo ainda sincroniza a posição e conserva o número remoto de jogadas.
-- Logs de movimento mostram a notação e as casas de origem e destino.
-- O campo ply do diagnóstico usa o histórico local ou o número conhecido do aparelho remoto.
-- O estado do rádio no diagnóstico só aparece ligado quando há reprodução real e uma estação selecionada.
-- A troca de estação encerra corretamente a transmissão anterior.
-- Reações rápidas são agrupadas por 200 ms, transmitindo somente a última escolha do intervalo.
-- A IA evita gerar listas completas de lances dentro da avaliação, usa quiescência mais curta e limita capturas analisadas.
-- A avaliação separa material e posição; em finais, reduz o peso posicional para priorizar material.
-- A chave da tabela de transposição inclui posição, turno, roque, en passant e profundidade.
-- O GOD calcula somente na vez humana, usa orçamento superior ao da IA normal, mostra indicador de processamento e oferece uma sugestão segura se o cálculo exceder 2,5 segundos.
-- Sugestões do GOD ficam vinculadas à posição exata e são recalculadas após desfazer um lance.
-- A jogada da IA termina antes de iniciar uma nova análise GOD.
-- Ao terminar uma partida Bot vs Bot, os cards deixam imediatamente o estado “Processando...”.
-- Cada card mostra as peças que aquele lado realmente capturou, inclusive quando o jogador começa com as Pretas.
-- Ícones capturados usam as cores originais das peças, sem halo herdado do tema do tabuleiro.
+CÓDIGOS MANTIDOS
+- 81=Nome: modo GOD.
+- 82=Nome: modo DEV/TESTER.
+- Nenhum código 83, 84, 85 ou 86 foi implementado.
 
-INTERFACE PRESERVADA
-- Tabuleiro no maior tamanho possível no computador e no celular.
-- Painel líquido, sem rolagem externa durante a partida.
-- Chat ocupa o espaço restante do painel.
-- Seis botões superiores uniformes, placar discreto e painéis sobrepostos de opções, reações e frases.
-- Prévia de áudio flutuante, sem deslocar os cards.
-- Configurações responsivas, prévias visuais, rádios em lista e diagnóstico com cópia, download e compartilhamento.
-
-CONFIGURAÇÃO VERCEL
-Mantenha as variáveis existentes do projeto. O registro de salas usa KV_REST_API_URL + KV_REST_API_TOKEN ou UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN. Nunca coloque tokens nos arquivos do jogo.
+ARQUIVOS DA CAMADA VISUAL
+- interface-v16.css
+- interface-v16.js
 
 VALIDAÇÃO EXECUTADA
-- Sintaxe de todos os scripts inline, interface-v15.js, sw.js e worker da IA.
-- Busca de IDs duplicados no HTML.
-- Renderização no navegador em 1366x768 e 392x735.
-- Tabuleiro, painel, chat e ausência de rolagem externa.
-- Console do navegador sem erros ou avisos durante a partida local.
+- Sintaxe dos scripts internos, worker, interface-v16.js e service worker.
+- IDs duplicados: nenhum.
+- Referências de versão, build, manifesto e cache conferidas.
+- Presença exclusiva dos códigos 81 e 82 conferida.
 
-VALIDAÇÃO NECESSÁRIA APÓS PUBLICAR
-- Partida P2P real entre dois aparelhos v15.1.1, incluindo reconexão e desfazer.
-- Compatibilidade entre v15.1.1 e uma versão anterior.
-- Tempo da IA e do GOD em aparelhos reais de diferentes capacidades.
-- Microfone, compartilhamento nativo, instalação PWA e transmissões de rádio.
-- Teste de stress DEV/TESTER com 500 ciclos.
+VALIDAÇÃO NECESSÁRIA NO APARELHO
+- Conferência visual nas dimensões reais de PC e celular.
+- Microfone e prévia de áudio.
+- Compartilhamento nativo e download TXT.
+- Rádio, PWA e menus suspensos.
+- Partida P2P em dois aparelhos.
 
-PRESERVAÇÃO
-O motor de regras, os modos de jogo, salas online, tutorial, histórico, temas, peças, estilos, conquistas, áudio, rádio, diagnóstico, PWA e demais recursos permanecem no pacote. Nenhum recurso foi intencionalmente removido.
-
-BASE
-Pacote XadrezPro-v15.0.0, SHA-256 931FF16DB3F04EBA9806D0C1F7D0EF8A85859B0D055AC524574A4A6A0D6B77C3.
-
-Este pacote não foi enviado ao GitHub nem publicado automaticamente.
+INSTALAÇÃO
+Publique todo o conteúdo desta pasta na raiz do projeto Vercel. Depois da publicação, feche e reabra o aplicativo ou recarregue sem cache para ativar o service worker v16.
